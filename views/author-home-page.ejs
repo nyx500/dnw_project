@@ -9,12 +9,16 @@
 <body>
     <!--Navbar for settings link-->
     <nav>
+        <a href="/author/">Author Home</a>
         <a href="/author/settings">Settings</a>
-      </nav>
+    </nav>
     <!-- Make it clear that this is the **Author** not the **User** Home page-->
     <h1>Welcome to the <b>Author</b> Home Page</h1>
     <h2><%= blog.title %></h2>
     <h3><%= blog.subtitle %></h3>
     <h4><em><%= blog.author %></em></h4>
+    <form method="GET" action="/author/edit-article">
+        <button name="create-new-draft" value="create-new-draft">Create New Draft</button>
+    </form>
 </body>
 </html>

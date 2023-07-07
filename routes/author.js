@@ -24,6 +24,7 @@ router.get("/", (req, res) => {
     });
 });
 
+
 // Author Settings Route: the author can change the blog title/subtitle/author name here
 router.get("/settings", (req, res) => {
     // Queries the blog_data table in the DB
@@ -40,6 +41,11 @@ router.get("/settings", (req, res) => {
             });
         }
     });
+});
+
+// The author writes, amends and publishes individual articles here
+router.get("/edit-article", (req, res) => {
+    res.render("author-edit-article");
 });
 
 

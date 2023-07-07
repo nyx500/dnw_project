@@ -2,6 +2,8 @@ const express = require('express');
 const app = express();
 const port = 3000;
 const sqlite3 = require('sqlite3').verbose();
+const bodyParser = require("body-parser");
+
 
 //items in the global namespace are accessible throught out the node application
 global.db = new sqlite3.Database('./database.db',function(err){
@@ -28,6 +30,9 @@ app.get('/', (req, res) => {
 app.use('/user', userRoutes);
 //this adds all the authorRoutes to the app under the path /user
 app.use('/author', authorRoutes);
+
+// enable body in post requests
+app.use(bodyParser.urlencoded({extended: true}));
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
