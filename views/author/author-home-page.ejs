@@ -21,11 +21,26 @@
     <ul>    
         <% articles.forEach(function(article) { %>
             <% if(!article.is_published){ %>
-                <li> ID: <%= article.id %>, Title: <%= article.title %>, Created on: <%= article.datetime_created %></li>
+                <li> ID: <%= article.id %>, Title: <%= article.title %>, Created on: <%= article.datetime_created %>,
+                    Last modified on: <%= article.datetime_created %>
+                    <br>
+                    <a href="/author/edit-article?id=<%= article.id %>">Edit article</a>
+                </li>
              <% } %>
         <% }); %> 
     </ul>
-
+    <h5>Published Articles</h5>
+    <ul>    
+        <% articles.forEach(function(article) { %>
+            <% if(article.is_published){ %>
+                <li> ID: <%= article.id %>, Title: <%= article.title %>, Created on: <%= article.datetime_created %>,
+                    Last modified on: <%= article.datetime_created %>
+                    <br>
+                    <a href="/author/edit-article?id=<%= article.id %>">Edit article</a>
+                </li>
+             <% } %>
+        <% }); %> 
+    </ul>
     <form method="GET" action="/author/create-new-draft-article">
         <button name="create-new-draft" value="create-new-draft">Create New Draft</button>
     </form>
