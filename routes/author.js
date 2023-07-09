@@ -8,51 +8,92 @@ const assert = require('assert');
 // Enables constructing path for article redirects with query string
 const url = require('url'); 
 
-// Author Home Page Route: the author can create, review, and edit articles here.
+// Author Home Page Route: the author can create, review, and edit articles here
 router.get("/", (req, res) => {
 
-    /** 
-        * Create a query string for Sqlite3 to create the 'Blog' table if it has not already been created!
-    */
+    // Creates a query string to create the 'Blog' table ONLY if it has not already been created!
     var create_blog_table_query = `CREATE TABLE IF NOT EXISTS blog (id INTEGER PRIMARY KEY,`
         + `title VARCHAR(255) DEFAULT  "My Blog" NOT NULL, `
         + `subtitle VARCHAR(500) DEFAULT "Welcome to my blog!" NOT NULL,`
         + `author VARCHAR(255) DEFAULT "Blog Author" NOT NULL,`
         + `datetime_created DATETIME DEFAULT CURRENT_TIMESTAMP);`;
 
-    //Creates the blog table if has not already been created
+    // Run the blog-table creating query...
     db.run(create_blog_table_query, function (err) {
         if (err) {
             console.log("Error - could not create blog table: " + err);
             // Exit program if could not create the table
             process.exit(1);
         } else {
-            // Get blog details from the DB with Select Query
+            // Gets blog info from the database with a Select Query
             var get_blog_data_query = `SELECT title, subtitle, author FROM blog;`;
             db.get(get_blog_data_query,
                 function (err, blog_data) {
                     if (err) {
-                        console.error("Error (no blog data!): " + err);
+                        // Error with query, log it
+                        console.error("Error: " + err);
                         process.exit(1);
                     } else {
-                        if (blog_data === undefined){
-                            var create_blog_query = `INSERT INTO blog DEFAULT VALUES`; 
-                            db.run(create_blog_query, function(err) {
-                                if (err){
-                                    console.log("Error - could not create blog: " + err);
+                        // No blog exists yet --> create 1 entry (but only if no rows are in the tables)
+                        if (blog_data === undefined) {
+                            // Creates a new blog entry if no blog row exists in 'blog' table (all defaults!)
+                            var create_blog_query = `INSERT INTO blog DEFAULT VALUES`;
+                            db.run(create_blog_query, function (err) {
+                                if (err) {
+                                    console.log("Error - could not create blog!: " + err);
                                     // Exit program if could not create the blog data
                                     process.exit(1);
                                 } else {
-                                    // Redirect to the home page again now the blog has been created!
+                                    /** Redirects to this route again once blog is created:
+                                     *  blog information should now be fetched from the DB!
+                                    */
                                     res.redirect("/author/");
                                 }
                             })
                         } else {
-                            // The blog exists --> display Home Page!
+                            // The blog exists now!
                             console.log("Blog data: " + blog_data.title);
-                            // Pass in the blog_data as a variable called 'blog' into the ejs template
-                            res.render("author/author-home-page", {
-                                blog: blog_data
+
+                            // Query which checks if the 'articles' table exists now:
+                            var check_articles_table_exists_query = `SELECT * FROM sqlite_master`
+                                + ` WHERE type='table' AND name='articles';`;
+
+                            db.get(check_articles_table_exists_query, function (err, articles_data) {
+                                if (err) {
+                                    console.log("Error getting articles data: " + err);
+                                    process.exit(1);
+                                } else {
+                                    console.log("Articles data: " + articles_data);
+                                    // Create new articles table if result is undefined
+                                    if (articles_data === undefined) {
+                                        // "Datetime_published' field is NULL because when draft created it is not yet published!
+                                        var create_articles_table_query = `CREATE TABLE IF NOT EXISTS articles `
+                                            + `(id INTEGER PRIMARY KEY, datetime_created DATETIME DEFAULT CURRENT_TIMESTAMP,`
+                                            + `datetime_modified DATETIME DEFAULT CURRENT_TIMESTAMP,`
+                                            + `datetime_published DATETIME, title VARCHAR(500), content TEXT,`
+                                            + `is_published BOOLEAN DEFAULT 0,`
+                                            + `likes INTEGER DEFAULT 0);`;
+
+                                        // Create the articles table
+                                        db.run(create_articles_table_query, function (err) {
+                                            if (err) {
+                                                console.log("Error - cannot create articles table! " + err);
+                                                // Exit program if could not create the table
+                                                process.exit(1);
+                                            } else {
+                                                // Redirects to this route again once articles table is created!
+                                                res.redirect("/author/");
+                                            }
+                                        });
+                                    } else {
+                                        // Both article and blog table exist --> render the view with the data from them
+                                        console.log("blog: " + blog_data + " articles: " + articles_data);
+                                        res.render("author/author-home-page", {
+                                            blog: blog_data,
+                                            articles: articles_data
+                                        });
+                                    }
+                                }
                             });
                         }
                     }
@@ -106,46 +147,24 @@ router.get("/edit-article", (req, res) => {
 
 // Creates a new article and stores it in the database after Author clicks "Create New Draft" in Home Page
 router.get("/create-new-draft-article", (req, res) => {
-    
-    /** 
-        * Create query string in SQL to create the articles table if it has not already been created
-        * "Datetime_published' field defaults to NULL because drafts have not yet been published!
-    */
-    var query = `CREATE TABLE IF NOT EXISTS articles (id INTEGER PRIMARY KEY,`
-    + `datetime_created DATETIME DEFAULT CURRENT_TIMESTAMP, datetime_modified DATETIME DEFAULT CURRENT_TIMESTAMP,`
-    + `datetime_published DATETIME, title VARCHAR(500), content TEXT, is_published BOOLEAN DEFAULT 0,` 
-    + `likes INTEGER DEFAULT 0);`;
-
-    // Creates the articles table if has not already been created
-    db.run(query, function (err) {
-        if (err) {
-            console.log(err);
-            // Exit program if could not create the table
-            process.exit(1);
-        }
-        else {
-            var insert_query = `INSERT INTO articles (datetime_published, title, content)`
-            + `VALUES (NULL, 'Untitled', '');`; // Set default title of new draft to 'Untitled'
-            // Insert new draft article with NULL title and content into the srticles table
-            db.run(insert_query,
-                function (err) { // No data in callback, only error if appears
-                    if (err) {
-                        console.error(err);
-                    } else {
-                        // If draft article successfully created, redirect to edit-article page...
-                        res.redirect(
-                            url.format({
-                                pathname: "/author/edit-article",
-                                query: {
-                                    "id": this.lastID // Pass the ID of the last-created draft into req.query
-                                }
-                            }));
-                    }
-                });
-        }
-    });
-
-    
+    var insert_query = `INSERT INTO articles (datetime_published, title, content)`
+    + `VALUES (NULL, 'Untitled', '');`; // Set default title of new draft to 'Untitled'
+    // Insert new draft article with NULL title and content into the srticles table
+    db.run(insert_query,
+        function (err) { // No data in callback, only error if appears
+            if (err) {
+                console.error(err);
+            } else {
+                // If draft article successfully created, redirect to edit-article page...
+                res.redirect(
+                    url.format({
+                        pathname: "/author/edit-article",
+                        query: {
+                            "id": this.lastID // Pass the ID of the last-created draft into req.query
+                        }
+                    }));
+            }
+        });
 });
 
 
