@@ -18,9 +18,11 @@
     <h3><%= blog.subtitle %></h3>
     <h4><em><%= blog.author %></em></h4>
     <h5>Draft Articles</h5>
-    <ul>
+    <ul>    
         <% articles.forEach(function(article) { %>
-           <li> ID: <%= article.id %>, Title: <%= article.title %>, Created on: <%= article.datetime_created %></li>
+            <% if(!article.is_published){ %>
+                <li> ID: <%= article.id %>, Title: <%= article.title %>, Created on: <%= article.datetime_created %></li>
+             <% } %>
         <% }); %> 
     </ul>
 
