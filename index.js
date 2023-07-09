@@ -20,6 +20,7 @@ const userRoutes = require('./routes/user');
 const authorRoutes = require('./routes/author');
 
 //set the app to use ejs for rendering
+app.set("views",__dirname + "/views");  
 app.set('view engine', 'ejs');
 
 app.get('/', (req, res) => {

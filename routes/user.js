@@ -55,7 +55,7 @@ router.get("/get-user-records", (req, res, next) => {
  * @desc Renders the page for creating a user record
  */
 router.get("/create-user-record", (req, res) => {
-  res.render("create-user-record");
+  res.render("user/create-user-record");
 });
 
 /**
