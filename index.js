@@ -3,6 +3,8 @@ const app = express();
 const port = 3000;
 const sqlite3 = require('sqlite3').verbose();
 const bodyParser = require("body-parser");
+// Imports path library to generate properly-formatted paths
+const path = require('path');
 
 
 //items in the global namespace are accessible throught out the node application
@@ -18,6 +20,9 @@ global.db = new sqlite3.Database('./database.db',function(err){
 
 const userRoutes = require('./routes/user');
 const authorRoutes = require('./routes/author');
+
+// enable access to public assets folder
+app.use('/public', express.static(path.join(__dirname, '/public')));
 
 //set the app to use ejs for rendering
 app.set("views",__dirname + "/views");  
