@@ -52,7 +52,7 @@ router.get("/", (req, res) => {
                             })
                         } else {
                             // The blog exists now!
-                            console.log("Blog data: " + blog_data.title);
+                            console.log("Blog data: " + blog_data);
 
                             // Query which checks if the 'articles' table exists now:
                             var check_articles_table_exists_query = `SELECT * FROM sqlite_master`
@@ -70,8 +70,8 @@ router.get("/", (req, res) => {
                                         var create_articles_table_query = `CREATE TABLE IF NOT EXISTS articles `
                                             + `(id INTEGER PRIMARY KEY, datetime_created DATETIME DEFAULT CURRENT_TIMESTAMP,`
                                             + `datetime_modified DATETIME DEFAULT CURRENT_TIMESTAMP,`
-                                            + `datetime_published DATETIME, title VARCHAR(500), content TEXT,`
-                                            + `is_published BOOLEAN DEFAULT 0,`
+                                            + `datetime_published DATETIME, title VARCHAR(500) DEFAULT "Untitled Article" NOT NULL,`
+                                            + `content TEXT DEFAULT "" NOT NULL, is_published BOOLEAN DEFAULT 0,`
                                             + `likes INTEGER DEFAULT 0);`;
 
                                         // Create the articles table
@@ -87,10 +87,17 @@ router.get("/", (req, res) => {
                                         });
                                     } else {
                                         // Both article and blog table exist --> render the view with the data from them
-                                        console.log("blog: " + blog_data + " articles: " + articles_data);
-                                        res.render("author/author-home-page", {
-                                            blog: blog_data,
-                                            articles: articles_data
+                                        db.all(`SELECT * FROM articles;`, function(err, articles_data){
+                                            if (err) {
+                                                console.log("Articles error: " + err);
+                                                process.exit(1);
+                                            } else {
+                                                console.log(articles_data.length);
+                                                res.render("author/author-home-page", {
+                                                    blog: blog_data,
+                                                    articles: articles_data
+                                                });
+                                            }
                                         });
                                     }
                                 }
@@ -147,8 +154,7 @@ router.get("/edit-article", (req, res) => {
 
 // Creates a new article and stores it in the database after Author clicks "Create New Draft" in Home Page
 router.get("/create-new-draft-article", (req, res) => {
-    var insert_query = `INSERT INTO articles (datetime_published, title, content)`
-    + `VALUES (NULL, 'Untitled', '');`; // Set default title of new draft to 'Untitled'
+    var insert_query = `INSERT INTO articles DEFAULT VALUES;`; // Set default title of new draft to 'Untitled'
     // Insert new draft article with NULL title and content into the srticles table
     db.run(insert_query,
         function (err) { // No data in callback, only error if appears
