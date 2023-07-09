@@ -71,6 +71,7 @@ router.get("/", (req, res) => {
                                             + `(id INTEGER PRIMARY KEY, datetime_created DATETIME DEFAULT CURRENT_TIMESTAMP,`
                                             + `datetime_modified DATETIME DEFAULT CURRENT_TIMESTAMP,`
                                             + `datetime_published DATETIME, title VARCHAR(500) DEFAULT "Untitled Article" NOT NULL,`
+                                            + `subtitle VARCHAR(500) DEFAULT "Undefined Subtitle",`
                                             + `content TEXT DEFAULT "" NOT NULL, is_published BOOLEAN DEFAULT 0,`
                                             + `likes INTEGER DEFAULT 0);`;
 
