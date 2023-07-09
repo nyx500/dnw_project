@@ -6,6 +6,8 @@ const router = express.Router();
 const assert = require('assert');
 // Enables constructing path for article redirects with query string
 const url = require('url'); 
+// Imports joi input data validation package
+const Joi = require('joi');
 
 // Author Home Page Route: the author can create, review, and edit articles here
 router.get("/", (req, res) => {
@@ -13,7 +15,7 @@ router.get("/", (req, res) => {
     // SQLite Query: creates the 'blog' table in the DB if and only if the table does not exist yet.
     var create_blog_table_query = `CREATE TABLE IF NOT EXISTS blog (id INTEGER PRIMARY KEY,`
         + `title VARCHAR(255) DEFAULT  "My Blog" NOT NULL, ` // Set default title (can be changed in Settings)
-        + `subtitle VARCHAR(500) DEFAULT "Welcome to my blog!" NOT NULL,` // Set default subtitle
+        + `subtitle VARCHAR(500) DEFAULT "Welcome to my blog!",` // Set default subtitle
         + `author VARCHAR(255) DEFAULT "Blog Author" NOT NULL,` // Set defaut author
         + `datetime_created DATETIME DEFAULT CURRENT_TIMESTAMP);`; // Set default blog-creation time to now in GMT
 
@@ -128,6 +130,43 @@ router.get("/settings", (req, res) => {
     });
 });
 
+// Settings POST Route: validates input data to change blog title/subtitle/author and updates blog table in DB
+router.post("/settings", (req, res) => {
+    
+    // Use Joi to validate author input 
+    const schema = Joi.object({
+        // 'required' --> ensures user enters some value
+        title: Joi.string().min(3).max(255).required(), // Set max char-value to the field's VARCHAR value from DB
+        subtitle: Joi.string().min(1).max(500).required(),
+        author: Joi.string().min(1).max(255).required()
+    });
+
+    /** Unpacks result of schema validation with Joi --> error stores error details if form data is invalid
+     * 'value' stores the inputted data, e.g. value.title = validated 'req.body.title' for blog title setting
+    */
+    const {value, error} = schema.validate(req.body);
+
+    // If data is invalid, send error msg to browser
+    if (error) {
+        res.send("Error: some fields are incomplete --> " + error.details[0].message);
+    }
+    // Data is valid --> update the DB to store new blog settings
+    else {
+        // Update blog settings in blog table in db
+        var update_query = `UPDATE blog SET title = ?,`
+            + `subtitle = ?, author = ? WHERE id = 1`;
+        // Update (single) blog row in 'blog' table with values from the **validated** req.body
+        db.run(update_query, [value.title, value.subtitle, value.author],
+            function (err) {
+                if (err) {
+                    console.log("ERROR - could not update blog settings! " + err);
+                } else {
+                    // If successfully updated blog table, reload author's home page
+                    res.redirect("/author/");
+                }
+            });
+    }
+});
 
 // Creates a new article and stores it in the database after Author clicks "Create New Draft" in Home Page
 router.get("/create-new-draft-article", (req, res) => {

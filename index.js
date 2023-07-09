@@ -5,6 +5,8 @@ const sqlite3 = require('sqlite3').verbose();
 const bodyParser = require("body-parser");
 // Imports path library to generate properly-formatted paths
 const path = require('path');
+// Imports joi input data validation package
+const Joi = require('joi');
 
 
 // handles post requests --> must define it before defining the routes or doesn't work!!!
