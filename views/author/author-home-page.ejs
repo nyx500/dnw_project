@@ -19,11 +19,13 @@
     <h4><em><%= blog.author %></em></h4>
     <h5>Draft Articles</h5>
     <ul>    
+        <!--Only display articles with is_published property set to False in here-->
         <% articles.forEach(function(article) { %>
             <% if(!article.is_published){ %>
                 <li> ID: <%= article.id %>, Title: <%= article.title %>, Created on: <%= article.datetime_created %>,
                     Last modified on: <%= article.datetime_created %>
                     <br>
+                    <!--Dynamically links to edit draft article page-->
                     <a href="/author/edit-article?id=<%= article.id %>">Edit article</a>
                 </li>
              <% } %>
@@ -31,11 +33,13 @@
     </ul>
     <h5>Published Articles</h5>
     <ul>    
+        <!--Only display articles with is_published property set to True in here-->
         <% articles.forEach(function(article) { %>
             <% if(article.is_published){ %>
                 <li> ID: <%= article.id %>, Title: <%= article.title %>, Created on: <%= article.datetime_created %>,
                     Last modified on: <%= article.datetime_created %>
                     <br>
+                    <!--Dynamically links to edit published article page-->
                     <a href="/author/edit-article?id=<%= article.id %>">Edit article</a>
                 </li>
              <% } %>
