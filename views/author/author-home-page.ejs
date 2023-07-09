@@ -4,8 +4,6 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!--Links to static assets-->
-    <script type="application/javascript" src="../../public/author-homepage-script.js" ></script>
     <link href="../../public/styles.css" rel="stylesheet" type="text/css" />
     <title>Author Home Page</title>
 </head>
@@ -25,11 +23,34 @@
         <!--Only display articles with is_published property set to False in here-->
         <% articles.forEach(function(article) { %>
             <% if(!article.is_published){ %>
-                <li> ID: <%= article.id %>, Title: <%= article.title %>, Created on: <%= article.datetime_created %>,
+                <li> ID: <%= article.id %>, Title: <%= article.title %>
+                    <br>
+                    Created on: <%= article.datetime_created %>
+                    <br>
                     Last modified on: <%= article.datetime_created %>
                     <br>
-                    <!--Dynamically links to edit draft article page-->
-                    <a href="/author/edit-article?id=<%= article.id %>">Edit article</a>
+                    <% if(!article.datetime_published){ %> 
+                    Published: Never
+                    <% } else { %>
+                    Last published: article.datetime_published
+                    <% } %>
+                    <span>
+                        <!-- Dynamic Link to Edit Article page with this article's ID in URL as querystring -->
+                        <a href="/author/edit-article?id=<%= article.id %>">Edit article</a>
+                         <!-- Form/Button to Delete Article page using this article's ID -->
+                        <!-- Use POST to avoid user executing CRUD operations in URL! -->
+                        <form method="POST" action="/author/delete-article">
+                            <!--Send Article ID in req.body from hidden input field-->
+                            <input type="hidden" id="article-<%= article.id %>" name="id" value="<%= article.id %>"/>
+                            <input type="submit" value="Delete"/>
+                        </form>
+                        <!-- Use POST to publish! -->
+                        <form method="POST" action="/author/publish-article">
+                            <!--Send Article ID in req.body from hidden input field-->
+                            <input type="hidden" id="article-<%= article.id %>" name="id" value="<%= article.id %>"/>
+                            <input type="submit" value="Publish"/>
+                        </form>
+                    </span>
                 </li>
              <% } %>
         <% }); %> 
@@ -42,8 +63,23 @@
                 <li> ID: <%= article.id %>, Title: <%= article.title %>, Created on: <%= article.datetime_created %>,
                     Last modified on: <%= article.datetime_created %>
                     <br>
-                    <!--Dynamically links to edit published article page-->
-                    <a href="/author/edit-article?id=<%= article.id %>">Edit article</a>
+                    Published: <%= article.datetime_published %>
+                    <br>
+                    Likes: <%= article.likes %>
+                    <br>
+                    <button class="share-button" id="share-button-<%= article.id %>">Share</button>
+                    <br>
+                    <span>
+                        <!-- Link to Edit Article page with this article's ID in URL as querystring -->
+                        <a href="/author/edit-article?id=<%= article.id %>">Edit article</a>
+                        <!-- Form/Button to Delete Article page using this article's ID -->
+                        <form method="POST" action="/author/delete-article">
+                            <!-- Use POST to avoid user executing CRUD operations in URL! -->
+                            <!--Send Article ID in req.body from hidden input field-->
+                            <input type="hidden" id="article-<%= article.id %>" name="id" value="<%= article.id %>"/>
+                            <input type="submit" value="Delete"/>
+                        </form>
+                    </span>
                 </li>
              <% } %>
         <% }); %> 
@@ -51,5 +87,7 @@
     <form method="GET" action="/author/create-new-draft-article">
         <button name="create-new-draft" value="create-new-draft">Create New Draft</button>
     </form>
+
+    <script type="application/javascript" src="../../public/author-homepage-script.js" ></script>
 </body>
 </html>
