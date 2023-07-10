@@ -190,7 +190,7 @@ router.post("/settings", blogValidate, (req, res) => {
                     res.redirect("/author/");
                 }
             });
-    }
+        }
 });
 
 // Creates a new article and stores it in the database after Author clicks "Create New Draft" in Home Page

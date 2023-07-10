@@ -7,17 +7,67 @@
 const express = require("express");
 const router = express.Router();
 const assert = require('assert');
+// Enables constructing path for article redirects with query string
+const url = require('url');
 
-// TESTING: Practice user/ index route
-// router.get("/", (req, res) => {
-//   global.db.all("SELECT (user_name) FROM testUsers", function (err, rows) {
-//     if (err) {
-//       next(err); //send the error on to the error handler
-//     } else {
-//       res.json(rows);
-//     }
-//   });
-// });
+//TESTING: Practice reader/ index route
+router.get("/", (req, res) => {
+  var blog_query = `SELECT * FROM blog`;
+  db.get(blog_query, function (err, blog_data) {
+    if (err) {
+      console.log(err);
+      process.exit(1);
+    } else {
+      // Gets only articles with is_published set to True, ordered by datetime published from latest to oldest
+      var articles_query = `SELECT * FROM articles WHERE is_published = 1 ORDER BY datetime_published DESC;`;
+      db.all(articles_query, function (err, articles_data){
+        if (err) {
+          next(err); //send the error on to the error handler
+        } else {
+          res.render("reader/reader-home-page", {
+            blog: blog_data,
+            articles: articles_data
+          });
+        }
+      });
+    }
+  });
+});
+
+router.get("/article", (req, res)=> {
+  var specific_article_query = `SELECT * FROM articles WHERE id = (?);`;
+  db.get(specific_article_query,[req.query.id], function (err, article){
+    if (err) {
+      console.log("Error: No such article ID!");
+      process.exit(1);
+    } else {
+      res.render("reader/reader-article", {
+        article: article
+      });
+    }
+  });
+})
+
+
+router.post("/like-article", (req, res)=> {
+  // Increments the likes field in the row for this article in the 'articles' table
+  var update_likes_query = `UPDATE articles SET likes = likes + 1 WHERE id = (?)`;
+  db.run(update_likes_query, [req.body.id], function (err) {
+        if (err) {
+            console.log("ERROR - could not update likes for article! " + err);
+            process.exit(1);
+        } else {
+            // If successfully updated blog likes, reload the same article using the ID passed in the query string
+            res.redirect(url.format({
+              pathname: "/reader/article",
+              query: {
+                  "id": req.body.id 
+              }
+          }));  
+        }
+    });
+})
+
 
 /**
  * @desc retrieves the current users

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="../../public/styles.css" rel="stylesheet" type="text/css" />
+    <title>View Article</title>
+</head>
+<body>
+    <!--Navbar for settings link-->
+    <nav>
+        <a href="/reader/">Reader Home</a>
+    </nav>
+    <!-- Make it clear that this is the **Author** not the **User** Home page-->
+    <h1><%= article.title %></h1>
+    <h2><%= article.subtitle %></h2>
+    <h3><em>Published: <%= article.datetime_published %> (GMT)</em></h3>
+    <span>
+        <h4>Likes: <%= article.likes %></h4>
+        <!--Form to 'like' the article-->
+        <form method="POST" action="/reader/like-article">
+            <input type="hidden" name="id" id="article-id" value="<%= article.id %>">
+            <input type="submit" value="Like">
+        </form>
+    </span>
+    <div id="article-content">
+        <p><%= article.content %> </p>
+    </div>
+</body>
+</html>

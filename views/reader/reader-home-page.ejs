@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="../../public/styles.css" rel="stylesheet" type="text/css" />
+    <title>Reader Home Page</title>
+</head>
+<body>
+    <!--Navbar for settings link-->
+    <nav>
+        <a href="/reader/">Reader Home</a>
+    </nav>
+    <!-- Make it clear that this is the **Author** not the **User** Home page-->
+    <h1>Welcome to the <b>Reader</b> Home Page!</h1>
+    <h2><%= blog.title %></h2>
+    <h3><%= blog.subtitle %></h3>
+    <h4>Author: <em><%= blog.author %></em></h4>
+    <h5>Articles</h5> 
+    <ul>    
+        <!--Only display articles with is_published property set to True in here-->
+        <% articles.forEach(function(article) { %>
+            <li><a href="/reader/article?id=<%= article.id %>"><%= article.title %></a>
+                </br>
+                <%= article.datetime_published %>
+            </li> <%}) 
+        %>
+    </ul>
+</body>
+</html>

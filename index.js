@@ -12,7 +12,6 @@ const Joi = require('joi');
 // handles post requests --> must define it before defining the routes or doesn't work!!!
 app.use(bodyParser.urlencoded({extended: true}));
 
-
 //items in the global namespace are accessible throught out the node application
 global.db = new sqlite3.Database('./database.db',function(err){
   if(err){
@@ -24,7 +23,7 @@ global.db = new sqlite3.Database('./database.db',function(err){
   }
 });
 
-const userRoutes = require('./routes/user');
+const readerRoutes = require('./routes/reader');
 const authorRoutes = require('./routes/author');
 
 // enable access to public assets folder
@@ -34,13 +33,14 @@ app.use('/public', express.static(path.join(__dirname, '/public')));
 app.set("views",__dirname + "/views");  
 app.set('view engine', 'ejs');
 
+// test page
 app.get('/', (req, res) => {
   res.send('Hello World!')
 });
 
-//this adds all the userRoutes to the app under the path /user
-app.use('/user', userRoutes);
-//this adds all the authorRoutes to the app under the path /user
+//this adds all the readerRoutes to the app under the path /reader
+app.use('/reader', readerRoutes);
+//this adds all the authorRoutes to the app under the path /author
 app.use('/author', authorRoutes);
 
 app.listen(port, () => {
@@ -62,15 +62,15 @@ app.listen(port, () => {
 
 // .get only retrieves the first row from the database/table which it finds
 // we need to use a different command to retrieve all the records: db.all!
-db.all("SELECT * FROM testUsers;", function(err, data) { // Callback has 2 args: error and data
-  if (err) {
-    console.log("No such data!");
-    console.error(err);
-    process.exist(1);
-  } else {
-    console.log(data);
-  }
-});
+// db.all("SELECT * FROM testUsers;", function(err, data) { // Callback has 2 args: error and data
+//   if (err) {
+//     console.log("No such data!");
+//     console.error(err);
+//     process.exist(1);
+//   } else {
+//     console.log(data);
+//   }
+// });
 
 
 
