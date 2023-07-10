@@ -5,7 +5,7 @@ const express = require("express");
 const router = express.Router();
 const assert = require('assert');
 // Enables constructing path for article redirects with query string
-const url = require('url'); 
+const url = require('url');
 // Imports joi input data validation package
 const Joi = require('joi');
 // Import modules from express-validation for form data validation and sanitization
@@ -54,18 +54,14 @@ router.get("/", (req, res) => {
                                 }
                             })
                         } else {
-                            // The blog exists now!
-                            console.log("Blog data: " + blog_data);
 
                             // Query which checks if the 'articles' table exists already:
                             var check_articles_table_exists_query = `SELECT * FROM sqlite_master`
                                 + ` WHERE type='table' AND name='articles';`;
                             db.get(check_articles_table_exists_query, function (err, articles_data) {
                                 if (err) {
-                                    console.log("Error getting articles data: " + err);
                                     process.exit(1);
                                 } else {
-                                    console.log("Articles data: " + articles_data);
                                     // If undefined, then 'articles' table has not been created --> create it
                                     if (articles_data === undefined) {
                                         // Create the 'articles' table as it does not already exist, set default values
@@ -73,8 +69,8 @@ router.get("/", (req, res) => {
                                             + `(id INTEGER PRIMARY KEY, datetime_created DATETIME DEFAULT CURRENT_TIMESTAMP,`
                                             + `datetime_modified DATETIME DEFAULT CURRENT_TIMESTAMP,`
                                             + `datetime_published DATETIME, title VARCHAR(500) DEFAULT "Untitled Article" NOT NULL,`
-                                            + `subtitle VARCHAR(500) DEFAULT "Undefined Subtitle",`
-                                            + `content TEXT DEFAULT "", is_published BOOLEAN DEFAULT 0,`
+                                            + `subtitle VARCHAR(500) DEFAULT "Undefined Subtitle" NOT NULL,`
+                                            + `content TEXT DEFAULT "" NOT NULL, is_published BOOLEAN DEFAULT 0,`
                                             + `likes INTEGER DEFAULT 0);`;
 
                                         // Creates the articles table
@@ -92,7 +88,7 @@ router.get("/", (req, res) => {
                                         /** Run this code only if article and blog table exist:
                                          * Retrieves all the articles from the 'articles' table in DB
                                         */
-                                        db.all(`SELECT * FROM articles;`, function(err, articles_data){
+                                        db.all(`SELECT * FROM articles;`, function (err, articles_data) {
                                             if (err) {
                                                 console.log("Articles error: " + err);
                                                 process.exit(1);
@@ -118,36 +114,41 @@ router.get("/", (req, res) => {
 // Author Settings Route: the author can change the blog title/subtitle/author name here
 router.get("/settings", (req, res) => {
     // Retrieves the blog title/subtitle/author from the 'blog' table (only has one row) in the dtabase
-    db.get("SELECT title, subtitle, author FROM blog;", 
-    function (err, blog_data) { // Callback has 2 args: error and data
-        if (err) {
-            console.error("Error (no blog data!): " + err);
-            process.exit(1);
-        } else {
-            console.log("Blog data: " + blog_data);
-           // Pass in the blog_data as a variable called 'blog' into the ejs template
-            res.render("author/author-settings", {
-                errors: null,
-                blog: blog_data
-            });
-        }
-    });
+    db.get("SELECT title, subtitle, author FROM blog;",
+        function (err, blog_data) { // Callback has 2 args: error and data
+            if (err) {
+                console.error("Error (no blog data!): " + err);
+                process.exit(1);
+            } else {
+                console.log("Blog data: " + blog_data);
+                // Pass in the blog_data as a variable called 'blog' into the ejs template
+                res.render("author/author-settings", {
+                    errors: [],
+                    blog: blog_data
+                });
+            }
+        });
 });
 
 // Set of Rules using express-validator package to validate form data for updating the blog settings
 var blogValidate = [
     // Check title
-    check('title').isLength({ min: 1, max: 255}).withMessage(`Blog title must contain 1-255 chars!`).trim().escape(),
+    check('title').isLength({  max: 500 }).withMessage(`Blog title must be less than 500 words`)
+    .not().isEmpty().withMessage(`Blog title cannot be empty!`)
+    .trim(),
     // Check subtitle
-    check('subtitle').isLength({min: 0, max: 500}).withMessage(`Blog subtitle cannot be more than 500 chars!`).trim().escape(),
+    check('subtitle').isLength({ max: 500 }).withMessage(`Blog subtitle must be less than 500 chars!`)
+    .not().isEmpty().withMessage(`Blog subtitle cannot be empty!`)
+    .trim(),
     // Check author
-    check('author').isLength({min: 1, max: 255}).withMessage(`Author name must contain 1-255 chars!`)
-    .trim().escape()
+    check('author').isLength({ max: 255 }).withMessage(`Author name must be less than 255 chars!`)
+    .not().isEmpty().withMessage(`Author cannot be empty!`)
+    .trim()
 ];
 
 // Settings POST Route: validates input data to change blog title/subtitle/author and updates blog table in DB
 router.post("/settings", blogValidate, (req, res) => {
-    
+
     const errors = validationResult(req);
 
     // Use Joi to validate author input 
@@ -175,9 +176,11 @@ router.post("/settings", blogValidate, (req, res) => {
     // Data is valid --> update the DB to store new blog settings
     else {
         // Update blog settings in blog table in db
-        var update_query = `UPDATE blog SET title = ?,`
-            + `subtitle = ?, author = ? WHERE id = 1`;
+        var update_query = `UPDATE blog SET title = (?),`
+            + `subtitle = (?), author = (?) WHERE id = 1`;
         // Update (single) blog row in 'blog' table with values from the **validated** req.body
+        console.log("DATA: ")
+        console.log(req.body.title, req.body.subtitle, req.body.author);
         db.run(update_query, [req.body.title, req.body.subtitle, req.body.author],
             function (err) {
                 if (err) {
@@ -206,13 +209,23 @@ router.get("/create-new-draft-article", (req, res) => {
                         query: {
                             "id": this.lastID // Pass the ID of the last-created draft into req.query
                         }
-                    }));
+                    })
+                );
             }
         });
 });
 
 // This is where the author writes, amends, and publishes individual articles
 router.get("/edit-article", (req, res) => {
+    // First get errors from query string if there are any (for when POST form does not work)
+    var errors = [];
+    // If errors have been passed in as query in URL via the edit-article POST method, then extract the errors
+    // from the query string and store them in the array
+    if (req.query.errors)
+    {   
+        errors = (JSON.parse(req.query.errors).errors);
+    }
+
     // Retrieves the individual article with the correct req.query.id from the database
     var query = `SELECT * FROM articles WHERE id = ?`; // Input: article's id from the inputted GET query string
     db.get(query, [req.query.id], function (err, article_data) {
@@ -221,16 +234,16 @@ router.get("/edit-article", (req, res) => {
             process.exit(1);
         } else {
             // Only render the article page if article was returned from SQL query!
-            if (article_data){
+            if (article_data) {
                 // Pass data about this individual draft article from DB to the edit-article view
                 res.render("author/author-edit-article", {
-                    /** Pass 'error' as null, as some ejs in the template only executes when 'error' NOT null
-                       * but then nothing in ejs works if no 'error' variable is passed at all
+                    /** Pass 'errors' as null, as some ejs in the template only executes when 'errors' NOT null
+                       * but then nothing in ejs works if no 'errors' variable is passed at all
                     **/
-                    error: null,
-                    article: article_data
+                    article: article_data,
+                    errors: errors
                 });
-            // No data returned --> no such article with that ID in the database, so log the error
+                // No data returned --> no such article with that ID in the database, so log the error
             } else {
                 console.log("Error: no such article");
                 process.exit(1);
@@ -241,21 +254,51 @@ router.get("/edit-article", (req, res) => {
 
 
 
-// Set of Rules using express-validator package to validate form data for updating the blog settings
+// Set of rules using the express-validator package to validate POST form data for updating the blog settings
 var articleValidate = [
-    // Check article title
-    check('title').isLength({ min: 1, max: 500}).withMessage(`Article title must contain 1-500 chars!`).trim().escape(),
-    // Check article subtitle
-    check('subtitle').isLength({min: 0, max: 500}).withMessage(`Article subtitle cannot be more than 500 chars!`).trim().escape(),
-    // Check article content
-    check('content').not().isEmpty().withMessage(`Article content cannot be empty!`).trim().escape()
+    // Check article title is not empty and less than 500 chars
+    check('title').not().isEmpty().withMessage(`Article title must not be empty!`)
+        .isLength({ max: 500 }).withMessage(`Article title must be less than 500 chars!`).trim(),
+    // Check article subtitle is not empty and less than 500 chars
+    check('subtitle').not().isEmpty().withMessage(`Article subtitle must not be empty!`)
+        .isLength({ max: 500 }).withMessage(`Article subtitle must be less than 500 chars!`).trim(),
+    // Check article content is not empty and that does not exceed 40K chars (prevent buffer overflow) 
+    check('content').not().isEmpty().withMessage(`Article content cannot be empty!`)
+        .isLength({ max: 40000 }).withMessage(`Article content cannot be empty!`).trim()
 ];
 
-// This is the POST route by which the author can update the article to-be-edited
+// This is the POST route by which the author can update each individual article
 router.post("/edit-article", articleValidate, (req, res) => {
-    // TEST: fill in later!
-   const errors = validationResult(req);
-   res.send(errors.array());
+    // Validates and sanitizes the req.body user input using the above articleValidate array with express-validat
+    const errors = validationResult(req);
+    // If data is invalid, then reload the edit-article page for the same article with error messages
+    if (!errors.isEmpty()) {
+        console.log("ERRORS!!!!!!!!!!!");
+        res.redirect(
+            url.format({
+                pathname: "/author/edit-article",
+                query: {
+                    "id": req.body.id, // Pass the ID of the article into the req.query object
+                    "errors": JSON.stringify(errors)
+                }
+            })
+        );
+    }
+    // Data is valid --> update the DB to store new blog settings
+    else {
+            // // Update the article and last-modified date in the DB
+            var update_query = `UPDATE articles SET datetime_modified = CURRENT_TIMESTAMP,`
+            +` title = (?), subtitle=(?), content=(?) WHERE id = (?)`;
+            // Article ID sent with the form in POST request using the value in the hidden input HTML element
+            db.run(update_query, [req.body.title, req.body.subtitle, req.body.content, req.body.id], function (err) {
+                if (err) {
+                    console.log("ERROR - could not publish article! " + err);
+                } else {
+                    console.log("Success - updated the article.");
+                    res.redirect("/author/");
+                }
+            });
+    }
 });
 
 
@@ -264,7 +307,7 @@ router.post("/delete-article", (req, res) => {
     // Deletes article with corresponding ID from the 'articles' table
     var delete_query = `DELETE FROM articles WHERE id = ?`;
     // Article ID sent with the form in POST request using the value in the hidden input HTML element
-    db.run(delete_query, [req.body.id], function (err) { 
+    db.run(delete_query, [req.body.id], function (err) {
         if (err) {
             console.log("ERROR - could not delete article! " + err);
         } else {
@@ -277,7 +320,7 @@ router.post("/delete-article", (req, res) => {
 router.post("/publish-article", (req, res) => {
     // Publishes the draft article with the corresponding ID by updating its is_published field to 1 (True)
     var update_query = `UPDATE articles SET is_published = 1,`
-                        + `datetime_published = CURRENT_TIMESTAMP WHERE id = ?`; 
+        + `datetime_published = CURRENT_TIMESTAMP WHERE id = ?`;
     // Article ID sent with the form in POST request using the value in the hidden input HTML element
     db.run(update_query, [req.body.id], function (err) {
         if (err) {

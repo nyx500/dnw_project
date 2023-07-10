@@ -14,13 +14,32 @@
     </nav>
     <!-- Make it clear that this is the **Author** not the **User** Home page-->
     <h1>Welcome, Author! This is the <b>Edit Article</b> Page</h1>
-    <h2>Article Title: <%= article.title %></h2>
-    <h3>Article Subtitle: <%= article.subtitle %></h3>
-    <h4>Created: <%= article.datetime_created %> (GMT), Last Modified: <%= article.datetime_modified %></h4>
-    <h4>Published: <%= article.datetime_published %></h4>
+    <h2>Created: <%= article.datetime_created %> (GMT), Last Modified: <%= article.datetime_modified %></h4>
+    
+    <h3>Published: 
+    <% if (article.datetime_published) { %>
+        article.datetime_published<%}  else  { %>
+            Never
+        <%} 
+    %>
+    </h3>
+
+
+    <% if (errors.length > 0) { %>
+        <h4>Could not save article - errors found: </h4>
+        <ul>
+        <% for (var i = 0; i < errors.length;  i++ ) { %>
+            <li> <%= errors[i].msg %> </li>
+        <% } %>
+        </ul>
+    <%} %>
+    <br/>
     <form method="POST" action="/author/edit-article">
-        <!--Send the article's ID back with POST!-->
+        <!--Send the article's ID and other hidden fields back with POST!-->
         <input type="hidden" id="article-<%= article.id %>" name="id" value="<%= article.id %>"/>
+        <input type="hidden" id="datetime_created" name="datetime_created" value="<%= article.datetime_created %>"/>
+        <input type="hidden" id="datetime_modified" name="datetime_modified" value="<%= article.datetime_modified %>"/>
+        <input type="hidden" id="datetime_published" name="datetime_published" value="<%= article.datetime_published %>"/>
         <label for="title">Change Article Title:</label>
         <input type="text" name="title" id="title" value="<%= article.title %>">
         <br>
@@ -29,7 +48,7 @@
         <br>
         <label for="content">Edit Article Text Content:</label>
         <br/>
-        <textarea type="text" name="content" id="content" value="<%= article.content %>" rows="4" cols="100"></textarea>
+        <textarea type="text" name="content" id="content" rows="20" cols="100"><%= article.content %></textarea>
         <br>
         <input type="submit" value="Submit Changes"/>
     </form>
