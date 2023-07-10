@@ -16,6 +16,19 @@
     <h1>Welcome, Author! This is the <b>Edit Article</b> Page</h1>
     <h2>Article Title: <%= article.title %></h2>
     <h3>Article Subtitle: <%= article.subtitle %></h3>
-    <h4>Created: <%= article.datetime_created %> (GMT) </h4>
+    <h4>Created: <%= article.datetime_created %> (GMT), Last Modified: <%= article.datetime_modified %></h4>
+    <h4>Published: <%= article.datetime_published %></h4>
+    <form method="POST" action="/author/edit-article">
+        <!--Send the article's ID back with POST!-->
+        <input type="hidden" id="article-<%= article.id %>" name="id" value="<%= article.id %>"/>
+        <label for="title">Change Article Title:</label>
+        <input type="text" name="title" id="title" value="<%= article.title %>">
+        <label for="subtitle">Change Article Subtitle:</label>
+        <input type="text" name="subtitle" id="subtitle" value="<%= article.subtitle %>">
+        <label for="content">Edit Article Text Content:</label>
+        <input type="text" name="content" id="content" value="<%= article.content %>">
+        <input type="submit" value="Save Changes"/>
+    </form>
+    <a href="/author/"><button>Back to Author Home</button></a>
 </body>
 </html>

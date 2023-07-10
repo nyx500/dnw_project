@@ -204,10 +204,14 @@ router.get("/edit-article", (req, res) => {
             console.error("No such article: " + err);
             process.exit(1);
         } else {
-            // Only render page if article was returned from SQL query!
+            // Only render the article page if article was returned from SQL query!
             if (article_data){
                 // Pass data about this individual draft article from DB to the edit-article view
                 res.render("author/author-edit-article", {
+                    /** Pass 'error' as null, as some ejs in the template only executes when 'error' NOT null
+                       * but then nothing in ejs works if no 'error' variable is passed at all
+                    **/
+                    error: null,
                     article: article_data
                 });
             // No data returned --> no such article with that ID in the database, so log the error
@@ -218,6 +222,13 @@ router.get("/edit-article", (req, res) => {
         }
     });
 });
+
+// This is the POST route by which the author can update the article to-be-edited
+router.get("/edit-article", (req, res) => {
+    // TEST: fill in later!
+   res.send(req.body);
+});
+
 
 // Deletes an article from the 'articles' table in the database
 router.post("/delete-article", (req, res) => {
