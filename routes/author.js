@@ -224,7 +224,7 @@ router.get("/edit-article", (req, res) => {
 });
 
 // This is the POST route by which the author can update the article to-be-edited
-router.get("/edit-article", (req, res) => {
+router.post("/edit-article", (req, res) => {
     // TEST: fill in later!
    res.send(req.body);
 });

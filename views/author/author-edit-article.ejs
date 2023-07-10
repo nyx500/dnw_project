@@ -23,10 +23,14 @@
         <input type="hidden" id="article-<%= article.id %>" name="id" value="<%= article.id %>"/>
         <label for="title">Change Article Title:</label>
         <input type="text" name="title" id="title" value="<%= article.title %>">
+        <br>
         <label for="subtitle">Change Article Subtitle:</label>
         <input type="text" name="subtitle" id="subtitle" value="<%= article.subtitle %>">
+        <br>
         <label for="content">Edit Article Text Content:</label>
-        <input type="text" name="content" id="content" value="<%= article.content %>">
+        <br/>
+        <textarea type="text" name="content" id="content" value="<%= article.content %>" rows="4" cols="100"></textarea>
+        <br>
         <input type="submit" value="Save Changes"/>
     </form>
     <a href="/author/"><button>Back to Author Home</button></a>
