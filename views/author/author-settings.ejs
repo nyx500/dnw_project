@@ -15,6 +15,13 @@
     <!-- Make it clear that this is the **Author** not the **User** Home page-->
     <h1>Welcome to the Author's <b>Settings</b> Page</h1>
     <h2>Change Settings</h2>
+    <% if (error) { %>
+        <p>
+            <b>Error - could not submit new settings: </b><%= error %>
+            <!--Gives the user the option to go back to previous settings if error occurs-->
+            <a href="/author/settings">Go Back to Previous Settings</a>
+        </p>
+    <%} %>
     <form method="POST" action="/author/settings">
         <label for="title">Blog Title:</label>
         <input type="text" name="title" id="title" value="<%= blog.title %>">

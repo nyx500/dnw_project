@@ -72,7 +72,7 @@ router.get("/", (req, res) => {
                                             + `datetime_modified DATETIME DEFAULT CURRENT_TIMESTAMP,`
                                             + `datetime_published DATETIME, title VARCHAR(500) DEFAULT "Untitled Article" NOT NULL,`
                                             + `subtitle VARCHAR(500) DEFAULT "Undefined Subtitle",`
-                                            + `content TEXT DEFAULT "" NOT NULL, is_published BOOLEAN DEFAULT 0,`
+                                            + `content TEXT DEFAULT "", is_published BOOLEAN DEFAULT 0,`
                                             + `likes INTEGER DEFAULT 0);`;
 
                                         // Creates the articles table
@@ -125,6 +125,7 @@ router.get("/settings", (req, res) => {
             console.log("Blog data: " + blog_data);
            // Pass in the blog_data as a variable called 'blog' into the ejs template
             res.render("author/author-settings", {
+                error: null,
                 blog: blog_data
             });
         }
@@ -146,10 +147,14 @@ router.post("/settings", (req, res) => {
      * 'value' stores the inputted data, e.g. value.title = validated 'req.body.title' for blog title setting
     */
     const {value, error} = schema.validate(req.body);
-
+    console.log(req.body);
     // If data is invalid, send error msg to browser
     if (error) {
-        res.send("Error: some fields are incomplete --> " + error.details[0].message);
+        // Pass the error message into the settings form .ejs file
+        res.render("author/author-settings", {
+            error: error.details[0].message,
+            blog: req.body
+        });
     }
     // Data is valid --> update the DB to store new blog settings
     else {
