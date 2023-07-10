@@ -137,11 +137,11 @@ router.get("/settings", (req, res) => {
 // Set of Rules using express-validator package to validate form data for updating the blog settings
 var blogValidate = [
     // Check title
-    check('title').isLength({ min: 1, max: 255}).withMessage(`Blog title must be 1-255 chars!`).trim().escape(),
+    check('title').isLength({ min: 1, max: 255}).withMessage(`Blog title must contain 1-255 chars!`).trim().escape(),
     // Check subtitle
     check('subtitle').isLength({min: 0, max: 500}).withMessage(`Blog subtitle cannot be more than 500 chars!`).trim().escape(),
     // Check author
-    check('author').isLength({min: 1, max: 255}).withMessage(`Author name must be 1-255 chars!`)
+    check('author').isLength({min: 1, max: 255}).withMessage(`Author name must contain 1-255 chars!`)
     .trim().escape()
 ];
 
@@ -239,10 +239,23 @@ router.get("/edit-article", (req, res) => {
     });
 });
 
+
+
+// Set of Rules using express-validator package to validate form data for updating the blog settings
+var articleValidate = [
+    // Check article title
+    check('title').isLength({ min: 1, max: 500}).withMessage(`Article title must contain 1-500 chars!`).trim().escape(),
+    // Check article subtitle
+    check('subtitle').isLength({min: 0, max: 500}).withMessage(`Article subtitle cannot be more than 500 chars!`).trim().escape(),
+    // Check article content
+    check('content').not().isEmpty().withMessage(`Article content cannot be empty!`).trim().escape()
+];
+
 // This is the POST route by which the author can update the article to-be-edited
-router.post("/edit-article", (req, res) => {
+router.post("/edit-article", articleValidate, (req, res) => {
     // TEST: fill in later!
-   res.send(req.body);
+   const errors = validationResult(req);
+   res.send(errors.array());
 });
 
 
