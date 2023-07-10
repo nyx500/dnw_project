@@ -8,6 +8,8 @@ const assert = require('assert');
 const url = require('url'); 
 // Imports joi input data validation package
 const Joi = require('joi');
+// Import modules from express-validation for form data validation and sanitization
+const { check, validationResult } = require('express-validator');
 
 // Author Home Page Route: the author can create, review, and edit articles here
 router.get("/", (req, res) => {
@@ -125,34 +127,48 @@ router.get("/settings", (req, res) => {
             console.log("Blog data: " + blog_data);
            // Pass in the blog_data as a variable called 'blog' into the ejs template
             res.render("author/author-settings", {
-                error: null,
+                errors: null,
                 blog: blog_data
             });
         }
     });
 });
 
+// Set of Rules using express-validator package to validate form data for updating the blog settings
+var blogValidate = [
+    // Check title
+    check('title').isLength({ min: 1, max: 255}).withMessage(`Blog title must be 1-255 chars!`).trim().escape(),
+    // Check subtitle
+    check('subtitle').isLength({min: 0, max: 500}).withMessage(`Blog subtitle cannot be more than 500 chars!`).trim().escape(),
+    // Check author
+    check('author').isLength({min: 1, max: 255}).withMessage(`Author name must be 1-255 chars!`)
+    .trim().escape()
+];
+
 // Settings POST Route: validates input data to change blog title/subtitle/author and updates blog table in DB
-router.post("/settings", (req, res) => {
+router.post("/settings", blogValidate, (req, res) => {
     
+    const errors = validationResult(req);
+
     // Use Joi to validate author input 
-    const schema = Joi.object({
-        // 'required' --> ensures user enters some value
-        title: Joi.string().min(3).max(255).required(), // Set max char-value to the field's VARCHAR value from DB
-        subtitle: Joi.string().min(1).max(500).required(),
-        author: Joi.string().min(1).max(255).required()
-    });
+    // const schema = Joi.object({
+    //     // 'required' --> ensures user enters some value
+    //     title: Joi.string().min(3).max(255).required(), // Set max char-value to the field's VARCHAR value from DB
+    //     subtitle: Joi.string().min(1).max(500).required(),
+    //     author: Joi.string().min(1).max(255).required()
+    // });
 
     /** Unpacks result of schema validation with Joi --> error stores error details if form data is invalid
      * 'value' stores the inputted data, e.g. value.title = validated 'req.body.title' for blog title setting
     */
-    const {value, error} = schema.validate(req.body);
-    console.log(req.body);
+    // const {value, error} = schema.validate(req.body);
+
     // If data is invalid, send error msg to browser
-    if (error) {
+    if (!errors.isEmpty()) {
+        console.log(errors.array());
         // Pass the error message into the settings form .ejs file
         res.render("author/author-settings", {
-            error: error.details[0].message,
+            errors: errors.array(),
             blog: req.body
         });
     }
@@ -162,7 +178,7 @@ router.post("/settings", (req, res) => {
         var update_query = `UPDATE blog SET title = ?,`
             + `subtitle = ?, author = ? WHERE id = 1`;
         // Update (single) blog row in 'blog' table with values from the **validated** req.body
-        db.run(update_query, [value.title, value.subtitle, value.author],
+        db.run(update_query, [req.body.title, req.body.subtitle, req.body.author],
             function (err) {
                 if (err) {
                     console.log("ERROR - could not update blog settings! " + err);

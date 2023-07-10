@@ -15,9 +15,9 @@
     <!-- Make it clear that this is the **Author** not the **User** Home page-->
     <h1>Welcome to the Author's <b>Settings</b> Page</h1>
     <h2>Change Settings</h2>
-    <% if (error) { %>
+    <% if (errors) { %>
         <p>
-            <b>Error - could not submit new settings: </b><%= error %>
+            <b>Error - could not submit new settings: </b><%= errors[0].msg %>
             <!--Gives the user the option to go back to previous settings if error occurs-->
             <a href="/author/settings">Go Back to Previous Settings</a>
         </p>
