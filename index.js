@@ -20,6 +20,12 @@ global.db = new sqlite3.Database('./database.db',function(err){
   }else{
     console.log("Database connected");
     global.db.run("PRAGMA foreign_keys=ON"); //This tells SQLite to pay attention to foreign key constraints
+    // SQLite Query: creates the 'comments' table if does not already exist
+    var create_comments_table = `CREATE TABLE IF NOT EXISTS comments (id INTEGER PRIMARY KEY,`
+        + `comment VARCHAR(1000) NOT NULL, article_id INTEGER NOT NULL,`
+        + `FOREIGN KEY (article_id) REFERENCES articles (id)`
+        + `);`;
+    global.db.run(create_comments_table);
   }
 });
 
