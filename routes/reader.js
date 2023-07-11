@@ -11,6 +11,8 @@ const assert = require('assert');
 const url = require('url');
 // Import modules from express-validation for form data validation and sanitization
 const { check, validationResult } = require('express-validator');
+// Sanitization library to get rid of dangerous HTML code injection
+const sanitizeHtml = require('sanitize-html');
 
 // Reader Home Page: displays blog title/subtitle/author and a list of links to published articles
 router.get("/", (req, res) => {
@@ -115,7 +117,9 @@ router.post("/post-comment", commentValidate, (req, res)=> {
   } else {
     // SQL query to add comment to comments table, with foreign key being the ID of the article the comment belongs to
   var add_comment_query = `INSERT INTO comments (username, comment, article_id) VALUES (?, ?, ?);`
-  db.run(add_comment_query, [req.body.name, req.body.comment, req.body.id_comment_form], function(err){
+  let clean_username = sanitizeHtml(req.body.name);
+  let clean_comment = sanitizeHtml(req.body.comment);
+  db.run(add_comment_query, [clean_username, clean_comment, req.body.id_comment_form], function(err){
     if (err)
     {
       console.log("Error: could not add comment :(");

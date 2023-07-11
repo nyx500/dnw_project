@@ -8,10 +8,19 @@ const path = require('path');
 // Imports joi input data validation package
 const Joi = require('joi');
 // Security: Helmet is a collection of middleware functions that set security-related HTTP response headers.
-const helmet = require('helmet')
-app.use(helmet())
+const helmet = require('helmet');
+app.use(helmet());
 // Add an extra layer of obsecurity to reduce server fingerprinting
-app.disable('x-powered-by')
+app.disable('x-powered-by');
+
+// Add a rate limiter to protect from brute-force attacks
+const rateLimit = require('express-rate-limit');
+// Ref: https://medium.com/@samuelnoye35/strengthening-security-in-node-js-best-practices-and-examples-64a408b254cd
+const limiter = rateLimit({
+  windowMs: 20 * 60 * 1000, // 20 minutes = 1 window
+  max: 100, // Maximum 100 requests per window
+});
+app.use(limiter);
 
 // handles post requests --> must define it before defining the routes or doesn't work!!!
 app.use(bodyParser.urlencoded({ extended: true }));

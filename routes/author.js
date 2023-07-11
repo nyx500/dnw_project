@@ -10,6 +10,8 @@ const url = require('url');
 const Joi = require('joi');
 // Import modules from express-validation for form data validation and sanitization
 const { check, validationResult } = require('express-validator');
+// Sanitization library to get rid of dangerous HTML code injection
+const sanitizeHtml = require('sanitize-html');
 
 // Author Home Page Route: the author can create, review, and edit articles here
 router.get("/", (req, res) => {
@@ -106,9 +108,10 @@ router.post("/settings", blogValidate, (req, res) => {
         var update_query = `UPDATE blog SET title = (?),`
             + `subtitle = (?), author = (?) WHERE id = 1`;
         // Update (single) blog row in 'blog' table with values from the **validated** req.body
-        console.log("DATA: ")
-        console.log(req.body.title, req.body.subtitle, req.body.author);
-        db.run(update_query, [req.body.title, req.body.subtitle, req.body.author],
+        var clean_title = sanitizeHtml(req.body.title);
+        var clean_subtitle = sanitizeHtml(req.body.subtitle);
+        var clean_author = sanitizeHtml(req.body.author);
+        db.run(update_query, [clean_title, clean_subtitle, clean_author],
             function (err) {
                 if (err) {
                     console.log("ERROR - could not update blog settings! " + err);
@@ -214,10 +217,13 @@ router.post("/edit-article", articleValidate, (req, res) => {
     // Data is valid --> update the DB to store new article data
     else {
             // // Update the article and last-modified date in the DB
-            var update_query = `UPDATE articles SET datetime_modified = CURRENT_TIMESTAMP,`
+            let update_query = `UPDATE articles SET datetime_modified = CURRENT_TIMESTAMP,`
             +` title = (?), subtitle=(?), content=(?) WHERE id = (?)`;
+            let clean_title = sanitizeHtml(req.body.title);
+            let clean_subtitle = sanitizeHtml(req.body.subtitle);
+            let clean_content = sanitizeHtml(req.body.content);
             // Article ID sent with the form in POST request using the value in the hidden input HTML element
-            db.run(update_query, [req.body.title, req.body.subtitle, req.body.content, req.body.id], function (err) {
+            db.run(update_query, [clean_title, clean_subtitle, clean_content, req.body.id], function (err) {
                 if (err) {
                     console.log(err);
                 } else {

@@ -44,7 +44,8 @@
     </form>
     <a href="/reader/">Back</a>
     <h6>Comments</h6>
-    <% if (errors) { %>
+    <!-- Display errors here if tried to post a comment but did not pass validation checks-->
+    <% if (errors.length > 0) { %>
         <h4>Could not post comment - errors found: </h4>
         <ul>
             <% errors.forEach(function(error) { %>
