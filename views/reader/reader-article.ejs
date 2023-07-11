@@ -15,7 +15,7 @@
     <!-- Make it clear that this is the **Author** not the **User** Home page-->
     <h1><%= article.title %></h1>
     <h2><%= article.subtitle %></h2>
-    <h3><em>Published: <%= article.datetime_published %> (GMT)</em></h3>
+    <h3><em>Published: <%= article.datetime_published %> (UTC)</em></h3>
     <span>
         <h4>Likes: <%= article.likes %></h4>
         <!--Form to 'like' the article-->
@@ -56,7 +56,7 @@
         </ul>
     <%} %>
     <% comments.forEach(function(comment) { %>
-        <%= comment.username %>, Posted: <%= comment.datetime_published %>
+        <%= comment.username %>, Posted: <%= comment.datetime_published %> (UTC)
         </br>
         "<%= comment.comment %>"
         </br> </br>

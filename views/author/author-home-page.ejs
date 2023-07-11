@@ -25,14 +25,14 @@
             <% if(!article.is_published){ %>
                 <li> ID: <%= article.id %>, Title: <%= article.title %>
                     <br>
-                    Created on: <%= article.datetime_created %>
+                    Created on: <%= article.datetime_created %> (UTC)
                     <br>
-                    Last modified on: <%= article.datetime_modified %>
+                    Last modified on: <%= article.datetime_modified %> (UTC)
                     <br>
                     <% if(!article.datetime_published){ %> 
                     Published: Never
                     <% } else { %>
-                    Last published: article.datetime_published
+                    Last published: article.datetime_published (UTC)
                     <% } %>
                     <span>
                         <!-- Dynamic Link to Edit Article page with this article's ID in URL as querystring -->
@@ -61,9 +61,9 @@
         <% articles.forEach(function(article) { %>
             <% if(article.is_published){ %>
                 <li> ID: <%= article.id %>, Title: <%= article.title %>, Created on: <%= article.datetime_created %>,
-                    Last modified on: <%= article.datetime_created %>
+                    Last modified on: <%= article.datetime_created %> (UTC)
                     <br>
-                    Published: <%= article.datetime_published %>
+                    Published: <%= article.datetime_published %> (UTC)
                     <br>
                     Likes: <%= article.likes %>
                     <br>
