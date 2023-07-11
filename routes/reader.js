@@ -10,15 +10,16 @@ const assert = require('assert');
 // Enables constructing path for article redirects with query string
 const url = require('url');
 
-//TESTING: Practice reader/ index route
+// Reader Home Page: displays blog title/subtitle/author and a list of links to published articles
 router.get("/", (req, res) => {
+  // Retrieve blog data from blog table (title, author etc.)
   var blog_query = `SELECT * FROM blog`;
   db.get(blog_query, function (err, blog_data) {
     if (err) {
       console.log(err);
       process.exit(1);
     } else {
-      // Gets only articles with is_published set to True, ordered by datetime published from latest to oldest
+      // Retrieve the articles with 'is_published set to True' & order by datetime published, most recent is first
       var articles_query = `SELECT * FROM articles WHERE is_published = 1 ORDER BY datetime_published DESC;`;
       db.all(articles_query, function (err, articles_data){
         if (err) {
@@ -49,10 +50,11 @@ router.get("/article", (req, res)=> {
 })
 
 
+
 router.post("/like-article", (req, res)=> {
-  // Increments the likes field in the row for this article in the 'articles' table
+  // Increments the likes field inside the row/entry for the article with this ID in the 'articles' table
   var update_likes_query = `UPDATE articles SET likes = likes + 1 WHERE id = (?)`;
-  db.run(update_likes_query, [req.body.id], function (err) {
+  db.run(update_likes_query, [req.body.id_like_form], function (err) {
         if (err) {
             console.log("ERROR - could not update likes for article! " + err);
             process.exit(1);
@@ -61,11 +63,29 @@ router.post("/like-article", (req, res)=> {
             res.redirect(url.format({
               pathname: "/reader/article",
               query: {
-                  "id": req.body.id 
+                  "id": req.body.id_like_form 
               }
           }));  
         }
     });
+})
+
+
+router.post("/post-comment", (req, res)=> {
+  // SQL query to add comment to comments table, with foreign key being the ID of the article the comment belongs to
+  var add_comment_query = `INSERT INTO comments (username, comment, article_id) VALUES (?, ?, ?);`
+  db.run(add_comment_query, [req.body.name, req.body.comment, req.body.id_comment_form], function(err){
+    if (err)
+    {
+      console.log("Error: could not add comment :(");
+      console.log(err);
+      process.exit(1);
+    }
+    else
+    {
+      res.send(req.body);
+    }
+  });
 })
 
 

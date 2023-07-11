@@ -13,43 +13,26 @@ const { check, validationResult } = require('express-validator');
 
 // Author Home Page Route: the author can create, review, and edit articles here
 router.get("/", (req, res) => {
-    /** Retrieves title,subtitle,author values from the
-    *  single row in the table which stores details about this blog */
+    /** Retrieves title,subtitle,author values from the blog table in the db */
     var get_blog_data_query = `SELECT title, subtitle, author FROM blog;`;
-    db.get(get_blog_data_query, function (err, blog_data){
+    db.get(get_blog_data_query, function (err, blog_data) {
         if (err) {
-            console.error(err);
+            console.error("Cannot retrieve blog details from database: " + err);
             process.exit(1);
         } else {
-            // No blog data exists yet --> create the single entry required for the blog site to work (storing blog's settings)
-            if (blog_data === undefined){
-                 // Creates a new blog (1 row) in 'blog' table with title/subtitle/author, set to the default vals for title/subtitle etc.
-                 var create_blog_query = `INSERT INTO blog DEFAULT VALUES;`;
-                 db.run(create_blog_query, function (err) {
-                     if (err) {
-                         console.log("Error - could not create blog!: " + err);
-                         process.exit(1);
-                     } else {
-                        // Redirect to same route once blog data is succesfully created
-                        res.redirect("/author/");
-                     }
-                 });
-            }  else { // If blog_data exists and has been fetched from DB:
-
-                 // Now get all the author's articles from 'articles' table in DB
-                 var retrieve_articles_query = `SELECT * FROM articles;`;
-                 db.all(retrieve_articles_query, function(err, articles_data){
-                    if (err) {
-                        console.log("Cannot retrieve articles from database: " + err);
-                        process.exit(1);
-                    } else {
-                        res.render("author/author-home-page", {
-                            blog: blog_data,
-                            articles: articles_data
-                        });
-                    }
-                 });
-            }
+            // Now we have the blog table details, retrieve all the articles from the database
+            var retrieve_articles_query = `SELECT * FROM articles;`;
+            db.all(retrieve_articles_query, function (err, articles_data) {
+                if (err) {
+                    console.log("Cannot retrieve articles from database: " + err);
+                    process.exit(1);
+                } else {
+                    res.render("author/author-home-page", {
+                        blog: blog_data,
+                        articles: articles_data
+                    });
+                }
+            });
         }
     });
 });
@@ -189,7 +172,7 @@ router.get("/edit-article", (req, res) => {
                 });
                 // No data returned --> no such article with that ID in the database, so log the error
             } else {
-                console.log("Error: no such article");
+                console.log("Error: no article with this ID exists");
                 process.exit(1);
             }
         }
@@ -217,7 +200,7 @@ router.post("/edit-article", articleValidate, (req, res) => {
     const errors = validationResult(req);
     // If data is invalid, then reload the edit-article page for the same article with error messages
     if (!errors.isEmpty()) {
-        console.log("ERRORS!!!!!!!!!!!");
+        console.log(errors.array());
         res.redirect(
             url.format({
                 pathname: "/author/edit-article",
@@ -236,7 +219,7 @@ router.post("/edit-article", articleValidate, (req, res) => {
             // Article ID sent with the form in POST request using the value in the hidden input HTML element
             db.run(update_query, [req.body.title, req.body.subtitle, req.body.content, req.body.id], function (err) {
                 if (err) {
-                    console.log("ERROR - could not publish article! " + err);
+                    console.log(err);
                 } else {
                     console.log("Success: updated the article.");
                     res.redirect("/author/");

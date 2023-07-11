@@ -20,12 +20,27 @@
         <h4>Likes: <%= article.likes %></h4>
         <!--Form to 'like' the article-->
         <form method="POST" action="/reader/like-article">
-            <input type="hidden" name="id" id="article-id" value="<%= article.id %>">
+            <input type="hidden" name="id_like_form" id="id-like-form" value="<%= article.id %>">
             <input type="submit" value="Like">
         </form>
     </span>
     <div id="article-content">
         <p><%= article.content %> </p>
     </div>
+    <!--Comment form-->
+    <h5>Add A Comment</h5>
+    <form method="POST" action="/reader/post-comment">
+        <input type="hidden" name="id_comment_form" id="id-comment-form" value="<%= article.id %>">
+        <label for="name">Your name:</label>
+        <br>
+        <input type="text" name="name" id="name" value="User">
+        </br>
+        </br>
+        <label for="comment">Type comment here:</label>
+        </br>
+        <textarea name="comment" id="comment" value="" rows="4" cols="50"></textarea>
+        </br>
+        <input type="submit" value="Submit Comment">
+    </form>
 </body>
 </html>
