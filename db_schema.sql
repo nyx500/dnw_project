@@ -48,7 +48,7 @@ CREATE TABLE IF NOT EXISTS comments (
     comment VARCHAR(1000) NOT NULL,
     datetime_published DATETIME DEFAULT CURRENT_TIMESTAMP,
     article_id INTEGER NOT NULL,
-    FOREIGN KEY (article_id) REFERENCES articles (id)
+    FOREIGN KEY (article_id) REFERENCES articles (id) ON DELETE CASCADE
 );
 
 --insert default data (if necessary here): insert 1 row of defaults into the blog table
