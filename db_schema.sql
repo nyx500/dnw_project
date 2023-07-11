@@ -46,6 +46,7 @@ CREATE TABLE IF NOT EXISTS comments (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     username VARCHAR(255) NOT NULL,
     comment VARCHAR(1000) NOT NULL,
+    datetime_published DATETIME DEFAULT CURRENT_TIMESTAMP,
     article_id INTEGER NOT NULL,
     FOREIGN KEY (article_id) REFERENCES articles (id)
 );

@@ -42,8 +42,17 @@ router.get("/article", (req, res)=> {
       console.log("Error: No such article ID!");
       process.exit(1);
     } else {
-      res.render("reader/reader-article", {
-        article: article
+      var retrieve_comments_query = `SELECT * FROM comments WHERE article_id = (?) ORDER BY datetime_published DESC;`;
+      db.all(retrieve_comments_query, [req.query.id], function (err, comments){
+        if (err) {
+          console.log("Error: could not retrieve comments - " + err);
+          process.exit(1);
+        } else {
+          res.render("reader/reader-article", {
+            article: article,
+            comments: comments
+          });
+        }
       });
     }
   });
@@ -83,7 +92,12 @@ router.post("/post-comment", (req, res)=> {
     }
     else
     {
-      res.send(req.body);
+      res.redirect(url.format({
+        pathname: "/reader/article",
+        query: {
+            "id": req.body.id_comment_form 
+        }
+      }));  
     }
   });
 })

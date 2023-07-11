@@ -42,5 +42,14 @@
         </br>
         <input type="submit" value="Submit Comment">
     </form>
+    <a href="/reader/">Back</a>
+    <h6>Comments</h6>
+    <% comments.forEach(function(comment) { %>
+        <%= comment.username %>, Posted: <%= comment.datetime_published %>
+        </br>
+        "<%= comment.comment %>"
+        </br> </br>
+        <%});
+    %> 
 </body>
 </html>
