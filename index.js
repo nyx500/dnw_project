@@ -7,7 +7,11 @@ const bodyParser = require("body-parser");
 const path = require('path');
 // Imports joi input data validation package
 const Joi = require('joi');
-
+// Security: Helmet is a collection of middleware functions that set security-related HTTP response headers.
+const helmet = require('helmet')
+app.use(helmet())
+// Add an extra layer of obsecurity to reduce server fingerprinting
+app.disable('x-powered-by')
 
 // handles post requests --> must define it before defining the routes or doesn't work!!!
 app.use(bodyParser.urlencoded({ extended: true }));
