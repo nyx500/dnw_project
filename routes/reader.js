@@ -9,6 +9,8 @@ const router = express.Router();
 const assert = require('assert');
 // Enables constructing path for article redirects with query string
 const url = require('url');
+// Import modules from express-validation for form data validation and sanitization
+const { check, validationResult } = require('express-validator');
 
 // Reader Home Page: displays blog title/subtitle/author and a list of links to published articles
 router.get("/", (req, res) => {
@@ -36,6 +38,12 @@ router.get("/", (req, res) => {
 });
 
 router.get("/article", (req, res)=> {
+  var errors = [];
+  if (req.query.errors)
+  {
+    errors = JSON.parse(req.query.errors);
+    console.log(typeof(errors));
+  }
   var specific_article_query = `SELECT * FROM articles WHERE id = (?);`;
   db.get(specific_article_query,[req.query.id], function (err, article){
     if (err) {
@@ -50,7 +58,8 @@ router.get("/article", (req, res)=> {
         } else {
           res.render("reader/reader-article", {
             article: article,
-            comments: comments
+            comments: comments,
+            errors: errors
           });
         }
       });
@@ -72,16 +81,39 @@ router.post("/like-article", (req, res)=> {
             res.redirect(url.format({
               pathname: "/reader/article",
               query: {
-                  "id": req.body.id_like_form 
+                  "id": req.body.id_like_form,
+                  "errors": []
               }
           }));  
         }
     });
 })
 
+// Validation rules for comments
+var commentValidate = [
+  // Check title
+  check('name').isLength({  max: 255 }).withMessage(`User's name must be less than 500 words`)
+  .not().isEmpty().withMessage(`Name cannot be empty!`).trim(),
+  check('comment').isLength({ max: 1000 }).withMessage(`Comment must be less than 1000 chars!`)
+  .not().isEmpty().withMessage(`Comment cannot be empty!`).trim()
+];
 
-router.post("/post-comment", (req, res)=> {
-  // SQL query to add comment to comments table, with foreign key being the ID of the article the comment belongs to
+router.post("/post-comment", commentValidate, (req, res)=> {
+  // Check for validation errors
+  const errors = validationResult(req);
+  // If data is invalid, send error msg to browser
+  if (!errors.isEmpty()) {
+    // Pass the error message into the article form .ejs file
+    res.redirect(
+      url.format({
+          pathname: "/reader/article",
+          query: {
+              "id": req.body.id_comment_form, // Pass the ID of the article into the req.query object
+              "errors": JSON.stringify(errors.array())
+          }
+      }));
+  } else {
+    // SQL query to add comment to comments table, with foreign key being the ID of the article the comment belongs to
   var add_comment_query = `INSERT INTO comments (username, comment, article_id) VALUES (?, ?, ?);`
   db.run(add_comment_query, [req.body.name, req.body.comment, req.body.id_comment_form], function(err){
     if (err)
@@ -95,11 +127,13 @@ router.post("/post-comment", (req, res)=> {
       res.redirect(url.format({
         pathname: "/reader/article",
         query: {
-            "id": req.body.id_comment_form 
+            "id": req.body.id_comment_form ,
+            errors: []
         }
       }));  
     }
   });
+  }
 })
 
 

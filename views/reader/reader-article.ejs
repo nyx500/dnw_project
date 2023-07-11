@@ -44,6 +44,16 @@
     </form>
     <a href="/reader/">Back</a>
     <h6>Comments</h6>
+    <% if (errors) { %>
+        <h4>Could not post comment - errors found: </h4>
+        <ul>
+            <% errors.forEach(function(error) { %>
+                            <li><%= error.msg %></li>
+                    <%
+                })
+            %>
+        </ul>
+    <%} %>
     <% comments.forEach(function(comment) { %>
         <%= comment.username %>, Posted: <%= comment.datetime_published %>
         </br>
