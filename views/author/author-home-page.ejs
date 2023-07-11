@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="../../public/styles.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="../../public/output.css" />
     <title>Author Home Page</title>
 </head>
 <body>
@@ -14,7 +14,7 @@
         <a href="/author/settings">Settings</a>
     </nav>
     <!-- Make it clear that this is the **Author** not the **User** Home page-->
-    <h1>Welcome to the <b>Author</b> Home Page!</h1>
+    <h1 class="text-red-500">Welcome to the Author Home Page!</h1>
     <h2><%= blog.title %></h2>
     <h3><%= blog.subtitle %></h3>
     <h4><em><%= blog.author %></em></h4>
@@ -87,7 +87,6 @@
     <form method="GET" action="/author/create-new-draft-article">
         <button name="create-new-draft" value="create-new-draft">Create New Draft</button>
     </form>
-
     <script type="application/javascript" src="../../public/author-homepage-script.js" ></script>
 </body>
 </html>
