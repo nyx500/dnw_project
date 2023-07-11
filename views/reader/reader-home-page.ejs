@@ -23,7 +23,7 @@
         <% articles.forEach(function(article) { %>
             <li><a href="/reader/article?id=<%= article.id %>"><%= article.title %></a>
                 </br>
-                <%= article.datetime_published %>
+                Published on: <%= article.datetime_published %>
             </li> <%}) 
         %>
     </ul>
