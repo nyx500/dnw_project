@@ -5,9 +5,9 @@
     });
 });
 
+// Ref: https://www.devwares.com/blog/how-to-create-a-beautiful-responsive-navbar-using-tailwind-css/
 const menuButton = document.querySelector('button.menu-button');
 const menu = document.querySelector('.hidden-menu');
-
 menuButton.addEventListener('click', () => {
     console.log("clicked on menu button");
     menu.classList.toggle('hidden');

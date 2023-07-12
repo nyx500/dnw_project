@@ -12,6 +12,7 @@
     <nav>
         <div class="nav-container">
             <span>
+                <div><%= blog.title %></div>
                 <a href="/author/">Home (Author)</a>
                 <a href="/author/settings">Settings</a>
             </span>
@@ -24,8 +25,9 @@
                 </button>
             </div>
         </div>
-        <div class="hidden divide-y hidden-menu border border-black">
-            <ul class="divide-y divide-black border border-black">
+        <!--Ref: https://www.devwares.com/blog/how-to-create-a-beautiful-responsive-navbar-using-tailwind-css/-->
+        <div class="hidden divide-y hidden-menu">
+            <ul>
                 <li>
                     <a href="/author/">Home (Author)</a>
                 </li>
