@@ -485,6 +485,9 @@ nav {
   align-content: center;
   padding-left: 1.5rem;
   padding-right: 1.5rem;
+  position: sticky;
+  /*Makes the navbar fixed on top*/
+  top: 0px;
 }
 
 /**Container for the links in the navbar shown on screens larger than 640px */

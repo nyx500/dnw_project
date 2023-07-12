@@ -25,6 +25,8 @@
       @apply justify-start;
       @apply content-center;
       @apply px-6;
+      @apply sticky; /*Makes the navbar fixed on top*/
+      @apply top-0;
     }
     /**Container for the links in the navbar shown on screens larger than 640px */
     .nav-container span {
