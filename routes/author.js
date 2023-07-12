@@ -23,7 +23,7 @@ router.get("/", (req, res) => {
             process.exit(1);
         } else {
             // Now we have the blog table details, retrieve all the articles from the database
-            var retrieve_articles_query = `SELECT * FROM articles ORDER BY datetime_published DESC;`;
+            var retrieve_articles_query = `SELECT * FROM articles ORDER BY datetime_modified DESC;`;
             db.all(retrieve_articles_query, function (err, articles_data) {
                 if (err) {
                     console.log("Cannot retrieve articles from database: " + err);

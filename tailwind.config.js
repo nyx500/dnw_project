@@ -3,9 +3,17 @@ module.exports = {
   content: [
     "./views/**/*.ejs",
     "./public/*.js",
+    "./public/**/*.ttf",
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        lobster : ["lobster", 'cursive', 'serif'],
+        opensans: ["opensans", 'sans-serif'],
+        opensansbold: ["opensansbold", "sans-serif"],
+        opensansitalic: ["opensansitalic", "sans-serif"]
+      }
+    },
   },
   plugins: [],
 }

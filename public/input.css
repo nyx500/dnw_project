@@ -1,5 +1,25 @@
 @tailwind base;
 
+
+/*Custom Fonts*/
+@font-face {
+  font-family: "lobster";
+  src: url("fonts/Lobster-Regular.ttf");
+}
+@font-face {
+  font-family: "opensans";
+  src: url("fonts/open_sans/OpenSans-Regular.ttf");
+}
+@font-face {
+  font-family: "opensansbold";
+  src: url("fonts/open_sans/OpenSans-Bold.ttf");
+}
+
+@font-face {
+  font-family: "opensansitalic";
+  src: url("fonts/open_sans/OpenSans-Italic.ttf");
+}
+
 @layer base {
     /**Apply heading sizes and margins to all heading tags so that they are responsive: use mobile-first approach*/
     .author-home-title-box {
@@ -18,15 +38,14 @@
     nav {
       @apply shadow-lg; /* Apply shadowy 3D outline to navbar*/
       @apply bg-gray-100; /* Light grey navbar */
+      @apply sm:sticky; /*Make the navbar fixed on top but not on mobile screens 640px width or less*/
+      @apply sm:top-0;
     }
     /*Navbar container for navbar content*/
     .nav-container {
       @apply flex;
-      @apply justify-start;
       @apply content-center;
       @apply px-6; /* Padding */
-      @apply sticky; /*Make the navbar fixed on top*/
-      @apply top-0;
     }
     /**Container for the links in the navbar shown on screens larger than 640px */
     .nav-container span {
@@ -39,9 +58,12 @@
       @apply py-2;
       @apply mt-2; /*Top margin*/
       @apply mb-2; /*Bottom margin*/
+      @apply font-opensans;
     }
     /* Container in navbar showing blog title */
     .nav-container span div {
+      @apply flex;
+      @apply justify-items-start;
       @apply text-2xl;
       @apply ml-0; /* Left margin */
       @apply mr-4; /* Right margin */
@@ -50,6 +72,23 @@
     .nav-container span a {
       @apply px-3; /*Apply padding to links in navbar*/
       @apply py-2;
+    }
+    .position-on-right {
+      @apply self-center;
+      @apply ml-auto;
+    }
+    /* Go to reader page by clicking this button */
+    .change-site-link {
+      @apply font-opensans;
+      @apply font-semibold;
+      @apply text-base;
+      @apply px-2;
+      @apply py-2;
+      @apply mt-2; /*Top margin*/
+      @apply mb-2; /*Bottom margin*/
+      @apply text-amber-700;
+      @apply underline;
+   
     }
     /* Container to show menu button only on mobile screens with less than 640 px width*/
     .menu-button-container {
@@ -84,29 +123,29 @@
     h1 {
       @apply m-4; /**Smallest screens: margin of 6rem around h1 titles*/
       @apply sm:m-5; /**Screens above 640px are 'sm': margin of 8rem around h1 titles*/
-      @apply text-3xl;  /**Increase h1 size as screen size increases*/
-      @apply sm:text-4xl;
+      @apply text-4xl;  /**Increase h1 size as screen size increases*/
+      @apply sm:text-5xl;
     }
     h2 {
       @apply m-4;
       @apply sm:m-5; 
-      @apply text-2xl; 
-      @apply sm:text-3xl;
+      @apply text-3xl; 
+      @apply sm:text-4xl;
       @apply font-semibold;
     }
     h3 {
       @apply m-4;
-      @apply text-xl; 
-      @apply sm:text-2xl;
+      @apply text-2xl; 
+      @apply sm:text-3xl;
     }
     h4 {
       @apply m-4;
-      @apply text-lg; 
-      @apply sm:text-xl;
+      @apply text-xl; 
+      @apply sm:text-2xl;
     }
     h5 {
-        @apply text-base;
-        @apply sm:text-lg;
+        @apply text-lg;
+        @apply sm:text-xl;
         @apply font-bold;
         @apply mb-4;
     }
@@ -132,7 +171,7 @@
       e.g. the one used on Author's homepage to create a draft*/
     .basic-button {
       @apply bg-blue-500;
-      @apply hover:bg-blue-700;
+      @apply hover:bg-blue-800;
       @apply shadow-md;
       @apply shadow-slate-400;
       @apply hover:shadow-xl;
@@ -141,27 +180,98 @@
       @apply py-2;
       @apply px-4;
       @apply rounded;
+      @apply cursor-pointer;
     }
     /*Styling for the grid container containing the draft articles and published article sections on Author Home*/
     .author-home-articles-container {
+      /* Two article columns only on larger screens */
       @apply grid;
       @apply sm:grid-cols-2;
       @apply justify-self-center;
-      @apply m-10;
+      @apply m-6;
       @apply px-4;
       @apply px-2;
     }
+    /*Link on single column mobile pages to navigate to either draft or published articles*/
+    .navigation-link {
+      @apply sm:hidden;
+      @apply underline;
+      @apply active:text-blue-700;
+      @apply visited:text-amber-700;
+    }
     /*Styling for the draft articles and published articles containers on the Author Home page*/
-    .author-home-articles-container div {
+    .author-home-draft-articles-container, .author-home-published-articles-container {
       /*Apply responsive paddings/margins to draft/published article sections*/
       @apply px-4;
       @apply sm:px-6;
       @apply py-2;
-      @apply sm:py-4;
-      @apply m-10;
-      @apply sm:m-12;
+      @apply sm:py-4; 
+      @apply m-4;
+      @apply sm:m-6;
       @apply bg-blue-100;
       @apply rounded;
+      @apply grid;
+      /* Position articles vertically starting from top of column*/
+      @apply content-start;
+      /* Position articles in center horizontally*/
+      @apply justify-items-center;
+      @apply gap-6;
+    }
+    .article-card {
+      @apply rounded-lg;
+      @apply bg-white;
+      @apply p-6;
+      @apply px-10;
+      @apply shadow-md;
+      @apply shadow-zinc-400;
+      @apply hover:shadow-xl;
+      @apply hover:shadow-zinc-900;
+    }
+    /*Styling for headings/forms inside of each article card*/
+    .article-card div {
+      @apply mt-2;
+      @apply mb-2;
+    }
+    /*Make buttons for edit/delete etc. be inline using flex*/
+    .article-forms-container {
+      @apply flex;
+      @apply gap-2;
+      @apply flex-wrap;
+      @apply justify-between;
+    }
+    /* Style Edit Link as a button*/
+    .edit-link, .publish-button, .delete-button, .share-button {
+      @apply rounded-lg;
+      @apply text-sm;
+      @apply px-5;
+      @apply py-2.5;
+      @apply mr-2;
+      @apply mb-2;
+      @apply cursor-pointer;
+    }
+    .edit-link {
+      @apply text-white;
+      @apply bg-blue-500;
+      @apply hover:bg-blue-900;
+      @apply hover:text-blue-50;
+    }
+    .publish-button {
+      @apply text-white;
+      @apply bg-teal-400;
+      @apply hover:bg-teal-900;
+      @apply hover:text-teal-50;
+    }
+    .delete-button {
+      @apply text-white;
+      @apply bg-amber-700;
+      @apply hover:bg-amber-900;
+      @apply hover:text-amber-50;
+    }
+    .share-button {
+      @apply text-white;
+      @apply bg-emerald-500;
+      @apply hover:bg-emerald-950;
+      @apply hover:text-emerald-50;
     }
 }  
 
