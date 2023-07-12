@@ -1,17 +1,46 @@
 @tailwind base;
 
 @layer base {
+    /**Apply heading sizes and margins to all heading tags so that they are responsive: use mobile-first approach*/
+    .headings-div {
+      @apply flex-col; /**Headings go in a column */
+      @apply flex-auto;
+      @apply justify-center;
+      @apply content-center;
+      @apply gap-2; /**Smallest screens*/
+      @apply sm:gap-4; /**Screens above 640px*/
+      @apply md:gap-5; /**Screens above 768px*/
+      @apply lg:gap-6; /**Screens above 1024px*/
+      @apply flex-wrap;
+    }
+    /**Sizing and margin for h1 tags: increase size and margin as screens get bigger; start with smallest first*/
     h1 {
-      @apply text-5xl;
+      @apply m-4; /**Smallest screens: margin of 6rem around h1 titles*/
+      @apply sm:m-5; /**Screens above 640px are 'sm': margin of 8rem around h1 titles*/
+      @apply text-3xl;  /**Increase h1 size as screen size increases*/
+      @apply sm:text-4xl;
+      @apply md:text-5xl;
+      @apply font-bold;
     }
     h2 {
-      @apply text-4xl;
+      @apply m-4;
+      @apply sm:m-5; 
+      @apply text-2xl; 
+      @apply sm:text-3xl;
+      @apply md:text-4xl;
+      @apply font-semibold;
     }
     h3 {
-      @apply text-3xl;
+      @apply m-4;
+      @apply text-xl; 
+      @apply sm:text-2xl;
+      @apply md:text-3xl;
     }
     h4 {
-        @apply text-2xl;
+      @apply m-2;
+      @apply text-lg; 
+      @apply sm:text-xl;
+      @apply md:text-2xl;
     }
     h5 {
         @apply text-xl;

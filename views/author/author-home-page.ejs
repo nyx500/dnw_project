@@ -14,10 +14,12 @@
         <a href="/author/settings">Settings</a>
     </nav>
     <!-- Make it clear that this is the **Author** not the **User** Home page-->
-    <h1 class="text-red-500">Welcome to the Author Home Page!</h1>
-    <h2><%= blog.title %></h2>
-    <h3><%= blog.subtitle %></h3>
-    <h4><em><%= blog.author %></em></h4>
+    <div class="headings-div text-center"> <!--This is a custom Tailwind class with flex property I made in public/input.css-->
+        <h1 class="order-1">Author Home Page</h1>
+        <h2 class="order-2"><%= blog.title %></h2>
+        <h3 class="order-3 italic"><%= blog.subtitle %></h3>
+        <h4 class="text-center"><%= blog.author %></h4>
+    </div>
     <h5>Draft Articles</h5>
     <ul>    
         <!--Only display articles with is_published property set to False in here-->

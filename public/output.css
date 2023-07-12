@@ -422,24 +422,158 @@ video {
   display: none;
 }
 
+/**Apply heading sizes and margins to all heading tags so that they are responsive: use mobile-first approach*/
+
+.headings-div {
+  flex-direction: column;
+  /**Headings go in a column */
+  flex: 1 1 auto;
+  justify-content: center;
+  align-content: center;
+  gap: 0.5rem;
+  /**Smallest screens*/
+}
+
+@media (min-width: 640px) {
+  .headings-div {
+    gap: 1rem;
+  }
+}
+
+.headings-div {
+  /**Screens above 640px*/
+}
+
+@media (min-width: 768px) {
+  .headings-div {
+    gap: 1.25rem;
+  }
+}
+
+.headings-div {
+  /**Screens above 768px*/
+}
+
+@media (min-width: 1024px) {
+  .headings-div {
+    gap: 1.5rem;
+  }
+}
+
+.headings-div {
+  /**Screens above 1024px*/
+  flex-wrap: wrap;
+}
+
+/**Sizing and margin for h1 tags: increase size and margin as screens get bigger; start with smallest first*/
+
 h1 {
-  font-size: 3rem;
-  line-height: 1;
+  margin: 1rem;
+  /**Smallest screens: margin of 6rem around h1 titles*/
+}
+
+@media (min-width: 640px) {
+  h1 {
+    margin: 1.25rem;
+  }
+}
+
+h1 {
+  /**Screens above 640px are 'sm': margin of 8rem around h1 titles*/
+  font-size: 1.875rem;
+  line-height: 2.25rem;
+  /**Increase h1 size as screen size increases*/
+}
+
+@media (min-width: 640px) {
+  h1 {
+    font-size: 2.25rem;
+    line-height: 2.5rem;
+  }
+}
+
+@media (min-width: 768px) {
+  h1 {
+    font-size: 3rem;
+    line-height: 1;
+  }
+}
+
+h1 {
+  font-weight: 700;
 }
 
 h2 {
-  font-size: 2.25rem;
-  line-height: 2.5rem;
+  margin: 1rem;
+}
+
+@media (min-width: 640px) {
+  h2 {
+    margin: 1.25rem;
+  }
+}
+
+h2 {
+  font-size: 1.5rem;
+  line-height: 2rem;
+}
+
+@media (min-width: 640px) {
+  h2 {
+    font-size: 1.875rem;
+    line-height: 2.25rem;
+  }
+}
+
+@media (min-width: 768px) {
+  h2 {
+    font-size: 2.25rem;
+    line-height: 2.5rem;
+  }
+}
+
+h2 {
+  font-weight: 600;
 }
 
 h3 {
-  font-size: 1.875rem;
-  line-height: 2.25rem;
+  margin: 1rem;
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+}
+
+@media (min-width: 640px) {
+  h3 {
+    font-size: 1.5rem;
+    line-height: 2rem;
+  }
+}
+
+@media (min-width: 768px) {
+  h3 {
+    font-size: 1.875rem;
+    line-height: 2.25rem;
+  }
 }
 
 h4 {
-  font-size: 1.5rem;
-  line-height: 2rem;
+  margin: 0.5rem;
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+}
+
+@media (min-width: 640px) {
+  h4 {
+    font-size: 1.25rem;
+    line-height: 1.75rem;
+  }
+}
+
+@media (min-width: 768px) {
+  h4 {
+    font-size: 1.5rem;
+    line-height: 2rem;
+  }
 }
 
 h5 {
@@ -569,11 +703,30 @@ p {
   --tw-backdrop-sepia:  ;
 }
 
+.order-1 {
+  order: 1;
+}
+
+.order-2 {
+  order: 2;
+}
+
+.order-3 {
+  order: 3;
+}
+
+.flex {
+  display: flex;
+}
+
 .hidden {
   display: none;
 }
 
-.text-red-500 {
-  --tw-text-opacity: 1;
-  color: rgb(239 68 68 / var(--tw-text-opacity));
+.text-center {
+  text-align: center;
+}
+
+.italic {
+  font-style: italic;
 }
