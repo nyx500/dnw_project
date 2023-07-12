@@ -5,17 +5,39 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../../public/output.css" />
-    <title>Author Home Page</title>
+    <title>Home: Author</title>
 </head>
 <body>
     <!--Navbar for settings link-->
     <nav>
-        <a href="/author/">Author Home</a>
-        <a href="/author/settings">Settings</a>
+        <div class="nav-container">
+            <span>
+                <a href="/author/">Home (Author)</a>
+                <a href="/author/settings">Settings</a>
+            </span>
+            <div class="menu-button-container">
+                <button class="outline-none menu-button">
+                    <svg class="w-12 h-12" x-show="! showMenu" stroke-linecap="round"
+                        stroke-linejoin="round" stroke-width="3" viewBox="0 00 26 26" stroke="black">
+                        <path d="m4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <div class="hidden divide-y hidden-menu border border-black">
+            <ul class="divide-y divide-black border border-black">
+                <li>
+                    <a href="/author/">Home (Author)</a>
+                </li>
+                <li>
+                    <a href="/author/settings">Settings</a>
+                </li>
+            </ul>
+        </div>
     </nav>
+    <h1 class="order-1">Home: Author</h1>
     <!-- Make it clear that this is the **Author** not the **User** Home page-->
-    <div class="headings-div text-center"> <!--This is a custom Tailwind class with flex property I made in public/input.css-->
-        <h1 class="order-1">Author Home Page</h1>
+    <div class="author-home-title-box text-center"> <!--This is a custom Tailwind class with flex property I made in public/input.css-->
         <h2 class="order-2"><%= blog.title %></h2>
         <h3 class="order-3 italic"><%= blog.subtitle %></h3>
         <h4 class="text-center"><%= blog.author %></h4>

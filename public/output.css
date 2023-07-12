@@ -424,7 +424,7 @@ video {
 
 /**Apply heading sizes and margins to all heading tags so that they are responsive: use mobile-first approach*/
 
-.headings-div {
+.author-home-title-box {
   flex-direction: column;
   /**Headings go in a column */
   flex: 1 1 auto;
@@ -435,34 +435,127 @@ video {
 }
 
 @media (min-width: 640px) {
-  .headings-div {
+  .author-home-title-box {
     gap: 1rem;
   }
 }
 
-.headings-div {
+.author-home-title-box {
   /**Screens above 640px*/
 }
 
 @media (min-width: 768px) {
-  .headings-div {
+  .author-home-title-box {
     gap: 1.25rem;
   }
 }
 
-.headings-div {
+.author-home-title-box {
   /**Screens above 768px*/
 }
 
 @media (min-width: 1024px) {
-  .headings-div {
+  .author-home-title-box {
     gap: 1.5rem;
   }
 }
 
-.headings-div {
+.author-home-title-box {
   /**Screens above 1024px*/
   flex-wrap: wrap;
+}
+
+/**General CSS settings for navbar
+      Ref: https://www.devwares.com/blog/how-to-create-a-beautiful-responsive-navbar-using-tailwind-css/*/
+
+nav {
+  --tw-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  --tw-shadow-colored: 0 10px 15px -3px var(--tw-shadow-color), 0 4px 6px -4px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+
+/*Navbar container for navbar content*/
+
+.nav-container {
+  display: flex;
+  justify-content: flex-start;
+  align-content: center;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+}
+
+/**Container for links in the navbar */
+
+.nav-container span {
+  display: none;
+}
+
+@media (min-width: 640px) {
+  .nav-container span {
+    display: flex;
+  }
+}
+
+.nav-container span {
+  /*Hide on mobile screens*/
+  font-weight: 600;
+  font-size: 1rem;
+  line-height: 1.5rem;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+  margin: 0.5rem;
+  /*General margin*/
+}
+
+.nav-container span a {
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+  /*Apply padding to links in navbar*/
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+}
+
+/*Container to show menu button only on mobile screens*/
+
+.menu-button-container {
+  display: flex;
+}
+
+@media (min-width: 640px) {
+  .menu-button-container {
+    display: none;
+  }
+}
+
+.menu-button-container {
+  align-items: center;
+  padding-top: 1.5rem;
+  padding-bottom: 1.5rem;
+}
+
+/*Container for hidden expandable menu which is only accessible on phones*/
+
+.hidden-menu {
+  --tw-bg-opacity: 1;
+  background-color: rgb(229 231 235 / var(--tw-bg-opacity));
+}
+
+@media (min-width: 640px) {
+  .hidden-menu {
+    display: none;
+  }
+}
+
+.hidden-menu ul li a {
+  display: block;
+  text-align: center;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  font-weight: 600;
 }
 
 /**Sizing and margin for h1 tags: increase size and margin as screens get bigger; start with smallest first*/
@@ -497,10 +590,6 @@ h1 {
     font-size: 3rem;
     line-height: 1;
   }
-}
-
-h1 {
-  font-weight: 700;
 }
 
 h2 {
@@ -584,12 +673,6 @@ h5 {
 h6 {
   font-size: 1.125rem;
   line-height: 1.75rem;
-}
-
-a {
-  --tw-text-opacity: 1;
-  color: rgb(37 99 235 / var(--tw-text-opacity));
-  text-decoration-line: underline;
 }
 
 a:hover {
@@ -723,10 +806,43 @@ p {
   display: none;
 }
 
+.h-12 {
+  height: 3rem;
+}
+
+.w-12 {
+  width: 3rem;
+}
+
+.divide-y > :not([hidden]) ~ :not([hidden]) {
+  --tw-divide-y-reverse: 0;
+  border-top-width: calc(1px * calc(1 - var(--tw-divide-y-reverse)));
+  border-bottom-width: calc(1px * var(--tw-divide-y-reverse));
+}
+
+.divide-black > :not([hidden]) ~ :not([hidden]) {
+  --tw-divide-opacity: 1;
+  border-color: rgb(0 0 0 / var(--tw-divide-opacity));
+}
+
+.border {
+  border-width: 1px;
+}
+
+.border-black {
+  --tw-border-opacity: 1;
+  border-color: rgb(0 0 0 / var(--tw-border-opacity));
+}
+
 .text-center {
   text-align: center;
 }
 
 .italic {
   font-style: italic;
+}
+
+.outline-none {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
 }
