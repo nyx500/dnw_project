@@ -222,6 +222,7 @@ router.post("/edit-article", articleValidate, (req, res) => {
             let clean_title = sanitizeHtml(req.body.title);
             let clean_subtitle = sanitizeHtml(req.body.subtitle);
             let clean_content = sanitizeHtml(req.body.content);
+            console.log(req.body.content);
             // Article ID sent with the form in POST request using the value in the hidden input HTML element
             db.run(update_query, [clean_title, clean_subtitle, clean_content, req.body.id], function (err) {
                 if (err) {

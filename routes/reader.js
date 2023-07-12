@@ -58,6 +58,7 @@ router.get("/article", (req, res)=> {
           console.log("Error: could not retrieve comments - " + err);
           process.exit(1);
         } else {
+          console.log(article.content);
           res.render("reader/reader-article", {
             article: article,
             comments: comments,

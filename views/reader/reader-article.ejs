@@ -25,7 +25,8 @@
         </form>
     </span>
     <div id="article-content">
-        <p><%= article.content %> </p>
+        <!--Important: without white-space set to "pre-wrap", the line breaks will not be displayed!-->
+        <p style="white-space: pre-wrap;"><%= article.content %> </p>
     </div>
     <!--Comment form-->
     <h5>Add A Comment</h5>
