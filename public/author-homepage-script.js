@@ -6,6 +6,7 @@
 });
 
 // Ref: https://www.devwares.com/blog/how-to-create-a-beautiful-responsive-navbar-using-tailwind-css/
+// Functionality to toggle menu on smaller screens when menu button is clicked
 const menuButton = document.querySelector('button.menu-button');
 const menu = document.querySelector('.hidden-menu');
 menuButton.addEventListener('click', () => {

@@ -465,16 +465,17 @@ video {
   flex-wrap: wrap;
 }
 
-/**General CSS settings for navbar
+/** CSS settings for navbar on top of page
       Ref: https://www.devwares.com/blog/how-to-create-a-beautiful-responsive-navbar-using-tailwind-css/*/
 
 nav {
   --tw-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
   --tw-shadow-colored: 0 10px 15px -3px var(--tw-shadow-color), 0 4px 6px -4px var(--tw-shadow-color);
   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
-  /**Apply shadowy 3D outline to navbar*/
+  /* Apply shadowy 3D outline to navbar*/
   --tw-bg-opacity: 1;
   background-color: rgb(243 244 246 / var(--tw-bg-opacity));
+  /* Light grey navbar */
 }
 
 /*Navbar container for navbar content*/
@@ -485,8 +486,9 @@ nav {
   align-content: center;
   padding-left: 1.5rem;
   padding-right: 1.5rem;
+  /* Padding */
   position: sticky;
-  /*Makes the navbar fixed on top*/
+  /*Make the navbar fixed on top*/
   top: 0px;
 }
 
@@ -494,6 +496,7 @@ nav {
 
 .nav-container span {
   display: none;
+  /*Hide links mobile screens in favour of menu button */
 }
 
 @media (min-width: 640px) {
@@ -503,7 +506,6 @@ nav {
 }
 
 .nav-container span {
-  /*Hide on mobile screens*/
   font-weight: 600;
   font-size: 1rem;
   line-height: 1.5rem;
@@ -529,6 +531,8 @@ nav {
   /* Right margin */
 }
 
+/* Links displayed on larger screens in navbar */
+
 .nav-container span a {
   padding-left: 0.75rem;
   padding-right: 0.75rem;
@@ -537,7 +541,7 @@ nav {
   padding-bottom: 0.5rem;
 }
 
-/*Container to show menu button only on mobile screens with less than 640 px width*/
+/* Container to show menu button only on mobile screens with less than 640 px width*/
 
 .menu-button-container {
   display: flex;
@@ -550,6 +554,7 @@ nav {
 }
 
 .menu-button-container {
+  /* Hide menu button on screens > 640px width */
   align-items: center;
   padding-top: 1.5rem;
   padding-bottom: 1.5rem;
@@ -666,7 +671,7 @@ h3 {
 }
 
 h4 {
-  margin: 0.5rem;
+  margin: 1rem;
   font-size: 1.125rem;
   line-height: 1.75rem;
 }
@@ -692,6 +697,7 @@ h5 {
 
 h5 {
   font-weight: 700;
+  margin-bottom: 1rem;
 }
 
 h6 {
@@ -708,17 +714,126 @@ h6 {
 
 h6 {
   font-weight: 600;
+  margin-bottom: 1rem;
 }
 
 a:hover {
   --tw-text-opacity: 1;
-  color: rgb(220 38 38 / var(--tw-text-opacity));
+  color: rgb(59 130 246 / var(--tw-text-opacity));
   text-decoration-line: underline;
 }
 
 p {
   font-size: 1rem;
   line-height: 1.75rem;
+}
+
+/*Style container for create new draft form*/
+
+.create-draft-container {
+  display: flex;
+  justify-content: center;
+  margin: 2rem;
+}
+
+/**Create general class for the most basic kind of button, 
+      e.g. the one used on Author's homepage to create a draft*/
+
+.basic-button {
+  --tw-bg-opacity: 1;
+  background-color: rgb(59 130 246 / var(--tw-bg-opacity));
+}
+
+.basic-button:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(29 78 216 / var(--tw-bg-opacity));
+}
+
+.basic-button {
+  --tw-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --tw-shadow-colored: 0 4px 6px -1px var(--tw-shadow-color), 0 2px 4px -2px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+  --tw-shadow-color: #94a3b8;
+  --tw-shadow: var(--tw-shadow-colored);
+}
+
+.basic-button:hover {
+  --tw-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+  --tw-shadow-colored: 0 20px 25px -5px var(--tw-shadow-color), 0 8px 10px -6px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+  --tw-shadow-color: #1e293b;
+  --tw-shadow: var(--tw-shadow-colored);
+}
+
+.basic-button {
+  --tw-text-opacity: 1;
+  color: rgb(255 255 255 / var(--tw-text-opacity));
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  border-radius: 0.25rem;
+}
+
+/*Styling for the grid container containing the draft articles and published article sections on Author Home*/
+
+.author-home-articles-container {
+  display: grid;
+}
+
+@media (min-width: 640px) {
+  .author-home-articles-container {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.author-home-articles-container {
+  justify-self: center;
+  margin: 2.5rem;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}
+
+/*Styling for the draft articles and published articles containers on the Author Home page*/
+
+.author-home-articles-container div {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+@media (min-width: 640px) {
+  .author-home-articles-container div {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+}
+
+.author-home-articles-container div {
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+}
+
+@media (min-width: 640px) {
+  .author-home-articles-container div {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+  }
+}
+
+.author-home-articles-container div {
+  margin: 2.5rem;
+}
+
+@media (min-width: 640px) {
+  .author-home-articles-container div {
+    margin: 3rem;
+  }
+}
+
+.author-home-articles-container div {
+  --tw-bg-opacity: 1;
+  background-color: rgb(219 234 254 / var(--tw-bg-opacity));
+  border-radius: 0.25rem;
 }
 
 *, ::before, ::after {
@@ -837,6 +952,10 @@ p {
   display: flex;
 }
 
+.grid {
+  display: grid;
+}
+
 .hidden {
   display: none;
 }
@@ -847,12 +966,6 @@ p {
 
 .w-12 {
   width: 3rem;
-}
-
-.divide-y > :not([hidden]) ~ :not([hidden]) {
-  --tw-divide-y-reverse: 0;
-  border-top-width: calc(1px * calc(1 - var(--tw-divide-y-reverse)));
-  border-bottom-width: calc(1px * var(--tw-divide-y-reverse));
 }
 
 .text-center {
@@ -866,4 +979,10 @@ p {
 .outline-none {
   outline: 2px solid transparent;
   outline-offset: 2px;
+}
+
+@media (min-width: 640px) {
+  .sm\:hidden {
+    display: none;
+  }
 }

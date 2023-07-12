@@ -13,25 +13,25 @@
       @apply lg:gap-6; /**Screens above 1024px*/
       @apply flex-wrap;
     }
-    /**General CSS settings for navbar
+    /** CSS settings for navbar on top of page
       Ref: https://www.devwares.com/blog/how-to-create-a-beautiful-responsive-navbar-using-tailwind-css/*/
     nav {
-      @apply shadow-lg; /**Apply shadowy 3D outline to navbar*/
-      @apply bg-gray-100;
+      @apply shadow-lg; /* Apply shadowy 3D outline to navbar*/
+      @apply bg-gray-100; /* Light grey navbar */
     }
     /*Navbar container for navbar content*/
     .nav-container {
       @apply flex;
       @apply justify-start;
       @apply content-center;
-      @apply px-6;
-      @apply sticky; /*Makes the navbar fixed on top*/
+      @apply px-6; /* Padding */
+      @apply sticky; /*Make the navbar fixed on top*/
       @apply top-0;
     }
     /**Container for the links in the navbar shown on screens larger than 640px */
     .nav-container span {
-      @apply hidden;
-      @apply sm:flex; /*Hide on mobile screens*/
+      @apply hidden; /*Hide links mobile screens in favour of menu button */
+      @apply sm:flex; 
       @apply font-semibold;
       @apply text-base;
       /* Padding */
@@ -46,14 +46,15 @@
       @apply ml-0; /* Left margin */
       @apply mr-4; /* Right margin */
     }
+    /* Links displayed on larger screens in navbar */
     .nav-container span a {
       @apply px-3; /*Apply padding to links in navbar*/
       @apply py-2;
     }
-    /*Container to show menu button only on mobile screens with less than 640 px width*/
+    /* Container to show menu button only on mobile screens with less than 640 px width*/
     .menu-button-container {
       @apply flex;
-      @apply sm:hidden;
+      @apply sm:hidden; /* Hide menu button on screens > 640px width */
       @apply items-center;
       @apply py-6;
     }
@@ -99,7 +100,7 @@
       @apply sm:text-2xl;
     }
     h4 {
-      @apply m-2;
+      @apply m-4;
       @apply text-lg; 
       @apply sm:text-xl;
     }
@@ -107,17 +108,60 @@
         @apply text-base;
         @apply sm:text-lg;
         @apply font-bold;
+        @apply mb-4;
     }
     h6 {
         @apply text-base;
         @apply sm:text-lg;
         @apply font-semibold;
+        @apply mb-4;
     }
     a:hover {
-        @apply text-red-600 underline;
+        @apply text-blue-500 underline;
     }
     p {
         @apply text-base/7;
+    }
+    /*Style container for create new draft form*/
+    .create-draft-container {
+      @apply flex;
+      @apply justify-center;
+      @apply m-8;
+    }
+    /**Create general class for the most basic kind of button, 
+      e.g. the one used on Author's homepage to create a draft*/
+    .basic-button {
+      @apply bg-blue-500;
+      @apply hover:bg-blue-700;
+      @apply shadow-md;
+      @apply shadow-slate-400;
+      @apply hover:shadow-xl;
+      @apply hover:shadow-slate-800;
+      @apply text-white;
+      @apply py-2;
+      @apply px-4;
+      @apply rounded;
+    }
+    /*Styling for the grid container containing the draft articles and published article sections on Author Home*/
+    .author-home-articles-container {
+      @apply grid;
+      @apply sm:grid-cols-2;
+      @apply justify-self-center;
+      @apply m-10;
+      @apply px-4;
+      @apply px-2;
+    }
+    /*Styling for the draft articles and published articles containers on the Author Home page*/
+    .author-home-articles-container div {
+      /*Apply responsive paddings/margins to draft/published article sections*/
+      @apply px-4;
+      @apply sm:px-6;
+      @apply py-2;
+      @apply sm:py-4;
+      @apply m-10;
+      @apply sm:m-12;
+      @apply bg-blue-100;
+      @apply rounded;
     }
 }  
 
