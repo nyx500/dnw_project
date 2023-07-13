@@ -248,7 +248,6 @@
       @apply text-base;
       @apply px-5;
       @apply py-2.5;
-      @apply mr-2;
       @apply mb-2;
       @apply cursor-pointer;
     }
