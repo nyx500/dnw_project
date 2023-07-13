@@ -1211,6 +1211,23 @@ p {
   font-family: opensansbold, sans-serif;
 }
 
+/*Styling for 'Edit Article' Page*/
+
+.article-dates-info {
+  font-family: opensans, sans-serif;
+  display: grid;
+}
+
+@media (min-width: 640px) {
+  .article-dates-info {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.article-dates-info {
+  margin: 2.5rem;
+}
+
 /*'a' link back to Author Home*/
 
 .bottom-link {
@@ -1418,6 +1435,10 @@ p {
 
 .font-opensansbold {
   font-family: opensansbold, sans-serif;
+}
+
+.font-opensansitalic {
+  font-family: opensansitalic, sans-serif;
 }
 
 .outline-none {

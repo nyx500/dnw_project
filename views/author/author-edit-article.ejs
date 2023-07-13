@@ -4,26 +4,67 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../../public/output.css" />
     <title>Edit Article</title>
 </head>
 <body>
-    <!--Navbar for settings link-->
+    <!--Navbar for home and settings link-->
     <nav>
-        <a href="/author/">Author Home</a>
-        <a href="/author/settings">Settings</a>
+        <div class="nav-container">
+            <span>
+                <!--Display blog title in navbar-->
+                <div class="font-lobster justify-self-start">
+                    <a href="/author/">
+                        <%= blog.title %>
+                    </a>
+                </div>
+                <a href="/author/">Home (Author)</a>
+                <a href="/author/settings">Settings</a>
+            </span>
+            <div class="position-on-right">
+                <a href="/reader" class="change-site-link" >Home (Reader)</a>
+            </div>
+            <div class="menu-button-container">
+                <button class="outline-none menu-button">
+                    <!--Code for how to make an SVG menu button with three horizontal bars: -->
+                     <!--Ref: https://www.devwares.com/blog/how-to-create-a-beautiful-responsive-navbar-using-tailwind-css/-->
+                    <svg class="w-12 h-12" x-show="! showMenu" stroke-linecap="round"
+                        stroke-linejoin="round" stroke-width="3" viewBox="0 00 26 26" stroke="black">
+                        <path d="m4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <div class="hidden hidden-menu font-opensans"> <!--Toggle 'hidden' property with JS script when button is clicked-->
+            <ul>
+                <li>
+                    <a href="/author/">Home (Author)</a>
+                </li>
+                <li>
+                    <a href="/author/settings">Settings</a>
+                </li>
+                <li>
+                    <a href="/reader/">Home (Reader)</a>
+                </li>
+            </ul>
+        </div>
     </nav>
-    <!-- Make it clear that this is the **Author** not the **User** Home page-->
-    <h1>Welcome, Author! This is the <b>Edit Article</b> Page</h1>
-    <h2>Created: <%= article.datetime_created %> (UTC), Last Modified: <%= article.datetime_modified %></h2>
-    
-    <h3>Published: 
-    <% if (article.datetime_published) { %>
-        article.datetime_published<%}  else  { %>
-            Never
-        <%} 
-    %>
-    </h3>
-
+    <h1 class="font-lobster">Author: Edit Article</h1>
+    <div class="article-dates-info">
+        <div><b>Created:</b> <%= article.datetime_created %> </div>
+        <div><b>Published:</b>
+            <% if (article.datetime_published) { %>
+                <%= article.datetime_published %>
+                <%}  else  { %>
+                    Never
+                <%}     
+            %>
+        </div> 
+        <div><b>Last Modified:</b> <%= article.datetime_modified %></div>
+        <div>
+            <p class="font-opensansitalic">(Times given in UTC)</p>
+        </div>
+    </div>
 
     <% if (errors.length > 0) { %>
         <h4>Could not save article - errors found: </h4>
@@ -33,7 +74,7 @@
         <% } %>
         </ul>
     <%} %>
-    <br/>
+    
     <form method="POST" action="/author/edit-article">
         <!--Send the article's ID and other hidden fields back with POST!-->
         <input type="hidden" id="article-<%= article.id %>" name="id" value="<%= article.id %>"/>
@@ -53,5 +94,6 @@
         <input type="submit" value="Submit Changes"/>
     </form>
     <a href="/author/"><button>Back to Author Home</button></a>
+    <script type="application/javascript" src="../../public/script.js" ></script>
 </body>
 </html>

@@ -8,12 +8,16 @@
     <title>Author: Settings</title>
 </head>
 <body>
-    <!--Navbar for home and settings link-->
-    <nav>
+     <!--Navbar for home and settings link-->
+     <nav>
         <div class="nav-container">
             <span>
                 <!--Display blog title in navbar-->
-                <div class="font-lobster justify-self-start"><%= blog.title %></div>
+                <div class="font-lobster justify-self-start">
+                    <a href="/author/">
+                        <%= blog.title %>
+                    </a>
+                </div>
                 <a href="/author/">Home (Author)</a>
                 <a href="/author/settings">Settings</a>
             </span>

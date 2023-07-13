@@ -376,6 +376,13 @@
       @apply hover:bg-orange-800;
       @apply font-opensansbold;
     }
+    /*Styling for 'Edit Article' Page*/
+    .article-dates-info {
+      @apply font-opensans;
+      @apply grid;
+      @apply sm:grid-cols-2;
+      @apply m-10;
+    }
     /*'a' link back to Author Home*/
     .bottom-link {
       @apply text-center;

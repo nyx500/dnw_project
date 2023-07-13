@@ -6,8 +6,6 @@ const router = express.Router();
 const assert = require('assert');
 // Enables constructing path for article redirects with query string
 const url = require('url');
-// Imports joi input data validation package
-const Joi = require('joi');
 // Import modules from express-validation for form data validation and sanitization
 const { check, validationResult } = require('express-validator');
 // Sanitization library to get rid of dangerous HTML code injection
@@ -63,15 +61,15 @@ router.get("/settings", (req, res) => {
 var blogValidate = [
     // Check title
     check('title').isLength({  max: 500 }).withMessage(`Blog title must be less than 500 words`)
-    .not().isEmpty().withMessage(`Blog title cannot be empty!`)
+    .not().isEmpty().withMessage(`Blog title field cannot be empty!`)
     .trim(),
     // Check subtitle
     check('subtitle').isLength({ max: 500 }).withMessage(`Blog subtitle must be less than 500 chars!`)
-    .not().isEmpty().withMessage(`Blog subtitle cannot be empty!`)
+    .not().isEmpty().withMessage(`Blog subtitle field cannot be empty!`)
     .trim(),
     // Check author
     check('author').isLength({ max: 255 }).withMessage(`Author name must be less than 255 chars!`)
-    .not().isEmpty().withMessage(`Author cannot be empty!`)
+    .not().isEmpty().withMessage(`Author field cannot be empty!`)
     .trim()
 ];
 
@@ -79,19 +77,6 @@ var blogValidate = [
 router.post("/settings", blogValidate, (req, res) => {
 
     const errors = validationResult(req);
-
-    // Use Joi to validate author input 
-    // const schema = Joi.object({
-    //     // 'required' --> ensures user enters some value
-    //     title: Joi.string().min(3).max(255).required(), // Set max char-value to the field's VARCHAR value from DB
-    //     subtitle: Joi.string().min(1).max(500).required(),
-    //     author: Joi.string().min(1).max(255).required()
-    // });
-
-    /** Unpacks result of schema validation with Joi --> error stores error details if form data is invalid
-     * 'value' stores the inputted data, e.g. value.title = validated 'req.body.title' for blog title setting
-    */
-    // const {value, error} = schema.validate(req.body);
 
     // If data is invalid, send error msg to browser
     if (!errors.isEmpty()) {
@@ -165,15 +150,27 @@ router.get("/edit-article", (req, res) => {
         } else {
             // Only render the article page if article was returned from SQL query!
             if (article_data) {
-                // Pass data about this individual draft article from DB to the edit-article view
-                res.render("author/author-edit-article", {
-                    /** Pass 'errors' as null, as some ejs in the template only executes when 'errors' NOT null
-                       * but then nothing in ejs works if no 'errors' variable is passed at all
-                    **/
-                    article: article_data,
-                    errors: errors
+                // Need to get Blog title for the navbar logo...
+                var get_blog_title_query = `SELECT * FROM blog;`;
+                db.get(get_blog_title_query, function(err, blog_data)
+                {
+                    if (err)
+                    {
+                        console.error("Could not get blog title: " + err);
+                        process.exit(1);
+                    } else {
+                        // Pass data about this individual draft article from DB to the edit-article view
+                        res.render("author/author-edit-article", {
+                            /** Pass 'errors' as null, as some ejs in the template only executes when 'errors' NOT null
+                             * but then nothing in ejs works if no 'errors' variable is passed at all
+                            **/
+                            blog: blog_data,
+                            article: article_data,
+                            errors: errors
+                        });
+                    }
                 });
-                // No data returned --> no such article with that ID in the database, so log the error
+                // No article data returned --> no such article with that ID in the database, so log the error
             } else {
                 console.log("Error: no article with this ID exists");
                 process.exit(1);
@@ -264,9 +261,6 @@ router.post("/publish-article", (req, res) => {
         }
     });
 });
-
-
-//////////////////////////////// HELPER FUNCTIONS FOR CALLBACKS /////////////////////////////////////////
 
 
 module.exports = router;
