@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -7,6 +8,7 @@
     <link rel="stylesheet" href="../../public/output.css" />
     <title>Edit Article</title>
 </head>
+
 <body>
     <!--Navbar for home and settings link-->
     <nav>
@@ -22,20 +24,21 @@
                 <a href="/author/settings">Settings</a>
             </span>
             <div class="position-on-right">
-                <a href="/reader" class="change-site-link" >Home (Reader)</a>
+                <a href="/reader" class="change-site-link">Home (Reader)</a>
             </div>
             <div class="menu-button-container">
                 <button class="outline-none menu-button">
                     <!--Code for how to make an SVG menu button with three horizontal bars: -->
-                     <!--Ref: https://www.devwares.com/blog/how-to-create-a-beautiful-responsive-navbar-using-tailwind-css/-->
-                    <svg class="w-12 h-12" x-show="! showMenu" stroke-linecap="round"
-                        stroke-linejoin="round" stroke-width="3" viewBox="0 00 26 26" stroke="black">
+                    <!--Ref: https://www.devwares.com/blog/how-to-create-a-beautiful-responsive-navbar-using-tailwind-css/-->
+                    <svg class="w-12 h-12" x-show="! showMenu" stroke-linecap="round" stroke-linejoin="round"
+                        stroke-width="3" viewBox="0 00 26 26" stroke="black">
                         <path d="m4 6h16M4 12h16M4 18h16"></path>
                     </svg>
                 </button>
             </div>
         </div>
-        <div class="hidden hidden-menu font-opensans"> <!--Toggle 'hidden' property with JS script when button is clicked-->
+        <div class="hidden hidden-menu font-opensans">
+            <!--Toggle 'hidden' property with JS script when button is clicked-->
             <ul>
                 <li>
                     <a href="/author/">Home (Author)</a>
@@ -50,50 +53,87 @@
         </div>
     </nav>
     <h1 class="font-lobster">Author: Edit Article</h1>
-    <div class="article-dates-info">
-        <div><b>Created:</b> <%= article.datetime_created %> </div>
+    <div class="font-opensans grid sm:grid-cols-2 m-10">
+        <div><b>Created:</b>
+            <%= article.datetime_created %>
+        </div>
         <div><b>Published:</b>
             <% if (article.datetime_published) { %>
                 <%= article.datetime_published %>
-                <%}  else  { %>
-                    Never
-                <%}     
-            %>
-        </div> 
-        <div><b>Last Modified:</b> <%= article.datetime_modified %></div>
+                    <%} else { %>
+                        Never
+                        <%} %>
+        </div>
+        <div><b>Last Modified:</b>
+            <%= article.datetime_modified %>
+        </div>
         <div>
             <p class="font-opensansitalic">(Times given in UTC)</p>
         </div>
     </div>
-
     <% if (errors.length > 0) { %>
-        <h4>Could not save article - errors found: </h4>
-        <ul>
-        <% for (var i = 0; i < errors.length;  i++ ) { %>
-            <li> <%= errors[i].msg %> </li>
-        <% } %>
-        </ul>
+        <!--If errors array contains at least one item, then display the errors container/div:-->
+        <div class="errors-container">
+            <p class="font-opensansbold">Sorry! We failed to save your article because of the following errors:</p>
+            <!--In tailwind, <ul> tags need explicit list-disc class to show the bullet points-->
+            <ul class="list-disc">
+                <% for (var i = 0; i < errors.length;  i++ ) { %>
+                    <li> <%= errors[i].msg %> </li>
+                <% } %>
+            </ul>
+        </div>
     <%} %>
-    
-    <form method="POST" action="/author/edit-article">
-        <!--Send the article's ID and other hidden fields back with POST!-->
-        <input type="hidden" id="article-<%= article.id %>" name="id" value="<%= article.id %>"/>
-        <input type="hidden" id="datetime_created" name="datetime_created" value="<%= article.datetime_created %>"/>
-        <input type="hidden" id="datetime_modified" name="datetime_modified" value="<%= article.datetime_modified %>"/>
-        <input type="hidden" id="datetime_published" name="datetime_published" value="<%= article.datetime_published %>"/>
-        <label for="title">Change Article Title:</label>
-        <input type="text" name="title" id="title" value="<%= article.title %>">
-        <br>
-        <label for="subtitle">Change Article Subtitle:</label>
-        <input type="text" name="subtitle" id="subtitle" value="<%= article.subtitle %>">
-        <br>
-        <label for="content">Edit Article Text Content:</label>
-        <br/>
-        <textarea type="text" name="content" id="content" rows="20" cols="100"><%= article.content %></textarea>
-        <br>
-        <input type="submit" value="Submit Changes"/>
-    </form>
-    <a href="/author/"><button>Back to Author Home</button></a>
-    <script type="application/javascript" src="../../public/script.js" ></script>
+    <div class="p-4 m-6 rounded-lg bg-blue-100 mb-6">
+        <form class="m-10 flex-col justify-center content-center" method="POST" action="/author/edit-article">
+            <!--Send the article's ID and other hidden fields back with POST!-->
+            <input type="hidden" id="article-<%= article.id %>" name="id" value="<%= article.id %>" />
+            <input type="hidden" id="datetime_created" name="datetime_created"
+                value="<%= article.datetime_created %>" />
+            <input type="hidden" id="datetime_modified" name="datetime_modified"
+                value="<%= article.datetime_modified %>" />
+            <input type="hidden" id="datetime_published" name="datetime_published"
+                value="<%= article.datetime_published %>" />
+            <div class="sm:flex sm:justify-start sm:mb-10 gap-8">
+                <div class="block">
+                    <label class="font-opensansbold m-2" for="title">
+                        Change Article Title:
+                    </label>
+                    <input class="font-opensansitalic sm:w-full bg-gray-50 border border-gray-300 text-gray-900 
+                        rounded-lg focus:outline-none focus:border-blue-600 focus:border-2 p-2.5" type="text"
+                        name="title" id="title" value="<%= article.title %>">
+                </div>
+                <div class="block">
+                    <label class="font-opensansbold m-2" for="subtitle">
+                        Change Article Subtitle:
+                    </label>
+                    <input class="font-opensansitalic sm:w-full bg-gray-50 border border-gray-300 text-gray-900 rounded-lg
+                     rounded-lg focus:outline-none focus:border-blue-600 focus:border-2 p-2.5" type="text" name="subtitle"
+                        id="subtitle" value="<%= article.subtitle %>">
+                </div>
+            </div>
+            <div class="flex-col no-wrap">
+                <div>
+                    <label class="font-opensansbold mb-10" for="content">Edit Content:</label>
+                </div>
+                <div>
+                    <textarea class="w-full px-1 py-1 text-gray-900 bg-white border-2 rounded-lg focus:outline-none
+                    focus:border-blue-600 focus:border-2 font-opensans" type="text" name="content" id="content"
+                        rows="12"><%= article.content %></textarea>
+                </div>
+            </div>
+            <div class="text-center pt-4">
+                <input class="shadow-md shadow-slate-400 hover:drop-shadow-lg hover:shadow-slate-800 text-white
+                py-2 px-4 rounded-lg cursor-pointer text-white bg-orange-600 hover:bg-orange-800
+                font-opensansbold" type="submit" value="Submit Changes" />
+            </div>
+        </form>
+    </div>
+    <!--Link to go back to Author's home page-->
+    <div class="text-left ml-10 relative inset-x-0 bottom-4 py-2">
+        <a class="hover:text-amber-700 font-bold underline text-blue-700" href="/author/">
+            Back to Home (Author)
+        </a>
+    </div>
+    <script type="application/javascript" src="../../public/script.js"></script>
 </body>
 </html>

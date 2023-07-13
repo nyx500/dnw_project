@@ -376,30 +376,6 @@
       @apply hover:bg-orange-800;
       @apply font-opensansbold;
     }
-    /*Styling for 'Edit Article' Page*/
-    .article-dates-info {
-      @apply font-opensans;
-      @apply grid;
-      @apply sm:grid-cols-2;
-      @apply m-10;
-    }
-    /*'a' link back to Author Home*/
-    .bottom-link {
-      @apply text-center;
-      /*Small screens --> 'relative': positions link relative to its normal position*/
-      @apply relative;
-      /*Cehter the link horizontally*/
-      @apply inset-x-0; 
-      /*Position the link near bottom of the page*/
-      @apply bottom-0;
-    }
-    /* Style the link */
-    .bottom-link a {
-      @apply font-opensansbold;
-      @apply underline;
-      @apply text-blue-600;
-      @apply hover:text-amber-700;
-    }
 }  
 
 @tailwind components;
