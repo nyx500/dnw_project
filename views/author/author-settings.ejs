@@ -4,37 +4,90 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Author Settings Page</title>
+    <link rel="stylesheet" href="../../public/output.css" />
+    <title>Author: Settings</title>
 </head>
 <body>
-    <!--Navbar for settings link-->
+    <!--Navbar for home and settings link-->
     <nav>
-        <a href="/author/">Author Home</a>
-        <a href="/author/settings">Settings</a>
+        <div class="nav-container">
+            <span>
+                <!--Display blog title in navbar-->
+                <div class="font-lobster justify-self-start"><%= blog.title %></div>
+                <a href="/author/">Home (Author)</a>
+                <a href="/author/settings">Settings</a>
+            </span>
+            <div class="position-on-right">
+                <a href="/reader" class="change-site-link" >Home (Reader)</a>
+            </div>
+            <div class="menu-button-container">
+                <button class="outline-none menu-button">
+                    <!--Code for how to make an SVG menu button with three horizontal bars: -->
+                     <!--Ref: https://www.devwares.com/blog/how-to-create-a-beautiful-responsive-navbar-using-tailwind-css/-->
+                    <svg class="w-12 h-12" x-show="! showMenu" stroke-linecap="round"
+                        stroke-linejoin="round" stroke-width="3" viewBox="0 00 26 26" stroke="black">
+                        <path d="m4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <div class="hidden hidden-menu font-opensans"> <!--Toggle 'hidden' property with JS script when button is clicked-->
+            <ul>
+                <li>
+                    <a href="/author/">Home (Author)</a>
+                </li>
+                <li>
+                    <a href="/author/settings">Settings</a>
+                </li>
+                <li>
+                    <a href="/reader/">Home (Reader)</a>
+                </li>
+            </ul>
+        </div>
     </nav>
     <!-- Make it clear that this is the **Author** not the **User** Home page-->
-    <h1>Welcome to the Author's <b>Settings</b> Page</h1>
-    <h2>Change Settings</h2>
-    <% if (errors.length > 0) { %>
-        <h4>Could not save settings - errors found: </h4>
-        <ul>
-        <% for (var i = 0; i < errors.length;  i++ ) { %>
-            <li> <%= errors[i].msg %> </li>
-        <% } %>
-        </ul>
-    <%} %>
-    <a href="/author/">Back to (Author) Home</a>
-    <form method="POST" action="/author/settings">
-        <label for="title">Blog Title:</label>
-        <input type="text" name="title" id="title" value="<%= blog.title %>">
-        <label for="subtitle">Blog Subtitle:</label>
-        <input type="text" name="subtitle" id="subtitle" value="<%= blog.subtitle %>">
-        <label for="author">Author:</label>
-        <input type="text" name="author" id="author" value="<%= blog.author %>">
-        <br>
-        <br>
-        <input type="submit" value="Save Settings"/>
-    </form>
-    <a href="/author/">Back to Author Homepage</a>
+    <h1 class="font-lobster">Author: Change Settings</h1>
+    <div class="author-settings-main-container">   
+        <h2 class="text-centers">
+            You can change your blog details here:
+        </h2>
+        <% if (errors.length > 0) { %>
+            <!--If errors array contains at least one item, then display the errors container/div:-->
+            <div class="errors-container">
+                <p class="font-opensansbold">Sorry! We failed to save your settings because of the following errors:</p>
+                <!--In tailwind, <ul> tags need explicit list-disc class to show the bullet points-->
+                <ul class="list-disc">
+                    <% for (var i = 0; i < errors.length;  i++ ) { %>
+                        <li> <%= errors[i].msg %> </li>
+                    <% } %>
+                </ul>
+            </div>
+        <%} %>
+        <!--Form to change the author's blog details/settings-->
+        <form class="settings-form" method="POST" action="/author/settings">
+            <div class="settings-form-inputs-container">
+                <div class="settings-form-label-input-pair">
+                    <label for="title">Blog Title:</label>
+                    <input type="text" name="title" id="title" value="<%= blog.title %>">
+                </div>
+                <div class="settings-form-label-input-pair">   
+                    <label for="author">Author:</label>
+                    <input type="text" name="author" id="author" value="<%= blog.author %>">
+                </div>
+                <div class="settings-form-label-input-pair">
+                    <label for="subtitle">Blog Subtitle:</label>
+                    <input type="text" name="subtitle" id="subtitle" value="<%= blog.subtitle %>">
+                </div>
+            </div>
+            <div class="save-settings-container">   
+                <input class="save-button" type="submit" value="Save Settings"/>
+            </div>
+        </form> <!--End of Change Settings Form-->
+        <!--Link to go back to Author's home page-->
+        <div class="bottom-link">
+            <a href="/author/">Back to Home (Author)</a>
+        </div>
+    </div> <!--End of main div-->
+    <script type="application/javascript" src="../../public/script.js" ></script>
 </body>
 </html>

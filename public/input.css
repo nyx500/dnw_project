@@ -79,6 +79,8 @@
     }
     /* Go to reader page by clicking this button */
     .change-site-link {
+      @apply hidden; /* Hide the link on small screens and use collapisble menu with Menu button instead!*/
+      @apply sm:flex;
       @apply font-opensans;
       @apply font-semibold;
       @apply text-base;
@@ -86,9 +88,9 @@
       @apply py-2;
       @apply mt-2; /*Top margin*/
       @apply mb-2; /*Bottom margin*/
-      @apply text-amber-700;
+      @apply text-blue-600;
+      @apply hover:text-amber-700;
       @apply underline;
-   
     }
     /* Container to show menu button only on mobile screens with less than 640 px width*/
     .menu-button-container {
@@ -122,7 +124,7 @@
     /**Sizing and margin for h1 tags: increase size and margin as screens get bigger; start with smallest first*/
     h1 {
       @apply m-4; /**Smallest screens: margin of 6rem around h1 titles*/
-      @apply sm:m-5; /**Screens above 640px are 'sm': margin of 8rem around h1 titles*/
+      @apply sm:m-8; /**Screens above 640px are 'sm': margin of 8rem around h1 titles*/
       @apply text-4xl;  /**Increase h1 size as screen size increases*/
       @apply sm:text-5xl;
     }
@@ -217,6 +219,7 @@
       @apply justify-items-center;
       @apply gap-6;
     }
+    /* Container for each individual article*/
     .article-card {
       @apply rounded-lg;
       @apply bg-white;
@@ -240,9 +243,9 @@
       @apply justify-between;
     }
     /* Style Edit Link as a button*/
-    .edit-link, .publish-button, .delete-button, .share-button {
+    .edit-link, .publish-button, .delete-button, .share-button, .save-button {
       @apply rounded-lg;
-      @apply text-sm;
+      @apply text-base;
       @apply px-5;
       @apply py-2.5;
       @apply mr-2;
@@ -272,6 +275,123 @@
       @apply bg-emerald-500;
       @apply hover:bg-emerald-950;
       @apply hover:text-emerald-50;
+    }
+    /*Styling for Author-Settings Page*/
+    .author-settings-main-container {
+      @apply font-opensans;
+      @apply ml-4;
+      @apply mr-4;
+      @apply m-4;
+      @apply py-4;
+      @apply rounded;
+      @apply grid;
+      @apply justify-center;
+      @apply content-evenly;
+      @apply gap-y-8;
+      @apply h-5/6;
+    }
+    /*Styling for div containing error msgs for bad form input*/
+    .errors-container {
+      @apply grid;
+      @apply text-center;
+      /*Apply dark orange instead of red for error messages, as red is quite harsh for the user */
+      @apply text-orange-600;
+      /*Requires a margin on smaller sizes, otherwise fills from edge-to-edge and looks very bad...*/
+      @apply m-4;
+      @apply sm:m-0;
+    }
+    /*Add bullet points to error list*/
+    .errors-container ul {
+      @apply list-disc;
+      /*Ensures the bullet points are always next to the text*/
+      @apply list-inside;
+    }
+    /*Add margin around listed errors*/
+    .errors-container ul li {
+      @apply m-2;
+    }
+    /*Container where form to change author's blog settings is located*/
+    .settings-form {
+      @apply text-left;
+      @apply grid;
+      @apply gap-4;
+      @apply content-center;
+      @apply bg-blue-200; 
+      @apply shadow-xl; 
+      @apply rounded;
+      @apply px-8; 
+      @apply pt-6;
+      @apply pb-6; 
+      @apply mb-4;
+    }
+    /*Container for the link-textinput elements (excluding the Submit button)*/
+    .settings-form-inputs-container{
+      @apply grid;
+      @apply gap-y-4;
+      @apply auto-cols-auto;
+      /*Put text inputs on lhs of container */
+      @apply self-start;
+    }
+    .settings-form-label-input-pair {
+      /*Mobile screens form inputs layout: */
+      @apply flex-col;
+      @apply flex-nowrap;
+      /*Larger screens: put label + input INLINE */
+      @apply sm:grid;
+      @apply sm:grid-cols-4;
+      @apply sm:gap-4;
+    }
+    .settings-form-label-input-pair label {
+      @apply font-opensansbold;
+      @apply sm:mr-2;
+      @apply sm:col-span-1;
+      @apply mt-2.5;
+      @apply p-2.5;
+    }
+    .settings-form-label-input-pair input {
+      @apply sm:col-span-3;
+      @apply bg-gray-50;
+      @apply border;
+      @apply border-gray-300;
+      @apply text-gray-900;
+      @apply text-sm;
+      @apply rounded-lg;
+      @apply focus:outline-none;
+      @apply focus:border-blue-600;
+      @apply focus:border-2;
+      @apply block;
+      @apply w-full;
+      @apply p-2;
+    }
+    .save-settings-container {
+        @apply flex;
+        @apply items-center;
+        /*On screens larger than mobile, place submit button in center, not on the lhs*/
+        @apply sm:justify-center;
+        @apply mt-4;
+    }
+    .save-button {
+      @apply text-white;
+      @apply bg-orange-600;
+      @apply hover:bg-orange-800;
+      @apply font-opensansbold;
+    }
+    /*'a' link back to Author Home*/
+    .bottom-link {
+      @apply text-center;
+      /*Small screens --> 'relative': positions link relative to its normal position*/
+      @apply relative;
+      /*Cehter the link horizontally*/
+      @apply inset-x-0; 
+      /*Position the link near bottom of the page*/
+      @apply bottom-0;
+    }
+    /* Style the link */
+    .bottom-link a {
+      @apply font-opensansbold;
+      @apply underline;
+      @apply text-blue-600;
+      @apply hover:text-amber-700;
     }
 }  
 

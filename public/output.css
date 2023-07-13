@@ -564,6 +564,17 @@ nav {
 /* Go to reader page by clicking this button */
 
 .change-site-link {
+  display: none;
+  /* Hide the link on small screens and use collapisble menu with Menu button instead!*/
+}
+
+@media (min-width: 640px) {
+  .change-site-link {
+    display: flex;
+  }
+}
+
+.change-site-link {
   font-family: opensans, sans-serif;
   font-weight: 600;
   font-size: 1rem;
@@ -577,7 +588,15 @@ nav {
   margin-bottom: 0.5rem;
   /*Bottom margin*/
   --tw-text-opacity: 1;
+  color: rgb(37 99 235 / var(--tw-text-opacity));
+}
+
+.change-site-link:hover {
+  --tw-text-opacity: 1;
   color: rgb(180 83 9 / var(--tw-text-opacity));
+}
+
+.change-site-link {
   text-decoration-line: underline;
 }
 
@@ -653,7 +672,7 @@ h1 {
 
 @media (min-width: 640px) {
   h1 {
-    margin: 1.25rem;
+    margin: 2rem;
   }
 }
 
@@ -906,6 +925,8 @@ p {
   gap: 1.5rem;
 }
 
+/* Container for each individual article*/
+
 .article-card {
   border-radius: 0.5rem;
   --tw-bg-opacity: 1;
@@ -946,10 +967,10 @@ p {
 
 /* Style Edit Link as a button*/
 
-.edit-link, .publish-button, .delete-button, .share-button {
+.edit-link, .publish-button, .delete-button, .share-button, .save-button {
   border-radius: 0.5rem;
-  font-size: 0.875rem;
-  line-height: 1.25rem;
+  font-size: 1rem;
+  line-height: 1.5rem;
   padding-left: 1.25rem;
   padding-right: 1.25rem;
   padding-top: 0.625rem;
@@ -1013,6 +1034,208 @@ p {
   background-color: rgb(2 44 34 / var(--tw-bg-opacity));
   --tw-text-opacity: 1;
   color: rgb(236 253 245 / var(--tw-text-opacity));
+}
+
+/*Styling for Author-Settings Page*/
+
+.author-settings-main-container {
+  font-family: opensans, sans-serif;
+  margin-left: 1rem;
+  margin-right: 1rem;
+  margin: 1rem;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  border-radius: 0.25rem;
+  display: grid;
+  justify-content: center;
+  align-content: space-evenly;
+  row-gap: 2rem;
+  height: 83.333333%;
+}
+
+/*Styling for div containing error msgs for bad form input*/
+
+.errors-container {
+  display: grid;
+  text-align: center;
+  /*Apply dark orange instead of red for error messages, as red is quite harsh for the user */
+  --tw-text-opacity: 1;
+  color: rgb(234 88 12 / var(--tw-text-opacity));
+  /*Requires a margin on smaller sizes, otherwise fills from edge-to-edge and looks very bad...*/
+  margin: 1rem;
+}
+
+@media (min-width: 640px) {
+  .errors-container {
+    margin: 0px;
+  }
+}
+
+/*Add bullet points to error list*/
+
+.errors-container ul {
+  list-style-type: disc;
+  /*Ensures the bullet points are always next to the text*/
+  list-style-position: inside;
+}
+
+/*Add margin around listed errors*/
+
+.errors-container ul li {
+  margin: 0.5rem;
+}
+
+/*Container where form to change author's blog settings is located*/
+
+.settings-form {
+  text-align: left;
+  display: grid;
+  gap: 1rem;
+  align-content: center;
+  --tw-bg-opacity: 1;
+  background-color: rgb(191 219 254 / var(--tw-bg-opacity));
+  --tw-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+  --tw-shadow-colored: 0 20px 25px -5px var(--tw-shadow-color), 0 8px 10px -6px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+  border-radius: 0.25rem;
+  padding-left: 2rem;
+  padding-right: 2rem;
+  padding-top: 1.5rem;
+  padding-bottom: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+/*Container for the link-textinput elements (excluding the Submit button)*/
+
+.settings-form-inputs-container {
+  display: grid;
+  row-gap: 1rem;
+  grid-auto-columns: auto;
+  /*Put text inputs on lhs of container */
+  align-self: flex-start;
+}
+
+.settings-form-label-input-pair {
+  /*Mobile screens form inputs layout: */
+  flex-direction: column;
+  flex-wrap: nowrap;
+  /*Larger screens: put label + input INLINE */
+}
+
+@media (min-width: 640px) {
+  .settings-form-label-input-pair {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 1rem;
+  }
+}
+
+.settings-form-label-input-pair label {
+  font-family: opensansbold, sans-serif;
+}
+
+@media (min-width: 640px) {
+  .settings-form-label-input-pair label {
+    margin-right: 0.5rem;
+    grid-column: span 1 / span 1;
+  }
+}
+
+.settings-form-label-input-pair label {
+  margin-top: 0.625rem;
+  padding: 0.625rem;
+}
+
+@media (min-width: 640px) {
+  .settings-form-label-input-pair input {
+    grid-column: span 3 / span 3;
+  }
+}
+
+.settings-form-label-input-pair input {
+  --tw-bg-opacity: 1;
+  background-color: rgb(249 250 251 / var(--tw-bg-opacity));
+  border-width: 1px;
+  --tw-border-opacity: 1;
+  border-color: rgb(209 213 219 / var(--tw-border-opacity));
+  --tw-text-opacity: 1;
+  color: rgb(17 24 39 / var(--tw-text-opacity));
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  border-radius: 0.5rem;
+}
+
+.settings-form-label-input-pair input:focus {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+  --tw-border-opacity: 1;
+  border-color: rgb(37 99 235 / var(--tw-border-opacity));
+  border-width: 2px;
+}
+
+.settings-form-label-input-pair input {
+  display: block;
+  width: 100%;
+  padding: 0.5rem;
+}
+
+.save-settings-container {
+  display: flex;
+  align-items: center;
+  /*On screens larger than mobile, place submit button in center, not on the lhs*/
+}
+
+@media (min-width: 640px) {
+  .save-settings-container {
+    justify-content: center;
+  }
+}
+
+.save-settings-container {
+  margin-top: 1rem;
+}
+
+.save-button {
+  --tw-text-opacity: 1;
+  color: rgb(255 255 255 / var(--tw-text-opacity));
+  --tw-bg-opacity: 1;
+  background-color: rgb(234 88 12 / var(--tw-bg-opacity));
+}
+
+.save-button:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(154 52 18 / var(--tw-bg-opacity));
+}
+
+.save-button {
+  font-family: opensansbold, sans-serif;
+}
+
+/*'a' link back to Author Home*/
+
+.bottom-link {
+  text-align: center;
+  /*Small screens --> 'relative': positions link relative to its normal position*/
+  position: relative;
+  /*Cehter the link horizontally*/
+  left: 0px;
+  right: 0px;
+  /*Position the link near bottom of the page*/
+  bottom: 0px;
+}
+
+/* Style the link */
+
+.bottom-link a {
+  font-family: opensansbold, sans-serif;
+  text-decoration-line: underline;
+  --tw-text-opacity: 1;
+  color: rgb(37 99 235 / var(--tw-text-opacity));
+}
+
+.bottom-link a:hover {
+  --tw-text-opacity: 1;
+  color: rgb(180 83 9 / var(--tw-text-opacity));
 }
 
 *, ::before, ::after {
@@ -1173,6 +1396,10 @@ p {
   width: 3rem;
 }
 
+.list-disc {
+  list-style-type: disc;
+}
+
 .justify-self-start {
   justify-self: start;
 }
@@ -1187,6 +1414,10 @@ p {
 
 .font-opensans {
   font-family: opensans, sans-serif;
+}
+
+.font-opensansbold {
+  font-family: opensansbold, sans-serif;
 }
 
 .outline-none {
