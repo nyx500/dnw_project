@@ -8,15 +8,51 @@
     <title>Reader Home Page</title>
 </head>
 <body>
-    <!--Navbar for settings link-->
-    <nav>
-        <a href="/reader/">Reader Home</a>
+    <!--Navbar for home and settings link-->
+    <nav class="z-10">
+        <div class="nav-container">
+            <span>
+                <!--Display blog title in navbar-->
+                <div class="font-lobster justify-self-start">
+                    <!--Logo/Blog Title Directs Reader to *Reader* Home Page-->
+                    <a href="/reader/">
+                        <%= blog.title %>
+                    </a>
+                </div>
+                <a href="/reader/">Home (Reader)</a>
+            </span>
+            <div class="position-on-right">
+                <a href="/author" class="change-site-link" >Home (Author)</a>
+            </div>
+            <div class="menu-button-container">
+                <button class="outline-none menu-button">
+                    <!--Code for how to make an SVG menu button with three horizontal bars: -->
+                     <!--Ref: https://www.devwares.com/blog/how-to-create-a-beautiful-responsive-navbar-using-tailwind-css/-->
+                    <svg class="w-12 h-12" x-show="! showMenu" stroke-linecap="round"
+                        stroke-linejoin="round" stroke-width="3" viewBox="0 00 26 26" stroke="black">
+                        <path d="m4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <div class="hidden hidden-menu font-opensans"> <!--Toggle 'hidden' property with JS script when button is clicked-->
+            <ul>
+                <li>
+                    <a href="/reader/">Home (Reader)</a>
+                </li>
+                <li>
+                    <a href="/author/">Home (Author)</a>
+                </li>
+            </ul>
+        </div>
     </nav>
-    <!-- Make it clear that this is the **Author** not the **User** Home page-->
-    <h1>Welcome to the <b>Reader</b> Home Page!</h1>
-    <h2><%= blog.title %></h2>
-    <h3><%= blog.subtitle %></h3>
-    <h4>Author: <em><%= blog.author %></em></h4>
+    <!-- Make it clear that this is the **Reader** not the **Author** Home page-->
+    <h1 class="font-lobster">Home: Reader</h1>
+    <div class="home-title-box"> 
+        <h2 class="order-1 font-lobster"><%= blog.title %></h2>
+        <h3 class="order-2 font-opensans"><%= blog.subtitle %></h3>
+        <h4 class="order-3 text-center font-opensans">By <%= blog.author %></h4>
+    </div>
     <h5>Articles</h5> 
     <ul>    
         <!--Only display articles with is_published property set to True in here-->
@@ -27,5 +63,6 @@
             </li> <%}) 
         %>
     </ul>
+    <script type="application/javascript" src="../../public/script.js" ></script>
 </body>
 </html>

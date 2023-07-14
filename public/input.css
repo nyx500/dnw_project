@@ -21,18 +21,6 @@
 }
 
 @layer base {
-    /**Apply heading sizes and margins to all heading tags so that they are responsive: use mobile-first approach*/
-    .author-home-title-box {
-      @apply flex-col; /**Headings go in a column */
-      @apply flex-auto;
-      @apply justify-center;
-      @apply content-center;
-      @apply gap-2; /**Smallest screens*/
-      @apply sm:gap-4; /**Screens above 640px*/
-      @apply md:gap-5; /**Screens above 768px*/
-      @apply lg:gap-6; /**Screens above 1024px*/
-      @apply flex-wrap;
-    }
     /** CSS settings for navbar on top of page
       Ref: https://www.devwares.com/blog/how-to-create-a-beautiful-responsive-navbar-using-tailwind-css/*/
     nav {
@@ -157,11 +145,26 @@
         @apply font-semibold;
         @apply mb-4;
     }
+    
+    /**Apply heading sizes and margins to all heading tags on Home pgs so that they are responsive*/
+    .home-title-box {
+      @apply flex-col; /**Headings go in a column */
+      @apply flex-auto;
+      @apply text-center;
+      @apply justify-center;
+      @apply content-center;
+      @apply gap-2; /**Smallest screens*/
+      @apply sm:gap-4; /**Screens above 640px*/
+      @apply md:gap-5; /**Screens above 768px*/
+      @apply lg:gap-6; /**Screens above 1024px*/
+      @apply flex-wrap;
+      @apply text-center;
+    }
     a:hover {
         @apply text-blue-500 underline;
     }
     p {
-        @apply text-base/7;
+        @apply text-base/7; /*Line spacing --> 7*/
     }
     /*Style container for create new draft form*/
     .create-draft-container {
