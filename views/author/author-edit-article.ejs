@@ -78,7 +78,7 @@
     <!--Errors container: appears only if there are POST errors when submitting form data!-->
     <% if (errors.length > 0) { %>
         <!--If errors array contains at least one item, then display the errors container/div:-->
-        <div class="errors-container">
+        <div id="errors-container" class="errors-container">
             <p class="font-opensansbold">Sorry! We failed to save your article because of the following errors:</p>
             <!--In tailwind, <ul> tags need explicit list-disc class to show the bullet points-->
             <ul class="list-disc">

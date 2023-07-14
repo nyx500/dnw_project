@@ -5,13 +5,36 @@
     });
 });
 
-// Ref: https://www.devwares.com/blog/how-to-create-a-beautiful-responsive-navbar-using-tailwind-css/
-// Functionality to toggle menu on smaller screens when menu button is clicked
-const menuButton = document.querySelector('button.menu-button');
-const menu = document.querySelector('.hidden-menu');
-const nav = document.querySelector('nav');
-menuButton.addEventListener('click', () => {
-    console.log("clicked on menu button");
-    menu.classList.toggle('hidden');
-    nav.classList.toggle('py-0');
-});
+
+/** Functionality to scroll to the errors container on the Comments form on the View Article page if errors exist
+ * Ref - instructions how to scroll smoothly to element:
+ * https://stackoverflow.com/questions/49820013/javascript-scrollintoview-smooth-scroll-and-offset
+*/
+function scrollToErrors(element) {
+    var offset = 200;
+    var elementPosition = element.getBoundingClientRect().top;
+    console.log(element.getBoundingClientRect());
+    var offsetPosition = elementPosition + window.scrollY - offset;
+    window.scrollTo({
+        top: offsetPosition,
+        behavior: "smooth"
+   });
+}
+document.querySelector('body').onload = function() {
+    var errorsContainer = document.querySelector('#errors-container');
+    if (errorsContainer)
+    {
+        scrollToErrors(errorsContainer);
+    }
+    /** Functionality to toggle menu on smaller screens when menu button is clicked
+     * Ref: https://www.devwares.com/blog/how-to-create-a-beautiful-responsive-navbar-using-tailwind-css/
+    */
+    const menuButton = document.querySelector('button.menu-button');
+    const menu = document.querySelector('.hidden-menu');
+    const nav = document.querySelector('nav');
+    menuButton.addEventListener('click', () => {
+        menu.classList.toggle('hidden');
+        nav.classList.toggle('py-0');
+    });
+};
+

@@ -56,12 +56,12 @@
     <!-- Make it clear that this is the **Author** not the **User** Home page-->
     <h1 class="font-lobster">Author: Change Settings</h1>
     <div class="author-settings-main-container">   
-        <h2 class="text-centers">
+        <h2 class="text-center">
             You can change your blog details here:
         </h2>
         <% if (errors.length > 0) { %>
             <!--If errors array contains at least one item, then display the errors container/div:-->
-            <div class="errors-container">
+            <div id="errors-container" class="errors-container">
                 <p class="font-opensansbold">Sorry! We failed to save your settings because of the following errors:</p>
                 <!--In tailwind, <ul> tags need explicit list-disc class to show the bullet points-->
                 <ul class="list-disc">

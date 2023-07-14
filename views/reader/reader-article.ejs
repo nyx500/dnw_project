@@ -47,15 +47,15 @@
             </ul>
         </div>
     </nav>
-    <div class="main-container mx-4">
+    <div class="main-container mx-4 my-4 py-8 flex-col gap-8">
         <div class="article-container">
             <div class="title-box flex-col content-center text-center">
                 <!-- Make it clear that this is the **Author** not the **User** Home page-->
                 <h1 class="font-lobster"><%= article.title %></h1>
                 <h2 class="text-3xl font-opensans"><%= article.subtitle %></h2>
-                <h3 class="text-lg font-opensansitalic">Published: <%= article.datetime_published %> (UTC)</h3>
+                <h3 class="text-lg"><em>Published: <%= article.datetime_published %> </em>(UTC)</h3>
             </div>
-            <div class="reactions-box flex gap-6 justify-evenly place-items-center font-opensans text-left">
+            <div class="my-6 reactions-box flex gap-6 justify-evenly place-items-center font-opensans text-left">
                 <h4 class="text-xl"><b>Number of Likes:</b> <%= article.likes %></h4>
                 <!--Form to 'like' the article-->
                 <form method="POST" action="/reader/like-article">
@@ -63,49 +63,73 @@
                     <input class="basic-button bg-emerald-500 hover:bg-emerald-800 px-10 font-opensansbold" type="submit" value="Like">
                 </form>
             </div>
-            <div class="bg-blue-200 flex m-4 rounded-lg py-2 justify-center text-left" id="article-content">
+            <div class="mx-6 mt-12 text-center">
+                <a class="underline font-opensansbold m-6 hover:text-blue-700 visited:text-amber-700" href="#comments-container">
+                    Navigate to the Comments section
+                </a>
+            </div>
+            <div class="font-opensans bg-blue-200 flex m-4 rounded-lg py-2 justify-center text-left" id="article-content">
                 <div class="w-full m-6 bg-white self-center p-6 rounded-lg border border-gray-300">
                      <!--Important: without white-space set to "pre-wrap", the line breaks will not be displayed!-->
                     <p style="white-space: pre-wrap;"><%= article.content %> </p>
                 </div>
             </div>
-            <!--Comment form-->
-            <h5>Add A Comment</h5>
-            <form method="POST" action="/reader/post-comment">
-                <input type="hidden" name="id_comment_form" id="id-comment-form" value="<%= article.id %>">
-                <label for="name">Your name:</label>
-                <br>
-                <input type="text" name="name" id="name" value="User">
-                </br>
-                </br>
-                <label for="comment">Type comment here:</label>
-                </br>
-                <textarea name="comment" id="comment" value="" rows="4" cols="50"></textarea>
-                </br>
-                <input type="submit" value="Submit Comment">
-            </form>
-            <a href="/reader/">Back</a>
         </div>
-        <div class="comments-container">
-            <h6>Comments</h6>
+        <div id="comments-section" class="font-opensans flex-col mx-4 my-8 p-2 content-center">
+            <!--Comment form-->
+            <h5 class="mx-6">Post a Comment</h5>
             <!-- Display errors here if tried to post a comment but did not pass validation checks-->
             <% if (errors.length > 0) { %>
-                <h4>Could not post comment - errors found: </h4>
-                <ul>
-                    <% errors.forEach(function(error) { %>
-                                    <li><%= error.msg %></li>
-                            <%
-                        })
-                    %>
-                </ul>
+                <!--If errors array contains at least one item, then display the errors container/div:-->
+                <div id="errors-container" class="errors-container">
+                    <p class="font-opensansbold">Sorry! Failed to post comment because of the following errors:</p>
+                    <!--In tailwind, <ul> tags need explicit list-disc class to show the bullet points-->
+                    <ul class="list-disc">
+                        <% for (var i = 0; i < errors.length;  i++ ) { %>
+                            <li> <%= errors[i].msg %> </li>
+                        <% } %>
+                    </ul>
+                </div>
             <%} %>
-            <% comments.forEach(function(comment) { %>
-                <%= comment.username %>, Posted: <%= comment.datetime_published %> (UTC)
-                </br>
-                "<%= comment.comment %>"
-                </br> </br>
-                <%});
-            %>
+            <div id="comment-form">
+                <form method="POST" action="/reader/post-comment">
+                    <div class="grid gap-4 p-6">
+                        <input type="hidden" name="id_comment_form" id="id-comment-form" value="<%= article.id %>">
+                        <div class="grid gap-0">
+                            <label class="font-opensansbold" for="name">Your name:</label>
+                            <input class="border-2 border-gray-300 bg-gray-100 rounded-lg p-2 font-opensans w-2/5
+                                focus:outline-none focus:border-blue-600"   type="text" name="name" id="name" value="User">
+                        </div>
+                        <div class="grid">
+                            <label class="font-opensansbold" for="comment">Type comment here:</label>
+                            <textarea class="border-2 border-gray-300 bg-gray-100 rounded-lg p-2 font-opensans w-5/6
+                                focus:outline-none focus:border-blue-600" name="comment" id="comment" value="" rows="4"></textarea>
+                        </div>
+                        <div>
+                            <input class="font-opensansbold basic-button bg-gray-300 text-black hover:bg-gray-500 hover:text-white" 
+                                type="submit" value="Submit Comment">
+                    </div>
+                </form>
+                <a class="font-opensansbold underline my-4 text-emerald-700 hover:text-amber-700" href="/reader/">Back to (Reader) Home</a>
+            </div>
+            <div class="m-4 border-2 border-gray-300 grid" id="comments-container">
+                <h6 class="font-opensansbold">Comments</h6>
+                <% if (comments.length < 1) { %>
+                    <p class="font-opensansitalic">Nobody has left any comments yet.</p>
+                <%} else { %>
+                        <% comments.forEach(function(comment) { %>
+                            <div>
+                                <%= comment.username %>, Posted: <%= comment.datetime_published %> (UTC)
+                                </br>
+                                "<%= comment.comment %>"
+                                </br> </br>
+                            </div>
+                                <%
+                            });
+                        %>
+                    <% }
+                %>
+            </div>
         </div>
     </div>
     <script type="application/javascript" src="../../public/script.js" ></script>

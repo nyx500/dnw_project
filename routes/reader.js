@@ -107,9 +107,9 @@ router.post("/like-article", (req, res)=> {
 var commentValidate = [
   // Check title
   check('name').isLength({  max: 255 }).withMessage(`User's name must be less than 500 words`)
-  .not().isEmpty().withMessage(`Name cannot be empty!`).trim(),
+  .not().isEmpty().withMessage(`Name field cannot be empty!`).trim(),
   check('comment').isLength({ max: 1000 }).withMessage(`Comment must be less than 1000 chars!`)
-  .not().isEmpty().withMessage(`Comment cannot be empty!`).trim()
+  .not().isEmpty().withMessage(`Comment field cannot be empty!`).trim()
 ];
 
 router.post("/post-comment", commentValidate, (req, res)=> {
