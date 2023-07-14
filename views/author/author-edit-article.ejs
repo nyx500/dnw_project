@@ -15,30 +15,34 @@
         <div class="nav-container">
             <span>
                 <!--Display blog title in navbar-->
-                <div class="font-lobster justify-self-start">
+                <div class="font-lobster justify-self-start title-container">
                     <a href="/author/">
                         <%= blog.title %>
                     </a>
                 </div>
-                <a href="/author/">Home (Author)</a>
-                <a href="/author/settings">Settings</a>
+                <div class="nav-link">
+                    <a href="/author/">Home (Author)</a>
+                </div>
+                <div class="nav-link">
+                    <a href="/author/settings">Settings</a>
+                </div>
             </span>
-            <div class="position-on-right">
-                <a href="/reader" class="change-site-link">Home (Reader)</a>
+            <div class="nav-link position-on-right">
+                <a href="/reader" class="change-site-link" >Home (Reader)</a>
             </div>
             <div class="menu-button-container">
                 <button class="outline-none menu-button">
                     <!--Code for how to make an SVG menu button with three horizontal bars: -->
-                    <!--Ref: https://www.devwares.com/blog/how-to-create-a-beautiful-responsive-navbar-using-tailwind-css/-->
-                    <svg class="w-12 h-12" x-show="! showMenu" stroke-linecap="round" stroke-linejoin="round"
-                        stroke-width="3" viewBox="0 00 26 26" stroke="black">
+                     <!--Ref: https://www.devwares.com/blog/how-to-create-a-beautiful-responsive-navbar-using-tailwind-css/-->
+                    <svg class="w-12 h-12" x-show="! showMenu" stroke-linecap="round"
+                        stroke-linejoin="round" stroke-width="3" viewBox="0 00 26 26" stroke="black">
                         <path d="m4 6h16M4 12h16M4 18h16"></path>
                     </svg>
                 </button>
             </div>
         </div>
-        <div class="hidden hidden-menu font-opensans">
-            <!--Toggle 'hidden' property with JS script when button is clicked-->
+        <!--Toggle 'hidden' property with JS script when button is clicked-->
+        <div class="hidden hidden-menu bg-blue-200"> 
             <ul>
                 <li>
                     <a href="/author/">Home (Author)</a>

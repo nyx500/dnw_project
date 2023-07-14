@@ -8,21 +8,22 @@
     <title>View Article</title>
 </head>
 <body>
-    <!--Navbar for home and settings link-->
+    <!--Navbar-->
     <nav class="z-10">
         <div class="nav-container">
             <span>
                 <!--Display blog title in navbar-->
-                <div class="font-lobster justify-self-start">
-                    <!--Logo/Blog Title Directs Reader to *Reader* Home Page-->
-                    <a class="hover:text-emerald-500" href="/reader/">
+                <div class="font-lobster justify-self-start title-container">
+                    <a class="hover:text-emerald-500" href="/author/">
                         <%= blog.title %>
                     </a>
                 </div>
-                <a class="hover:text-emerald-500" href="/reader/">Home (Reader)</a>
+                <div class="nav-link">
+                    <a class="hover:text-emerald-500" href="/reader/">Home (Reader)</a>
+                </div>
             </span>
-            <div class="position-on-right">
-                <a href="/author" class="change-site-link text-emerald-700" >Home (Author)</a>
+            <div class="nav-link position-on-right">
+                <a href="/author" class="change-site-link hover:text-emerald-500" >Home (Author)</a>
             </div>
             <div class="menu-button-container">
                 <button class="outline-none menu-button">
@@ -35,7 +36,7 @@
                 </button>
             </div>
         </div>
-        <div class="hidden hidden-menu font-opensans"> <!--Toggle 'hidden' property with JS script when button is clicked-->
+        <div class="hidden hidden-menu bg-emerald-200"> <!--Toggle'hidden' property with JS script when button is clicked-->
             <ul>
                 <li>
                     <a href="/reader/">Home (Reader)</a>
@@ -96,6 +97,7 @@
         "<%= comment.comment %>"
         </br> </br>
         <%});
-    %> 
+    %>
+    <script type="application/javascript" src="../../public/script.js" ></script>
 </body>
 </html>

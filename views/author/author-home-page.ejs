@@ -13,15 +13,19 @@
         <div class="nav-container">
             <span>
                 <!--Display blog title in navbar-->
-                <div class="font-lobster justify-self-start">
+                <div class="font-lobster justify-self-start title-container">
                     <a href="/author/">
                         <%= blog.title %>
                     </a>
                 </div>
-                <a href="/author/">Home (Author)</a>
-                <a href="/author/settings">Settings</a>
+                <div class="nav-link">
+                    <a href="/author/">Home (Author)</a>
+                </div>
+                <div class="nav-link">
+                    <a href="/author/settings">Settings</a>
+                </div>
             </span>
-            <div class="position-on-right">
+            <div class="nav-link position-on-right">
                 <a href="/reader" class="change-site-link" >Home (Reader)</a>
             </div>
             <div class="menu-button-container">
@@ -35,7 +39,7 @@
                 </button>
             </div>
         </div>
-        <div class="hidden hidden-menu font-opensans"> <!--Toggle 'hidden' property with JS script when button is clicked-->
+        <div class="hidden hidden-menu font-opensans bg-blue-200"> <!--Toggle 'hidden' property with JS script when button is clicked-->
             <ul>
                 <li>
                     <a href="/author/">Home (Author)</a>

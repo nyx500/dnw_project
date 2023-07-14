@@ -9,7 +9,9 @@
 // Functionality to toggle menu on smaller screens when menu button is clicked
 const menuButton = document.querySelector('button.menu-button');
 const menu = document.querySelector('.hidden-menu');
+const nav = document.querySelector('nav');
 menuButton.addEventListener('click', () => {
     console.log("clicked on menu button");
     menu.classList.toggle('hidden');
+    nav.classList.toggle('py-0');
 });

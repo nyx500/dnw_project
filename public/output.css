@@ -448,6 +448,21 @@ nav {
 @media (min-width: 640px) {
   nav {
     top: 0px;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+}
+
+nav {
+  /* Padding */
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+}
+
+@media (min-width: 640px) {
+  nav {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
   }
 }
 
@@ -455,10 +470,6 @@ nav {
 
 .nav-container {
   display: flex;
-  align-content: center;
-  padding-left: 1.5rem;
-  padding-right: 1.5rem;
-  /* Padding */
 }
 
 /**Container for the links in the navbar shown on screens larger than 640px */
@@ -483,30 +494,34 @@ nav {
 
 /* Container in navbar showing blog title */
 
-.nav-container span div {
-  display: flex;
-  justify-items: start;
-  font-size: 1.5rem;
-  line-height: 2rem;
+.title-container {
+  flex-direction: column;
+  justify-content: flex-start;
   margin-left: 0px;
   /* Left margin */
   margin-right: 1rem;
   /* Right margin */
+  font-size: 1.5rem;
+  line-height: 2rem;
 }
 
-/* Links displayed on larger screens in navbar */
+.nav-link {
+  flex-direction: column;
+  justify-content: flex-end;
+  margin-top: 0.25rem;
+}
 
-.nav-container span a {
+.nav-link a {
+  font-size: 1rem;
+  line-height: 1.5rem;
   padding-left: 0.75rem;
   padding-right: 0.75rem;
-  /*Apply padding to links in navbar*/
-  padding-top: 1rem;
-  padding-bottom: 1rem;
 }
 
 .position-on-right {
-  align-self: center;
   margin-left: auto;
+  font-size: 1rem;
+  line-height: 1.5rem;
 }
 
 /* Go to reader page by clicking this button */
@@ -525,16 +540,8 @@ nav {
 .change-site-link {
   font-family: opensans, sans-serif;
   font-weight: 600;
-  font-size: 1rem;
-  line-height: 1.5rem;
   padding-left: 0.5rem;
   padding-right: 0.5rem;
-  padding-top: 0.5rem;
-  padding-bottom: 0.5rem;
-  margin-top: 0.5rem;
-  /*Top margin*/
-  margin-bottom: 0.5rem;
-  /*Bottom margin*/
   --tw-text-opacity: 1;
   color: rgb(37 99 235 / var(--tw-text-opacity));
 }
@@ -563,15 +570,15 @@ nav {
 .menu-button-container {
   /* Hide menu button on screens > 640px width */
   align-items: center;
-  padding-top: 1.5rem;
-  padding-bottom: 1.5rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
 }
 
 /*Container for the hidden expandable menu which is only accessible on phones*/
 
 .hidden-menu {
-  --tw-bg-opacity: 1;
-  background-color: rgb(229 231 235 / var(--tw-bg-opacity));
+  font-family: opensans, sans-serif;
+  width: 100%;
 }
 
 @media (min-width: 640px) {
@@ -1575,9 +1582,19 @@ p {
   background-color: rgb(219 234 254 / var(--tw-bg-opacity));
 }
 
+.bg-blue-200 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(191 219 254 / var(--tw-bg-opacity));
+}
+
 .bg-emerald-100 {
   --tw-bg-opacity: 1;
   background-color: rgb(209 250 229 / var(--tw-bg-opacity));
+}
+
+.bg-emerald-200 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(167 243 208 / var(--tw-bg-opacity));
 }
 
 .bg-gray-50 {
@@ -1620,6 +1637,11 @@ p {
 .px-6 {
   padding-left: 1.5rem;
   padding-right: 1.5rem;
+}
+
+.py-0 {
+  padding-top: 0px;
+  padding-bottom: 0px;
 }
 
 .py-1 {
@@ -1744,14 +1766,14 @@ p {
   color: rgb(180 83 9 / var(--tw-text-opacity));
 }
 
-.hover\:text-emerald-900:hover {
-  --tw-text-opacity: 1;
-  color: rgb(6 78 59 / var(--tw-text-opacity));
-}
-
 .hover\:text-emerald-500:hover {
   --tw-text-opacity: 1;
   color: rgb(16 185 129 / var(--tw-text-opacity));
+}
+
+.hover\:text-emerald-900:hover {
+  --tw-text-opacity: 1;
+  color: rgb(6 78 59 / var(--tw-text-opacity));
 }
 
 .hover\:shadow-slate-800:hover {

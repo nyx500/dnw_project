@@ -28,12 +28,13 @@
       @apply bg-gray-100; /* Light grey navbar */
       @apply sm:sticky; /*Make the navbar fixed on top but not on mobile screens 640px width or less*/
       @apply sm:top-0;
+      @apply sm:px-6; /* Padding */
+      @apply py-2;
+      @apply sm:py-4;
     }
     /*Navbar container for navbar content*/
     .nav-container {
       @apply flex;
-      @apply content-center;
-      @apply px-6; /* Padding */
     }
     /**Container for the links in the navbar shown on screens larger than 640px */
     .nav-container span {
@@ -44,21 +45,25 @@
       @apply font-opensans;
     }
     /* Container in navbar showing blog title */
-    .nav-container span div {
-      @apply flex;
-      @apply justify-items-start;
-      @apply text-2xl;
+    .title-container {
+      @apply flex-col;
+      @apply justify-start;
       @apply ml-0; /* Left margin */
       @apply mr-4; /* Right margin */
+      @apply text-2xl;
     }
-    /* Links displayed on larger screens in navbar */
-    .nav-container span a {
-      @apply px-3; /*Apply padding to links in navbar*/
-      @apply py-4;
+    .nav-link {
+      @apply flex-col;
+      @apply justify-end;
+      @apply mt-1;
+    }
+    .nav-link a {
+      @apply text-base;
+      @apply px-3;
     }
     .position-on-right {
-      @apply self-center;
       @apply ml-auto;
+      @apply text-base;
     }
     /* Go to reader page by clicking this button */
     .change-site-link {
@@ -66,11 +71,7 @@
       @apply sm:flex;
       @apply font-opensans;
       @apply font-semibold;
-      @apply text-base;
       @apply px-2;
-      @apply py-2;
-      @apply mt-2; /*Top margin*/
-      @apply mb-2; /*Bottom margin*/
       @apply text-blue-600;
       @apply hover:text-amber-700;
       @apply underline;
@@ -80,11 +81,12 @@
       @apply flex;
       @apply sm:hidden; /* Hide menu button on screens > 640px width */
       @apply items-center;
-      @apply py-6;
+      @apply py-2;
     }
     /*Container for the hidden expandable menu which is only accessible on phones*/
     .hidden-menu {
-      @apply bg-gray-200;
+      @apply font-opensans;
+      @apply w-full;
       @apply sm:hidden;
       @apply border;
       @apply border-black;
