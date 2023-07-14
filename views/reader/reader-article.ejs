@@ -14,7 +14,7 @@
             <span>
                 <!--Display blog title in navbar-->
                 <div class="font-lobster justify-self-start title-container">
-                    <a class="hover:text-emerald-500" href="/author/">
+                    <a class="hover:text-emerald-500" href="/reader/">
                         <%= blog.title %>
                     </a>
                 </div>
@@ -63,9 +63,11 @@
                     <input class="basic-button bg-emerald-500 hover:bg-emerald-800 px-10 font-opensansbold" type="submit" value="Like">
                 </form>
             </div>
-            <div id="article-content">
-                <!--Important: without white-space set to "pre-wrap", the line breaks will not be displayed!-->
-                <p style="white-space: pre-wrap;"><%= article.content %> </p>
+            <div class="bg-blue-200 flex m-4 rounded-lg py-2 justify-center text-left" id="article-content">
+                <div class="w-full m-6 bg-white self-center p-6 rounded-lg border border-gray-300">
+                     <!--Important: without white-space set to "pre-wrap", the line breaks will not be displayed!-->
+                    <p style="white-space: pre-wrap;"><%= article.content %> </p>
+                </div>
             </div>
             <!--Comment form-->
             <h5>Add A Comment</h5>
