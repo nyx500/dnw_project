@@ -72,8 +72,8 @@
       @apply font-opensans;
       @apply font-semibold;
       @apply px-2;
-      @apply text-blue-600;
-      @apply hover:text-amber-700;
+      @apply text-amber-700;
+      @apply hover:text-blue-600;
       @apply underline;
     }
     /* Container to show menu button only on mobile screens with less than 640 px width*/

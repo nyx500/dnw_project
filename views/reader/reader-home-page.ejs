@@ -14,16 +14,16 @@
             <span>
                 <!--Display blog title in navbar-->
                 <div class="font-lobster justify-self-start title-container">
-                    <a href="/author/">
+                    <a class="hover:text-emerald-500" href="/author/">
                         <%= blog.title %>
                     </a>
                 </div>
                 <div class="nav-link">
-                    <a href="/reader/">Home (Reader)</a>
+                    <a class="hover:text-emerald-500" href="/reader/">Home (Reader)</a>
                 </div>
             </span>
             <div class="nav-link position-on-right">
-                <a href="/author" class="change-site-link" >Home (Author)</a>
+                <a href="/author" class="change-site-link text-amber-700 hover:text-emerald-500" >Home (Author)</a>
             </div>
             <div class="menu-button-container">
                 <button class="outline-none menu-button">
@@ -36,7 +36,7 @@
                 </button>
             </div>
         </div>
-        <div class="hidden hidden-menu font-opensans bg-emerald-200"> <!--Toggle 'hidden' property with JS script when button is clicked-->
+        <div class="hidden hidden-menu bg-emerald-200"> <!--Toggle'hidden' property with JS script when button is clicked-->
             <ul>
                 <li>
                     <a href="/reader/">Home (Reader)</a>

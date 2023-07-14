@@ -23,7 +23,7 @@
                 </div>
             </span>
             <div class="nav-link position-on-right">
-                <a href="/author" class="change-site-link hover:text-emerald-500" >Home (Author)</a>
+                <a href="/author" class="change-site-link text-amber-700 hover:text-emerald-500" >Home (Author)</a>
             </div>
             <div class="menu-button-container">
                 <button class="outline-none menu-button">
@@ -47,57 +47,65 @@
             </ul>
         </div>
     </nav>
-    <!-- Make it clear that this is the **Author** not the **User** Home page-->
-    <h1><%= article.title %></h1>
-    <h2><%= article.subtitle %></h2>
-    <h3><em>Published: <%= article.datetime_published %> (UTC)</em></h3>
-    <span>
-        <h4>Likes: <%= article.likes %></h4>
-        <!--Form to 'like' the article-->
-        <form method="POST" action="/reader/like-article">
-            <input type="hidden" name="id_like_form" id="id-like-form" value="<%= article.id %>">
-            <input type="submit" value="Like">
-        </form>
-    </span>
-    <div id="article-content">
-        <!--Important: without white-space set to "pre-wrap", the line breaks will not be displayed!-->
-        <p style="white-space: pre-wrap;"><%= article.content %> </p>
-    </div>
-    <!--Comment form-->
-    <h5>Add A Comment</h5>
-    <form method="POST" action="/reader/post-comment">
-        <input type="hidden" name="id_comment_form" id="id-comment-form" value="<%= article.id %>">
-        <label for="name">Your name:</label>
-        <br>
-        <input type="text" name="name" id="name" value="User">
-        </br>
-        </br>
-        <label for="comment">Type comment here:</label>
-        </br>
-        <textarea name="comment" id="comment" value="" rows="4" cols="50"></textarea>
-        </br>
-        <input type="submit" value="Submit Comment">
-    </form>
-    <a href="/reader/">Back</a>
-    <h6>Comments</h6>
-    <!-- Display errors here if tried to post a comment but did not pass validation checks-->
-    <% if (errors.length > 0) { %>
-        <h4>Could not post comment - errors found: </h4>
-        <ul>
-            <% errors.forEach(function(error) { %>
-                            <li><%= error.msg %></li>
-                    <%
-                })
+    <div class="main-container mx-4">
+        <div class="article-container">
+            <div class="title-box flex-col content-center text-center">
+                <!-- Make it clear that this is the **Author** not the **User** Home page-->
+                <h1 class="font-lobster"><%= article.title %></h1>
+                <h2 class="text-3xl font-opensans"><%= article.subtitle %></h2>
+                <h3 class="text-lg font-opensansitalic">Published: <%= article.datetime_published %> (UTC)</h3>
+            </div>
+            <div class="reactions-box flex gap-6 justify-evenly place-items-center font-opensans text-left">
+                <h4 class="text-xl"><b>Number of Likes:</b> <%= article.likes %></h4>
+                <!--Form to 'like' the article-->
+                <form method="POST" action="/reader/like-article">
+                    <input type="hidden" name="id_like_form" id="id-like-form" value="<%= article.id %>">
+                    <input class="basic-button bg-emerald-500 hover:bg-emerald-800 px-10 font-opensansbold" type="submit" value="Like">
+                </form>
+            </div>
+            <div id="article-content">
+                <!--Important: without white-space set to "pre-wrap", the line breaks will not be displayed!-->
+                <p style="white-space: pre-wrap;"><%= article.content %> </p>
+            </div>
+            <!--Comment form-->
+            <h5>Add A Comment</h5>
+            <form method="POST" action="/reader/post-comment">
+                <input type="hidden" name="id_comment_form" id="id-comment-form" value="<%= article.id %>">
+                <label for="name">Your name:</label>
+                <br>
+                <input type="text" name="name" id="name" value="User">
+                </br>
+                </br>
+                <label for="comment">Type comment here:</label>
+                </br>
+                <textarea name="comment" id="comment" value="" rows="4" cols="50"></textarea>
+                </br>
+                <input type="submit" value="Submit Comment">
+            </form>
+            <a href="/reader/">Back</a>
+        </div>
+        <div class="comments-container">
+            <h6>Comments</h6>
+            <!-- Display errors here if tried to post a comment but did not pass validation checks-->
+            <% if (errors.length > 0) { %>
+                <h4>Could not post comment - errors found: </h4>
+                <ul>
+                    <% errors.forEach(function(error) { %>
+                                    <li><%= error.msg %></li>
+                            <%
+                        })
+                    %>
+                </ul>
+            <%} %>
+            <% comments.forEach(function(comment) { %>
+                <%= comment.username %>, Posted: <%= comment.datetime_published %> (UTC)
+                </br>
+                "<%= comment.comment %>"
+                </br> </br>
+                <%});
             %>
-        </ul>
-    <%} %>
-    <% comments.forEach(function(comment) { %>
-        <%= comment.username %>, Posted: <%= comment.datetime_published %> (UTC)
-        </br>
-        "<%= comment.comment %>"
-        </br> </br>
-        <%});
-    %>
+        </div>
+    </div>
     <script type="application/javascript" src="../../public/script.js" ></script>
 </body>
 </html>
