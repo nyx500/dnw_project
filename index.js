@@ -48,7 +48,7 @@ app.set('view engine', 'ejs');
 
 // Test route
 app.get('/', (req, res) => {
-  res.send('Hello World!')
+  res.render("home");
 });
 
 // This adds all the readerRoutes to the app under the path /reader

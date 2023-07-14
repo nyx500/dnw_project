@@ -122,7 +122,7 @@ router.post("/post-comment", commentValidate, (req, res)=> {
       url.format({
           pathname: "/reader/article",
           query: {
-              "id": req.body.id_comment_form, // Pass the ID of the article into the req.query object
+              "id": req.body.id_comment_form, // Pass the ID of the article into the req.query object,
               "errors": JSON.stringify(errors.array())
           }
       }));
@@ -143,7 +143,7 @@ router.post("/post-comment", commentValidate, (req, res)=> {
       res.redirect(url.format({
         pathname: "/reader/article",
         query: {
-            "id": req.body.id_comment_form ,
+            "id": req.body.id_comment_form,
             errors: []
         }
       }));  

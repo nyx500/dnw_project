@@ -36,5 +36,6 @@ document.querySelector('body').onload = function() {
         menu.classList.toggle('hidden');
         nav.classList.toggle('py-0');
     });
+
 };
 

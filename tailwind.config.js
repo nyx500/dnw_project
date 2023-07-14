@@ -2,6 +2,7 @@
 module.exports = {
   content: [
     "./views/**/*.ejs",
+    "./views/*.ejs",
     "./public/*.js",
     "./public/**/*.ttf",
   ],
