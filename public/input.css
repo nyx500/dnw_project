@@ -236,9 +236,8 @@
       @apply hover:shadow-zinc-900;
     }
     /*Styling for headings/forms inside of each article card*/
-    .article-card div {
-      @apply mt-2;
-      @apply mb-2;
+    .article-card-author-home div {
+      @apply my-2;
     }
     /*Make buttons for edit/delete etc. be inline using flex*/
     .article-forms-container {
