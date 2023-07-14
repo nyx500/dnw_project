@@ -20,6 +20,8 @@ function scrollToErrors(element) {
         behavior: "smooth"
    });
 }
+
+// Execute code only when 'body' tag is loaded
 document.querySelector('body').onload = function() {
     var errorsContainer = document.querySelector('#errors-container');
     if (errorsContainer)

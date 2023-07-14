@@ -47,7 +47,7 @@
             </ul>
         </div>
     </nav>
-    <div class="main-container mx-4 my-12 py-8 grid gap-8 rounded-lg items-stretch">
+    <div id="main-container" class="main-container mx-4 my-12 py-8 grid gap-8 rounded-lg items-stretch">
         <div class="article-section">
             <div class="title-box flex-col content-center text-center">
                 <!-- Make it clear that this is the **Author** not the **User** Home page-->
@@ -69,7 +69,7 @@
             <div class="mx-6 my-0 reactions-box flex gap-6 justify-start content-end font-opensans text-left">
                 <h4 class="text-base"><b>Likes:</b> <%= article.likes %></h4>
                 <!--Form to 'like' the article-->
-                <form method="POST" action="/reader/like-article">
+                <form id="likes-form" method="POST" action="/reader/like-article">
                     <input type="hidden" name="id_like_form" id="id-like-form" value="<%= article.id %>">
                     <button class="bg-amber-700 hover:bg-amber-900 text-white font-opensansbold flex justify-start py-2 justify-items-start
                          text-left text-base rounded-xl" type="submit">
@@ -145,6 +145,8 @@
             </div>
         <% }%>
     </div>
+    <script type="text/javascript" src="../../public/jquery.js"></script>
     <script type="application/javascript" src="../../public/script.js" ></script>
+    <script type="application/javascript" src="../../public/likes-script.js" ></script>
 </body>
 </html>

@@ -83,23 +83,25 @@ router.get("/article", (req, res)=> {
 
 
 
+/** 
+ * Updates the 'likes' field for an article with the posted ID in the 'articles' table by incrementing it by 1.
+ * This happens when a reader clicks 'like' under the article on the View article page
+ * This route works in tandem with the AJAX async call in the likes-script.js file
+ * I decided to use AJAX because the user can immediately see the 'likes' being incremented without the page
+ * reloading and navigating away to the top section, forcing the reader to scroll down again.
+ * Without AJAX, the page would reload and user would have to scroll a lot again to see that their 'like' worked!
+*/
 router.post("/like-article", (req, res)=> {
-  // Increments the likes field inside the row/entry for the article with this ID in the 'articles' table
+  // Updates the 'likes' field for the requested article (by ID) by 1 in the 'articles' Sqlite table
   var update_likes_query = `UPDATE articles SET likes = likes + 1 WHERE id = (?)`;
   db.run(update_likes_query, [req.body.id_like_form], function (err) {
         if (err) {
             console.log("ERROR - could not update likes for article! " + err);
             process.exit(1);
         } else {
-            // If successfully updated blog likes, reload the same article using the ID passed in the query string
-            res.redirect(url.format({
-              pathname: "/reader/article",
-              query: {
-                  "id": req.body.id_like_form,
-                  "errors": []
-              }
-          }));  
-        }
+          // Likes are immediately updated via AJAX, so just send JSON status data for AJAX to continue
+          res.end('{"success" : "Updated Successfully", "status" : 200}');
+      };
     });
 })
 
