@@ -175,8 +175,6 @@
     /**Create general class for the most basic kind of button, 
       e.g. the one used on Author's homepage to create a draft*/
     .basic-button {
-      @apply bg-blue-500;
-      @apply hover:bg-blue-800;
       @apply shadow-md;
       @apply shadow-slate-400;
       @apply hover:shadow-xl;
@@ -186,6 +184,10 @@
       @apply px-4;
       @apply rounded;
       @apply cursor-pointer;
+    }
+    .create-draft-button {
+      @apply bg-blue-500;
+      @apply hover:bg-blue-800;
     }
     /*Styling for the grid container containing the draft articles and published article sections on Author Home*/
     .author-home-articles-container {
@@ -223,7 +225,7 @@
       @apply gap-6;
     }
     /* Container for each individual article*/
-    .article-card {
+    .article-card-author-home {
       @apply rounded-lg;
       @apply bg-white;
       @apply p-6;
@@ -377,6 +379,34 @@
       @apply bg-orange-600;
       @apply hover:bg-orange-800;
       @apply font-opensansbold;
+    }
+    /*Styles specific to 'Reader' home pg*/
+    .reader-home-articles-container {
+      @apply grid;
+      @apply gap-4;
+      @apply sm:grid-cols-2;
+      @apply lg:grid-cols-4;
+      @apply place-items-center;
+      @apply auto-rows-auto;
+    }
+    .article-card-reader-home {
+      @apply h-full;
+      @apply col-span-1;
+      @apply flex;
+      @apply flex-col;
+      @apply justify-evenly;
+      @apply rounded-lg;
+      @apply bg-white;
+      @apply p-6;
+      @apply px-10;
+      @apply shadow-md;
+      @apply shadow-zinc-400;
+      @apply hover:shadow-xl;
+      @apply hover:shadow-zinc-900;
+    }
+    .view-article-button {
+      @apply bg-amber-700;
+      @apply hover:bg-amber-900;
     }
 }  
 

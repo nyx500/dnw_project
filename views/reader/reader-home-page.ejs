@@ -53,16 +53,30 @@
         <h3 class="order-2 font-opensans"><%= blog.subtitle %></h3>
         <h4 class="order-3 text-center font-opensans">By <%= blog.author %></h4>
     </div>
-    <h5>Articles</h5> 
-    <ul>    
-        <!--Only display articles with is_published property set to True in here-->
-        <% articles.forEach(function(article) { %>
-            <li><a href="/reader/article?id=<%= article.id %>"><%= article.title %></a>
-                </br>
-                Published on: <%= article.datetime_published %> (UTC)
-            </li> <%}) 
-        %>
-    </ul>
+    <div class="bg-emerald-200 mx-10 rounded px-6 pt-4 pb-12 my-16 font-opensans">
+        <h5 class="text-center my-6 lg:text-left lg:mx-8">Browse Published Articles:</h5>
+        <div class="reader-home-articles-container">
+            <% articles.forEach(function(article) { %>
+                <div class="text-left my-6 article-card-reader-home">
+                    <a href="/reader/article?id=<%= article.id %>" 
+                        class="font-opensansbold text-emerald-700 visited:text-amber-700 hover:text-emerald-900 underline">
+                        <%= article.title %>
+                    </a>
+                    <div class="text-sm">
+                        <em>Published:</em> <%= article.datetime_published %> (UTC)
+                    </div>
+                    <div class="mr-auto relative">
+                        <a href="/reader/article?id=<%= article.id %>">
+                            <button class="basic-button view-article-button">
+                                View Article
+                            </button>
+                        </a>
+                    </div>
+                </div>
+            <%}) 
+            %>
+        </div>
+    </div>
     <script type="application/javascript" src="../../public/script.js" ></script>
 </body>
 </html>

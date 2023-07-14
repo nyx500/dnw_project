@@ -59,7 +59,7 @@
     </div>
     <div class="create-draft-container font-opensans">
         <form method="GET" action="/author/create-new-draft-article">
-            <button type="submit" class="basic-button" name="create-new-draft" value="create-new-draft">
+            <button type="submit" class="basic-button create-draft-button" name="create-new-draft" value="create-new-draft">
                 <b>Create New Draft</b>
             </button>
         </form>
@@ -74,7 +74,7 @@
             <!--Only display articles with is_published property set to "False" in here-->
             <% articles.forEach(function(article) { %>
                 <% if(!article.is_published){ %>
-                    <div class="article-card">
+                    <div class="article-card-author-home">
                         <div class="article-title">                 
                             <h6>Title: <%= article.title %></h6>
                         </div>
@@ -121,7 +121,7 @@
             <!--Only display articles with is_published property set to True in here-->
             <% articles.forEach(function(article) { %>
                 <% if(article.is_published){ %>
-                    <div class="article-card">
+                    <div class="article-card-author-home">
                         <div class="article-title">
                             <h6>Title: <%= article.title %></h6>
                         </div>
