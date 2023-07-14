@@ -41,11 +41,6 @@
       @apply sm:flex; 
       @apply font-semibold;
       @apply text-base;
-      /* Padding */
-      @apply px-2;
-      @apply py-2;
-      @apply mt-2; /*Top margin*/
-      @apply mb-2; /*Bottom margin*/
       @apply font-opensans;
     }
     /* Container in navbar showing blog title */
@@ -59,7 +54,7 @@
     /* Links displayed on larger screens in navbar */
     .nav-container span a {
       @apply px-3; /*Apply padding to links in navbar*/
-      @apply py-2;
+      @apply py-4;
     }
     .position-on-right {
       @apply self-center;

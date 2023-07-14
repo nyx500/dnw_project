@@ -58,11 +58,22 @@ router.get("/article", (req, res)=> {
           console.log("Error: could not retrieve comments - " + err);
           process.exit(1);
         } else {
-          console.log(article.content);
-          res.render("reader/reader-article", {
-            article: article,
-            comments: comments,
-            errors: errors
+          // Need to get Blog title for the navbar logo...
+          var get_blog_title_query = `SELECT * FROM blog;`;
+          db.get(get_blog_title_query, function(err, blog_data)
+          {
+              if (err)
+              {
+                  console.error("Reader View Article - Could not get blog title: " + err);
+                  process.exit(1);
+              } else {
+                res.render("reader/reader-article", {
+                  article: article,
+                  blog: blog_data,
+                  comments: comments,
+                  errors: errors
+                });
+              }
           });
         }
       });

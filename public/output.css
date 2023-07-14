@@ -478,15 +478,6 @@ nav {
   font-weight: 600;
   font-size: 1rem;
   line-height: 1.5rem;
-  /* Padding */
-  padding-left: 0.5rem;
-  padding-right: 0.5rem;
-  padding-top: 0.5rem;
-  padding-bottom: 0.5rem;
-  margin-top: 0.5rem;
-  /*Top margin*/
-  margin-bottom: 0.5rem;
-  /*Bottom margin*/
   font-family: opensans, sans-serif;
 }
 
@@ -509,8 +500,8 @@ nav {
   padding-left: 0.75rem;
   padding-right: 0.75rem;
   /*Apply padding to links in navbar*/
-  padding-top: 0.5rem;
-  padding-bottom: 0.5rem;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
 }
 
 .position-on-right {
@@ -1756,6 +1747,11 @@ p {
 .hover\:text-emerald-900:hover {
   --tw-text-opacity: 1;
   color: rgb(6 78 59 / var(--tw-text-opacity));
+}
+
+.hover\:text-emerald-500:hover {
+  --tw-text-opacity: 1;
+  color: rgb(16 185 129 / var(--tw-text-opacity));
 }
 
 .hover\:shadow-slate-800:hover {
