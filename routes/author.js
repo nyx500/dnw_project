@@ -10,11 +10,12 @@ const url = require('url');
 const { check, validationResult } = require('express-validator');
 // Sanitization library to get rid of dangerous HTML code injection
 const sanitizeHtml = require('sanitize-html');
+
+// Error handling modules:
 const httpStatusCodes = require('../errors/httpStatusCodes');
 const Error500 = require("../errors/Error500");
 const Error404 = require("../errors/Error404");
-
-// Function that is called when Sqlite query returns 'err' and cannot process the DB request:
+// Function which is called when Sqlite query returns 'err' and cannot process the DB request:
 function returnErrorPage(res, error, optional_message=null) {
     res.status(error.statusCode).render("error", {
         error: error,

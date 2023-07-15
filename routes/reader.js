@@ -14,20 +14,32 @@ const { check, validationResult } = require('express-validator');
 // Sanitization library to get rid of dangerous HTML code injection
 const sanitizeHtml = require('sanitize-html');
 
+// Error handling modules:
+const httpStatusCodes = require('../errors/httpStatusCodes');
+const Error500 = require("../errors/Error500");
+const Error404 = require("../errors/Error404");
+// Function which is called when Sqlite query returns 'err' and cannot process the DB request:
+function returnErrorPage(res, error, optional_message=null) {
+  res.status(error.statusCode).render("error", {
+      error: error,
+      message: optional_message
+  }); // Renders the 'error' template/ejs file in the 'view' folder, passes in the Error object as variable
+}
+
+
 // Reader Home Page: displays blog title/subtitle/author and a list of links to published articles
 router.get("/", (req, res) => {
   // Retrieve blog data from blog table (title, author etc.)
   var blog_query = `SELECT * FROM blog`;
   db.get(blog_query, function (err, blog_data) {
     if (err) {
-      console.log(err);
-      process.exit(1);
+      returnErrorPage(res, new Error500());
     } else {
       // Retrieve the articles with 'is_published set to True' & order by datetime published, most recent is first
       var articles_query = `SELECT * FROM articles WHERE is_published = 1 ORDER BY datetime_published DESC;`;
       db.all(articles_query, function (err, articles_data){
         if (err) {
-          next(err); //send the error on to the error handler
+          returnErrorPage(res, new Error500());
         } else {
           res.render("reader/reader-home-page", {
             blog: blog_data,
@@ -49,14 +61,12 @@ router.get("/article", (req, res)=> {
   var specific_article_query = `SELECT * FROM articles WHERE id = (?);`;
   db.get(specific_article_query,[req.query.id], function (err, article){
     if (err) {
-      console.log("Error: No such article ID!");
-      process.exit(1);
+      returnErrorPage(res, new Error404(), "This article does not exist.");
     } else {
       var retrieve_comments_query = `SELECT * FROM comments WHERE article_id = (?) ORDER BY datetime_published DESC;`;
       db.all(retrieve_comments_query, [req.query.id], function (err, comments){
         if (err) {
-          console.log("Error: could not retrieve comments - " + err);
-          process.exit(1);
+          returnErrorPage(res, new Error500());
         } else {
           // Need to get Blog title for the navbar logo...
           var get_blog_title_query = `SELECT * FROM blog;`;
@@ -64,8 +74,7 @@ router.get("/article", (req, res)=> {
           {
               if (err)
               {
-                  console.error("Reader View Article - Could not get blog title: " + err);
-                  process.exit(1);
+                returnErrorPage(res, new Error500());
               } else {
                 res.render("reader/reader-article", {
                   article: article,
@@ -96,8 +105,7 @@ router.post("/like-article", (req, res)=> {
   var update_likes_query = `UPDATE articles SET likes = likes + 1 WHERE id = (?)`;
   db.run(update_likes_query, [req.body.id_like_form], function (err) {
         if (err) {
-            console.log("ERROR - could not update likes for article! " + err);
-            process.exit(1);
+          returnErrorPage(res, new Error500(), "Failed to add 'like' to article.");
         } else {
           // Likes are immediately updated via AJAX, so just send JSON status data for AJAX to continue
           res.end('{"success" : "Updated Successfully", "status" : 200}');
@@ -136,9 +144,7 @@ router.post("/post-comment", commentValidate, (req, res)=> {
   db.run(add_comment_query, [clean_username, clean_comment, req.body.id_comment_form], function(err){
     if (err)
     {
-      console.log("Error: could not add comment :(");
-      console.log(err);
-      process.exit(1);
+      returnErrorPage(res, new Error500(), "Failed to post comment on article.");
     }
     else
     {
@@ -155,98 +161,98 @@ router.post("/post-comment", commentValidate, (req, res)=> {
 })
 
 
-/**
- * @desc retrieves the current users
- */
-router.get("/get-test-users", (req, res, next) => {
-  //Use this pattern to retrieve data
-  //NB. it's better NOT to use arrow functions for callbacks with this library
-  global.db.all("SELECT (user_name) FROM testUsers", function (err, rows) {
-    if (err) {
-      next(err); //send the error on to the error handler
-    } else {
-      res.json(rows);
-    }
-  });
+// /**
+//  * @desc retrieves the current users
+//  */
+// router.get("/get-test-users", (req, res, next) => {
+//   //Use this pattern to retrieve data
+//   //NB. it's better NOT to use arrow functions for callbacks with this library
+//   global.db.all("SELECT (user_name) FROM testUsers", function (err, rows) {
+//     if (err) {
+//       next(err); //send the error on to the error handler
+//     } else {
+//       res.json(rows);
+//     }
+//   });
   
-});
+// });
 
-/**
- * @desc retrieves the current user records
- */
-router.get("/get-user-records", (req, res, next) => {
-  //USE this pattern to retrieve data
-  //NB. it's better NOT to use arrow functions for callbacks with this library
+// /**
+//  * @desc retrieves the current user records
+//  */
+// router.get("/get-user-records", (req, res, next) => {
+//   //USE this pattern to retrieve data
+//   //NB. it's better NOT to use arrow functions for callbacks with this library
 
-  global.db.all("SELECT * FROM testUserRecords", function (err, rows) {
-    if (err) {
-      next(err); //send the error on to the error handler
-    } else {
-      res.json(rows);
-    }
-  });
-});
+//   global.db.all("SELECT * FROM testUserRecords", function (err, rows) {
+//     if (err) {
+//       next(err); //send the error on to the error handler
+//     } else {
+//       res.json(rows);
+//     }
+//   });
+// });
 
-/**
- * @desc Renders the page for creating a user record
- */
-router.get("/create-user-record", (req, res) => {
-  res.render("user/create-user-record");
-});
+// /**
+//  * @desc Renders the page for creating a user record
+//  */
+// router.get("/create-user-record", (req, res) => {
+//   res.render("user/create-user-record");
+// });
 
-/**
- * @desc Add a new user record to the database for user id = 1
- */
-router.post("/create-user-record", (req, res, next) => {
-  //USE this pattern to update and insert data
-  //NB. it's better NOT to use arrow functions for callbacks with this library
-  const data = generateRandomData(10);
-  global.db.run(
-    "INSERT INTO testUserRecords ('test_record_value', 'test_user_id') VALUES( ?, ? );",
-    [data, 1],
-    function (err) {
-      if (err) {
-        next(err); //send the error on to the error handler
-      } else {
-        res.send(`New data inserted @ id ${this.lastID}!`);
-        next();
-      }
-    }
-  );
-});
+// /**
+//  * @desc Add a new user record to the database for user id = 1
+//  */
+// router.post("/create-user-record", (req, res, next) => {
+//   //USE this pattern to update and insert data
+//   //NB. it's better NOT to use arrow functions for callbacks with this library
+//   const data = generateRandomData(10);
+//   global.db.run(
+//     "INSERT INTO testUserRecords ('test_record_value', 'test_user_id') VALUES( ?, ? );",
+//     [data, 1],
+//     function (err) {
+//       if (err) {
+//         next(err); //send the error on to the error handler
+//       } else {
+//         res.send(`New data inserted @ id ${this.lastID}!`);
+//         next();
+//       }
+//     }
+//   );
+// });
 
-///////////////////////////////////////////// HELPERS ///////////////////////////////////////////
+// ///////////////////////////////////////////// HELPERS ///////////////////////////////////////////
 
-/**
- * @desc A helper function to generate a random string
- * @returns a random lorem ipsum string
- */
-function generateRandomData(numWords = 5) {
-  const str =
-    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum";
+// /**
+//  * @desc A helper function to generate a random string
+//  * @returns a random lorem ipsum string
+//  */
+// function generateRandomData(numWords = 5) {
+//   const str =
+//     "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum";
 
-  const words = str.split(" ");
+//   const words = str.split(" ");
 
-  let output = "";
+//   let output = "";
 
-  for (let i = 0; i < numWords; i++) {
-    output += choose(words);
-    if (i < numWords - 1) {
-      output += " ";
-    }
-  }
+//   for (let i = 0; i < numWords; i++) {
+//     output += choose(words);
+//     if (i < numWords - 1) {
+//       output += " ";
+//     }
+//   }
 
-  return output;
-}
+//   return output;
+// }
 
-/**
- * @desc choose and return an item from an array
- * @returns the item
- */
-function choose(array) {
-  assert(Array.isArray(array), "Not an array");
-  const i = Math.floor(Math.random() * array.length);
-  return array[i];
-}
+// /**
+//  * @desc choose and return an item from an array
+//  * @returns the item
+//  */
+// function choose(array) {
+//   assert(Array.isArray(array), "Not an array");
+//   const i = Math.floor(Math.random() * array.length);
+//   return array[i];
+// }
 
 module.exports = router;
