@@ -10,22 +10,31 @@ const url = require('url');
 const { check, validationResult } = require('express-validator');
 // Sanitization library to get rid of dangerous HTML code injection
 const sanitizeHtml = require('sanitize-html');
+const httpStatusCodes = require('../errors/httpStatusCodes');
+const Error500 = require("../errors/Error500");
+const Error404 = require("../errors/Error404");
+
+// Function that is called when Sqlite query returns 'err' and cannot process the DB request:
+function returnErrorPage(res, error, optional_message=null) {
+    res.status(error.statusCode).render("error", {
+        error: error,
+        message: optional_message
+    }); // Renders the 'error' template/ejs file in the 'view' folder, passes in the Error object as variable
+}
 
 // Author Home Page Route: the author can create, review, and edit articles here
-router.get("/", (req, res) => {
+router.get("/", (req, res, next) => {
     /** Retrieves title,subtitle,author values from the blog table in the db */
     var get_blog_data_query = `SELECT title, subtitle, author FROM blog;`;
     db.get(get_blog_data_query, function (err, blog_data) {
         if (err) {
-            console.error("Cannot retrieve blog details from database: " + err);
-            process.exit(1);
+            returnErrorPage(res, new Error500());
         } else {
             // Now we have the blog table details, retrieve all the articles from the database
             var retrieve_articles_query = `SELECT * FROM articles ORDER BY datetime_modified DESC;`;
             db.all(retrieve_articles_query, function (err, articles_data) {
                 if (err) {
-                    console.log("Cannot retrieve articles from database: " + err);
-                    process.exit(1);
+                    returnErrorPage(res, new Error500());
                 } else {
                     res.render("author/author-home-page", {
                         blog: blog_data,
@@ -44,10 +53,8 @@ router.get("/settings", (req, res) => {
     db.get("SELECT title, subtitle, author FROM blog;",
         function (err, blog_data) { // Callback has 2 args: error and data
             if (err) {
-                console.error("Error (no blog data!): " + err);
-                process.exit(1);
+                returnErrorPage(res, new Error500());
             } else {
-                console.log("Blog data: " + blog_data);
                 // Pass in the blog_data as a variable called 'blog' into the ejs template
                 res.render("author/author-settings", {
                     errors: [],
@@ -99,7 +106,7 @@ router.post("/settings", blogValidate, (req, res) => {
         db.run(update_query, [clean_title, clean_subtitle, clean_author],
             function (err) {
                 if (err) {
-                    console.log("ERROR - could not update blog settings! " + err);
+                    returnErrorPage(res, new Error500(), "Failed to save new settings.");
                 } else {
                     // If successfully updated blog table, reload author's home page
                     res.redirect("/author/");
@@ -115,7 +122,7 @@ router.get("/create-new-draft-article", (req, res) => {
     db.run(insert_query,
         function (err) {
             if (err) {
-                console.error(err);
+                returnErrorPage(res, new Error500(), "Failed to create a new draft article in the database.");
             } else {
                 // If draft article is successfully added to 'articles' table, redirect to edit-article page...
                 res.redirect(
@@ -145,8 +152,7 @@ router.get("/edit-article", (req, res) => {
     var query = `SELECT * FROM articles WHERE id = ?`; // Input: article's id from the inputted GET query string
     db.get(query, [req.query.id], function (err, article_data) {
         if (err) {
-            console.error("No such article: " + err);
-            process.exit(1);
+            returnErrorPage(res, new Error500());
         } else {
             // Only render the article page if article was returned from SQL query!
             if (article_data) {
@@ -156,8 +162,7 @@ router.get("/edit-article", (req, res) => {
                 {
                     if (err)
                     {
-                        console.error("Could not get blog title: " + err);
-                        process.exit(1);
+                        returnErrorPage(res, new Error500());
                     } else {
                         // Pass data about this individual draft article from DB to the edit-article view
                         res.render("author/author-edit-article", {
@@ -172,8 +177,7 @@ router.get("/edit-article", (req, res) => {
                 });
                 // No article data returned --> no such article with that ID in the database, so log the error
             } else {
-                console.log("Error: no article with this ID exists");
-                process.exit(1);
+                returnErrorPage(res, new Error404(), "This article does not exist.");
             }
         }
     });
@@ -200,7 +204,6 @@ router.post("/edit-article", articleValidate, (req, res) => {
     const errors = validationResult(req);
     // If data is invalid, then reload the edit-article page for the same article with error messages
     if (!errors.isEmpty()) {
-        console.log(errors.array());
         res.redirect(
             url.format({
                 pathname: "/author/edit-article",
@@ -219,13 +222,11 @@ router.post("/edit-article", articleValidate, (req, res) => {
             let clean_title = sanitizeHtml(req.body.title);
             let clean_subtitle = sanitizeHtml(req.body.subtitle);
             let clean_content = sanitizeHtml(req.body.content);
-            console.log(req.body.content);
             // Article ID sent with the form in POST request using the value in the hidden input HTML element
             db.run(update_query, [clean_title, clean_subtitle, clean_content, req.body.id], function (err) {
                 if (err) {
-                    console.log(err);
+                    returnErrorPage(res, new Error500(), "Failed to save changes to the article.");
                 } else {
-                    console.log("Success: updated the article.");
                     res.redirect("/author/");
                 }
             });
@@ -240,7 +241,7 @@ router.post("/delete-article", (req, res) => {
     // Article ID sent with the form in POST request using the value in the hidden input HTML element
     db.run(delete_query, [req.body.id], function (err) {
         if (err) {
-            console.log("ERROR - could not delete article! " + err);
+            returnErrorPage(res, new Error500(), "Failed to delete article from database.");
         } else {
             res.redirect("/author/");
         }
@@ -255,7 +256,7 @@ router.post("/publish-article", (req, res) => {
     // Article ID sent with the form in POST request using the value in the hidden input HTML element
     db.run(update_query, [req.body.id], function (err) {
         if (err) {
-            console.log("ERROR - could not publish article! " + err);
+            returnErrorPage(res, new Error500(), "Failed to publish article.");
         } else {
             res.redirect("/author/");
         }

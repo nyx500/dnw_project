@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../../public/output.css" />
+    <title>Error</title>
+</head>
+<body>
+    <div class="mx-10 font-opensans">
+        <h1 class="text-3xl font-bold">Error</h1>
+        <% if (error) 
+            {%> 
+                <div class="flex mx-4">
+                    <h2 class="text-lg">
+                        <%= error.name %>: 
+                        <%= error.description %>
+                    </h2>
+                </div>
+            <%}
+        %>
+        <% if (message)
+            {%> 
+                <div class="flex mx-9">
+                    <p>
+                        <%= message %>
+                    </p>
+                </div>
+            <%}
+        %> 
+    </div>
+</body>
+</html>
+

@@ -92,7 +92,7 @@
                             <% if(!article.datetime_published){ %> 
                                 <em>Published:</em> Never
                                 <% } else { %>
-                                <em>Last published:</em> article.datetime_published (UTC)
+                                <em>Last published:</em> <%= article.datetime_published %> (UTC)
                                 <% } %>
                         </div>
                         <div class="article-forms-container">

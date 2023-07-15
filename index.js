@@ -13,6 +13,10 @@ app.use(helmet());
 // Add an extra layer of obsecurity to reduce server fingerprinting
 app.disable('x-powered-by');
 
+// Import my custom error functionality (Ref: https://sematext.com/blog/node-js-error-handling/#types-of-errors-operational-vs-programmer-errors)
+const httpStatusCodes = require('./errors/httpStatusCodes');
+const Error404 = require("./errors/Error404");
+
 // Add a rate limiter to protect from brute-force attacks
 const rateLimit = require('express-rate-limit');
 // Ref: https://medium.com/@samuelnoye35/strengthening-security-in-node-js-best-practices-and-examples-64a408b254cd
@@ -55,6 +59,15 @@ app.get('/', (req, res) => {
 app.use('/reader', readerRoutes);
 // This adds all the authorRoutes to the app under the path /author
 app.use('/author', authorRoutes);
+
+// 404 - No Resource/URL Found Handler --> call this route if all the other routes have failed!
+app.get('*', function(req, res){
+  var error = new Error404();
+  res.status(404).render("error", {
+    error: error,
+    message: null
+  });
+});
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
