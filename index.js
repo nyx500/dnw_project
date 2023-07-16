@@ -13,23 +13,24 @@ app.use(helmet());
 // Add an extra layer of obsecurity to reduce server fingerprinting
 app.disable('x-powered-by');
 
-// Import my custom error functionality (Ref: https://sematext.com/blog/node-js-error-handling/#types-of-errors-operational-vs-programmer-errors)
+// Import my custom error functionality 
+// Ref: https://sematext.com/blog/node-js-error-handling/#types-of-errors-operational-vs-programmer-errors
 const httpStatusCodes = require('./errors/httpStatusCodes');
 const Error404 = require("./errors/Error404");
 
-// Add a rate limiter to protect from brute-force attacks
+// Add a rate limiter here to protect from brute-force attacks
 const rateLimit = require('express-rate-limit');
 // Ref: https://medium.com/@samuelnoye35/strengthening-security-in-node-js-best-practices-and-examples-64a408b254cd
 const limiter = rateLimit({
-  windowMs: 20 * 60 * 1000, // 20 minutes = 1 window
-  max: 100, // Maximum 100 requests per window
+  windowMs: 20 * 60 * 1000, // 20 minutes = 1 time window
+  max: 100, // Set a maximum of 100 requests per time window
 });
-//app.use(limiter);
+app.use(limiter); // Run limiter
 
-// handles post requests --> must define it before defining the routes or doesn't work!!!
+// Handles post requests --> must define it before defining the routes or doesn't work!!!
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// items in the global namespace are accessible throught out the node application
+// Items in the global namespace are accessible throught out the node application
 global.db = new sqlite3.Database('./database.db', function (err) {
   if (err) {
     console.error(err);
@@ -40,27 +41,29 @@ global.db = new sqlite3.Database('./database.db', function (err) {
   }
 });
 
-const readerRoutes = require('./routes/reader');
+// Add all routes to reader and author pages
 const authorRoutes = require('./routes/author');
+const readerRoutes = require('./routes/reader');
 
-// Enables access to public assets (stores JS scripts, CSS) folder
+// Enables access to public assets (stores JS scripts, fonts and CSS) folder
 app.use('/public', express.static(path.join(__dirname, '/public')));
 
 // Sets the app up to use ejs for rendering
 app.set("views", __dirname + "/views");
 app.set('view engine', 'ejs');
 
-// Test route
-app.get('/', (req, res) => {
-  res.render("home");
-});
 
 // This adds all the readerRoutes to the app under the path /reader
 app.use('/reader', readerRoutes);
 // This adds all the authorRoutes to the app under the path /author
 app.use('/author', authorRoutes);
 
-// 404 - No Resource/URL Found Handler --> call this route if all the other routes have failed!
+// Route to general Welcome page
+app.get('/', (req, res) => {
+  res.render("home");
+});
+
+// 404 - No Resource/URL Found Handler --> calls this route if all the other routes have failed!
 app.get('*', function(req, res){
   var error = new Error404();
   res.status(404).render("error", {

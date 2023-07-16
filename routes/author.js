@@ -3,38 +3,40 @@
  */
 const express = require("express");
 const router = express.Router();
-const assert = require('assert');
 // Enables constructing path for article redirects with query string
 const url = require('url');
-// Import modules from express-validation for form data validation and sanitization
+
+// Imports for form data validation and sanitization
 const { check, validationResult } = require('express-validator');
 // Sanitization library to get rid of dangerous HTML code injection
 const sanitizeHtml = require('sanitize-html');
 
-// Error handling modules:
+// Import error handling functionality and modules from the errors subfolder
 const httpStatusCodes = require('../errors/httpStatusCodes');
 const Error500 = require("../errors/Error500");
 const Error404 = require("../errors/Error404");
 const { contentSecurityPolicy } = require("helmet");
-// Function which is called when Sqlite query returns 'err' and cannot process the DB request:
-function returnErrorPage(res, error, optional_message=null) {
-    res.status(error.statusCode).render("error", {
-        error: error,
-        message: optional_message
-    }); // Renders the 'error' template/ejs file in the 'view' folder, passes in the Error object as variable
-}
 
-// Author Home Page Route: the author can create, review, and edit articles here
+
+/**
+ * Author Home Page GET Route
+ * Purpose: the author can create, review, and edit articles here
+ * Inputs: none
+ * Outputs: renders Author home page if there are no db errors, otherwise returns a custom error page
+*/
 router.get("/", (req, res, next) => {
-    /** Retrieves title,subtitle,author values from the blog table in the db */
+    /** Retrieves the (title,subtitle,author) values from the single-row blog table in the sqlite db */
     var get_blog_data_query = `SELECT title, subtitle, author FROM blog;`;
-    db.get(get_blog_data_query, function (err, blog_data) {
+    db.get(get_blog_data_query, function (err, blog_data) { // There should only be one row in the blog table, so use 'db.get'
         if (err) {
             returnErrorPage(res, new Error500());
         } else {
-            // Now we have the blog table details, retrieve all the articles from the database
-            // Sort articles so that the articles most recently modified are displayed at the top
+            /**
+             * Now that we have the blog table details, this query retrieves all the articles from the database.
+             * The articles should be sorted by the date the user last modified them with most-recent at the top.
+            */
             var retrieve_articles_query = `SELECT * FROM articles ORDER BY datetime_modified DESC;`;
+            // Use db.all query because we want all the articles rather than just one
             db.all(retrieve_articles_query, function (err, articles_data) {
                 if (err) {
                     returnErrorPage(res, new Error500());
@@ -42,7 +44,7 @@ router.get("/", (req, res, next) => {
                     res.render("author/author-home-page", {
                         blog: blog_data,
                         articles: articles_data,
-                        // Send number of draft & published articles to the EJS, to display special msg if only 0 articles in a category
+                        // Also send the count of draft & published articles, this will display a special msg if only 0 articles exist
                         draft_count: countDraftArticles(articles_data),
                         published_count: countPublishedArticles(articles_data)
                     });
@@ -269,6 +271,27 @@ router.post("/publish-article", (req, res) => {
     });
 });
 
+
+//////////////////////////////////////////////////HELPER FUNCTIONS/////////////////////////////////////////////////////////////////////////
+
+/**
+ * This function is called when the Sqlite query returns 'err' and cannot process request
+ * Input args: 'res' object to render the error page, error object, message to display on ejs page (default is null)
+ * Outcome: sends back custom error page with the error and message variables
+*/ 
+function returnErrorPage(res, error, optional_message=null) {
+    // Renders the 'error' template/ejs file and passes in the error and message variables
+    res.status(error.statusCode).render("error", {
+        error: error,
+        message: optional_message
+    }); 
+}
+
+/**
+ * Counts the number of articles which are drafts from the result of select all articles query from the db  
+ * Output of count is then passed to Author Home ejs page
+ * If number of drafts is 0, a special message saying there are no drafts is published on the Author Home page
+*/
 function countDraftArticles(articles) {
     let count = 0;
     articles.forEach(article => {
@@ -279,6 +302,11 @@ function countDraftArticles(articles) {
     return count;
 }
 
+/**
+ * Counts the number of articles which have been published from the result of select all articles query from the db  
+ * Output of count is then passed to Author Home ejs page
+ * If number of published articles is 0, a special message saying there are no drafts is published on the Author Home page
+*/
 function countPublishedArticles(articles) {
     let count = 0;
     articles.forEach(article => {
