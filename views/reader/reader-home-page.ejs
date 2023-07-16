@@ -1,110 +1,107 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="../../public/output.css" rel="stylesheet" />
-    <title>Reader Home Page</title>
-</head>
-
-<body>
-    <!--Navbar-->
-    <nav class="z-10">
-        <div class="nav-container">
-            <span>
-                <!--Display blog title in navbar-->
-                <div class="title-container">
-                    <a class="hover:text-emerald-500" href="/reader/">
-                        <%= blog.title %>
-                    </a>
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="../../public/output.css" rel="stylesheet" />
+        <title>Reader Home Page</title>
+    </head>
+    <body>
+        <!--Navbar-->
+        <nav class="z-10">
+            <div class="nav-container">
+                <span>
+                    <!--Display blog title in navbar-->
+                    <div class="title-container">
+                        <a class="hover:text-emerald-500" href="/reader/">
+                            <%= blog.title %>
+                        </a>
+                    </div>
+                    <div class="nav-link">
+                        <a class="hover:text-emerald-500" href="/reader/">Home (Reader)</a>
+                    </div>
+                </span>
+                <div class="nav-link position-on-right">
+                    <a href="/author" class="change-site-link hover:text-emerald-500">Home (Author)</a>
                 </div>
-                <div class="nav-link">
-                    <a class="hover:text-emerald-500" href="/reader/">Home (Reader)</a>
+                <div class="menu-button-container">
+                    <button class="menu-button">
+                        <!--Code for how to make an SVG menu button with three horizontal bars: -->
+                        <!--Ref: https://www.devwares.com/blog/how-to-create-a-beautiful-responsive-navbar-using-tailwind-css/-->
+                        <svg class="w-12 h-12" x-show="! showMenu" stroke-linecap="round" stroke-linejoin="round"
+                            stroke-width="3" viewBox="0 00 26 26" stroke="black">
+                            <path d="m4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                    </button>
                 </div>
-            </span>
-            <div class="nav-link position-on-right">
-                <a href="/author" class="change-site-link hover:text-emerald-500">Home (Author)</a>
             </div>
-            <div class="menu-button-container">
-                <button class="menu-button">
-                    <!--Code for how to make an SVG menu button with three horizontal bars: -->
-                    <!--Ref: https://www.devwares.com/blog/how-to-create-a-beautiful-responsive-navbar-using-tailwind-css/-->
-                    <svg class="w-12 h-12" x-show="! showMenu" stroke-linecap="round" stroke-linejoin="round"
-                        stroke-width="3" viewBox="0 00 26 26" stroke="black">
-                        <path d="m4 6h16M4 12h16M4 18h16"></path>
-                    </svg>
-                </button>
+            <div class="hidden hidden-menu bg-emerald-300">
+                <!--Toggle'hidden' property with JS script when button is clicked-->
+                <ul>
+                    <li>
+                        <a href="/reader/">Home (Reader)</a>
+                    </li>
+                    <li>
+                        <a href="/author/">Home (Author)</a>
+                    </li>
+                </ul>
             </div>
+        </nav>
+        <!-- Makes it clear that this is the **Reader** not the **Author** Home page-->
+        <h1 class="font-lobster">Home: Reader</h1>
+        <!--Section with headers introducing the blog-->
+        <div class="flex-col flex-auto flex-wrap text-center justify-center content-center gap-2 sm:gap-4
+                    md:gap-5 lg:gap-6">
+            <h2 class="order-1 font-lobster">
+                <%= blog.title %>
+            </h2>
+            <h3 class="order-2 font-opensans">
+                <%= blog.subtitle %>
+            </h3>
+            <h4 class="order-3 text-center font-opensans">By <%= blog.author %>
+            </h4>
         </div>
-        <div class="hidden hidden-menu bg-emerald-300">
-            <!--Toggle'hidden' property with JS script when button is clicked-->
-            <ul>
-                <li>
-                    <a href="/reader/">Home (Reader)</a>
-                </li>
-                <li>
-                    <a href="/author/">Home (Author)</a>
-                </li>
-            </ul>
-        </div>
-    </nav>
-    <!-- Makes it clear that this is the **Reader** not the **Author** Home page-->
-    <h1 class="font-lobster">Home: Reader</h1>
-    <!--Section with headers introducing the blog-->
-    <div class="flex-col flex-auto flex-wrap text-center justify-center content-center gap-2 sm:gap-4
-        md:gap-5 lg:gap-6">
-        <h2 class="order-1 font-lobster">
-            <%= blog.title %>
-        </h2>
-        <h3 class="order-2 font-opensans">
-            <%= blog.subtitle %>
-        </h3>
-        <h4 class="order-3 text-center font-opensans">By <%= blog.author %>
-        </h4>
-    </div>
-    <!--Section displaying the list of articles with their 'is_published' property set to true-->
-    <div class="bg-emerald-100 rounded px-6 pt-4 pb-12 mt-6 m-4 font-opensans">
-        <h5 class="text-center my-6 lg:text-left lg:mx-4">Browse Published Articles:</h5>
-        <!--Print message stating if there are no published articles-->
-        <% if (articles.length < 1 ) {%>
-            <div class="ml-4">
-                <p class="font-opensansitalic">
-                    There are no articles here...
-                </p>
-            </div>
-            <%} else {%>
-                <div class="reader-home-articles-container"> <!--See custom class in input.css file-->
-                    <!--Articles should be displayed from newest to oldest by publishing date -->
-                    <% articles.forEach(function(article) { %>
-                        <div class="article-card-reader-home"> <!--See custom class in input.css file-->
-                            <a href="/reader/article?id=<%= article.id %>" class="font-opensansbold text-emerald-700 visited:text-amber-700 
-                                hover:text-emerald-900 underline">
-                                <%= article.title %>
-                            </a>
-                            <div class="text-sm">
-                                <em>Published:</em>
-                                <%= article.datetime_published %> (UTC)
-                            </div>
-                            <div class="mr-auto relative">
-                                <a href="/reader/article?id=<%= article.id %>">
-                                    <button class="basic-button bg-amber-700 hover:bg-amber-900">
-                                        View Article
-                                    </button>
+        <!--Section displaying the list of articles with their 'is_published' property set to true-->
+        <div class="bg-emerald-100 rounded px-6 pt-4 pb-12 mt-6 m-4 font-opensans">
+            <h5 class="text-center my-6 lg:text-left lg:mx-4">Browse Published Articles:</h5>
+            <!--Print message stating if there are no published articles-->
+            <% if (articles.length < 1 ) {%>
+                <div class="ml-4">
+                    <p class="font-opensansitalic">
+                        There are no articles here...
+                    </p>
+                </div>
+                <%} else {%>
+                    <div class="reader-home-articles-container"> <!--See custom class in input.css file-->
+                        <!--Articles should be displayed from newest to oldest by publishing date -->
+                        <% articles.forEach(function(article) { %>
+                            <div class="article-card-reader-home"> <!--See custom class in input.css file-->
+                                <a href="/reader/article?id=<%= article.id %>" class="font-opensansbold text-emerald-700 visited:text-amber-700 
+                                            hover:text-emerald-900 underline">
+                                    <%= article.title %>
                                 </a>
+                                <div class="text-sm">
+                                    <em>Published:</em>
+                                    <%= article.datetime_published %> (UTC)
+                                </div>
+                                <div class="mr-auto relative">
+                                    <a href="/reader/article?id=<%= article.id %>">
+                                        <button class="basic-button bg-amber-700 hover:bg-amber-900">
+                                            View Article
+                                        </button>
+                                    </a>
+                                </div>
                             </div>
-                        </div>
-                        <%}) %>
-                </div> <!--End of list of published articles-->
-            <%}%>
-    </div> <!--End of articles container-->
-    <footer>
-        <div>
-            BlogDragon Solutions 2023
-        </div>
-    </footer>
-    <script type="application/javascript" src="../../public/script.js"></script>
-</body>
-
+                            <%}) %>
+                    </div> <!--End of list of published articles-->
+                    <%}%>
+        </div> <!--End of articles container-->
+        <footer>
+            <div>
+                BlogDragon Solutions 2023
+            </div>
+        </footer>
+        <script type="application/javascript" src="../../public/script.js"></script>
+    </body>
 </html>
