@@ -35,7 +35,7 @@ CREATE TABLE IF NOT EXISTS articles(
     datetime_modified DATETIME DEFAULT CURRENT_TIMESTAMP,
     datetime_published DATETIME DEFAULT NULL,
     title VARCHAR(500) DEFAULT "My Article" NOT NULL,
-    subtitle VARCHAR(500) DEFAULT "My Subtitle",
+    subtitle VARCHAR(500) DEFAULT "My Subtitle" NOT NULL,
     content TEXT DEFAULT "" NOT NULL,
     is_published BOOLEAN DEFAULT 0,
     likes INTEGER DEFAULT 0

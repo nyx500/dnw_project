@@ -197,7 +197,8 @@ var articleValidate = [
     check('title').not().isEmpty().withMessage(`Article title must not be empty!`)
         .isLength({ max: 500 }).withMessage(`Article title must be less than 500 chars!`).trim(),
     // Check article subtitle is not empty and less than 500 chars
-    check('subtitle').isLength({ max: 500 }).withMessage(`Article subtitle must be less than 500 chars!`).trim(),
+    check('subtitle').not().isEmpty().withMessage(`Article subtitle must not be empty!`)
+        .isLength({ max: 500 }).withMessage(`Article subtitle must be less than 500 chars!`).trim(),
     // Check article content is not empty and that does not exceed 40K chars (prevent buffer overflow) 
     check('content').not().isEmpty().withMessage(`Article content cannot be empty!`)
         .isLength({ max: 40000 }).withMessage(`Article content cannot be empty!`).trim()
