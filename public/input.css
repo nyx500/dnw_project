@@ -341,7 +341,7 @@
       @apply p-2;
     }
 
-    /*******************************Styles specific to 'Reader' home page*********************************/
+    /*******************************Repeated Styles specific to 'Reader' home page*********************************/
     .reader-home-articles-container {
       @apply grid;
       @apply gap-4;
