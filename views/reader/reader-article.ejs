@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -7,10 +8,11 @@
     <link href="../../public/output.css" rel="stylesheet" type="text/css" />
     <title>View Article</title>
 </head>
+
 <body class="bg-blue-100">
     <!--Navbar-->
-     <!--Navbar-->
-     <nav class="z-10">
+    <!--Navbar-->
+    <nav class="z-10">
         <div class="nav-container">
             <span>
                 <!--Display blog title in navbar-->
@@ -24,20 +26,21 @@
                 </div>
             </span>
             <div class="nav-link position-on-right">
-                <a href="/author" class="change-site-link hover:text-emerald-500" >Home (Author)</a>
+                <a href="/author" class="change-site-link hover:text-emerald-500">Home (Author)</a>
             </div>
             <div class="menu-button-container">
                 <button class="menu-button">
                     <!--Code for how to make an SVG menu button with three horizontal bars: -->
-                     <!--Ref: https://www.devwares.com/blog/how-to-create-a-beautiful-responsive-navbar-using-tailwind-css/-->
-                    <svg class="w-12 h-12" x-show="! showMenu" stroke-linecap="round"
-                        stroke-linejoin="round" stroke-width="3" viewBox="0 00 26 26" stroke="black">
+                    <!--Ref: https://www.devwares.com/blog/how-to-create-a-beautiful-responsive-navbar-using-tailwind-css/-->
+                    <svg class="w-12 h-12" x-show="! showMenu" stroke-linecap="round" stroke-linejoin="round"
+                        stroke-width="3" viewBox="0 00 26 26" stroke="black">
                         <path d="m4 6h16M4 12h16M4 18h16"></path>
                     </svg>
                 </button>
             </div>
         </div>
-        <div class="hidden hidden-menu bg-emerald-300"> <!--Toggle'hidden' property with JS script when button is clicked-->
+        <div class="hidden hidden-menu bg-emerald-300">
+            <!--Toggle'hidden' property with JS script when button is clicked-->
             <ul>
                 <li>
                     <a href="/reader/">Home (Reader)</a>
@@ -48,81 +51,113 @@
             </ul>
         </div>
     </nav>
-    <div id="main-container" class="main-container mx-4 my-12 py-8 grid gap-8 rounded-lg items-stretch">
+    <!--Main container (column/grid)-->
+    <div class="grid gap-8 items-stretch mx-4 my-12 py-8">
+        <!--Article container-->
         <div class="article-section">
-            <div class="title-box flex-col content-center text-center">
+            <!--Display article details in this container (column/grid)-->
+            <div class="flex-col content-center text-center">
                 <!-- Make it clear that this is the **Author** not the **User** Home page-->
-                <h1 class="font-lobster"><%= article.title %></h1>
-                <h2 class="text-3xl font-opensans"><%= article.subtitle %></h2>
+                <h1 class="font-lobster">
+                    <%= article.title %>
+                </h1>
+                <h2 class="text-3xl font-opensans">
+                    <%= article.subtitle %>
+                </h2>
                 <h3 class="text-lg"><em>Published: <%= article.datetime_published %> </em>(UTC)</h3>
             </div>
+            <!--Link container enabling easy access to comments section in center of article container-->
             <div class="mx-6 mt-12 text-center">
-                <a class="underline font-opensansbold m-6 text-blue-700 hover:text-blue-900 visited:text-amber-700" href="#comments-container">
+                <a class="underline font-opensansbold m-6 text-blue-700 hover:text-blue-900
+                     visited:text-amber-700" href="#comments-container">
                     Navigate to the Comments section
                 </a>
             </div>
+            <!-- Container for actual article content in white-->
             <div class="w-full font-opensans flex m-2 py-2 justify-center text-left" id="article-content">
-                <div class="w-full mx-6 self-center p-6 border border-gray-300 bg-white">
-                     <!--Important: without white-space set to "pre-wrap", the line breaks will not be displayed!-->
-                    <p class="w-full" style="white-space: pre-wrap;"><%= article.content %> </p>
+                <div class="w-full mx-6 p-6 border border-gray-300 bg-white">
+                    <!--Important: without white-space set to "pre-wrap", the author's line breaks will not be displayed!-->
+                    <p class="w-full" style="white-space: pre-wrap;">
+                        <%= article.content %>
+                    </p>
                 </div>
             </div>
+            <!--Container displaying number of likes and the like button-->
             <div class="mx-6 my-0 reactions-box flex gap-6 justify-start content-end font-opensans text-left">
-                <h4 class="text-base"><b>Likes:</b> <%= article.likes %></h4>
-                <!--Form to 'like' the article-->
+                <!--Likes information-->
+                <h4 class="text-base"><b>Likes:</b>
+                    <%= article.likes %>
+                </h4>
+                <!--LIKE FORM-->
                 <form id="likes-form" method="POST" action="/reader/like-article">
                     <input type="hidden" name="id_like_form" id="id-like-form" value="<%= article.id %>">
-                    <button class="bg-amber-700 hover:bg-amber-900 text-white font-opensansbold flex justify-start py-2 justify-items-start
-                         text-left text-base rounded-xl" type="submit">
+                    <!--Construct Like button from heart-shaped SVG icon from FontAwesome and some text-->
+                    <button class="bg-amber-700 hover:bg-amber-900 text-white font-opensansbold flex 
+                        justify-start py-2 justify-items-start text-left text-base rounded-xl" type="submit">
                         <svg class="h-5 w-11 px-2" stroke="none" stroke-width="24" fill="white"
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 512 512">
-                            <path
-                                d="M47.6 300.4L228.3 469.1c7.5 7 17.4 10.9 27.7 10.9s20.2-3.9 27.7-10.9L464.4 300.4c30.4-28.3 47.6-68 47.6-109.5v-5.8c0-69.9-50.5-129.5-119.4-141C347 36.5 300.6 51.4 268 84L256 96 244 84c-32.6-32.6-79-47.5-124.6-39.9C50.5 55.6 0 115.2 0 185.1v5.8c0 41.5 17.2 81.2 47.6 109.5z" />
-                            <!--! Ref: Font Awesome Pro 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
+                            xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                            <!-- Ref: Font Awesome Pro 6.4.0 by @fontawesome - https://fontawesome.com License 
+                                - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
+                            <path d="M47.6 300.4L228.3 469.1c7.5 7 17.4 10.9 27.7 10.9s20.2-3.9 27.7-10.9L464.4
+                                    300.4c30.4-28.3 47.6-68 47.6-109.5v-5.8c0-69.9-50.5-129.5-119.4-141C347
+                                    36.5 300.6 51.4 268 84L256 96 244 84c-32.6-32.6-79-47.5-124.6-39.9C50.5
+                                    55.6 0 115.2 0 185.1v5.8c0 41.5 17.2 81.2 47.6 109.5z" />
                         </svg>
+                        <!--Text in the like button-->
                         <div class="pr-4">Like Article</div>
-                    </button>
-                </form>
-            </div>
-        </div>
-        <div class="mx-auto w-5/6 grid rounded-lg shadow-md shadow-zinc-300 p-6 bg-gray-200 border-4" id="comments-form">
+                    </button> <!--End of like article button-->
+                </form> <!--End of like article form-->
+            </div> <!-- End of container for the likes information and form -->
+        </div> <!--End of article container-->
+        <!--Post comment form container-->
+        <div class="mx-auto w-5/6 grid rounded-lg shadow-md shadow-zinc-300 p-6 bg-gray-200 border-4"
+            sid="comments-form">
             <h5 class="mx-6">Post a Comment</h5>
             <!-- Display errors here if tried to post a comment but did not pass validation checks-->
-            <% if (errors.length > 0) { %>
+            <% if (errors.length> 0) { %>
                 <!--If errors array contains at least one item, then display the errors container/div:-->
                 <div id="errors-container" class="errors-container">
                     <p class="font-opensansbold">Sorry! Failed to post comment because of the following errors:</p>
                     <!--In tailwind, <ul> tags need explicit list-disc class to show the bullet points-->
                     <ul class="list-disc">
-                        <% for (var i = 0; i < errors.length;  i++ ) { %>
-                            <li> <%= errors[i].msg %> </li>
-                        <% } %>
+                        <% for (var i=0; i < errors.length; i++ ) { %>
+                            <li>
+                                <%= errors[i].msg %>
+                            </li>
+                            <% } %>
                     </ul>
                 </div>
-            <%} %>
-            <form method="POST" action="/reader/post-comment">
-                <div class="grid gap-4 p-6 ">
-                    <input type="hidden" name="id_comment_form" id="id-comment-form" value="<%= article.id %>">
-                    <div class="grid gap-0">
-                        <label class="font-opensansbold" for="name">Your name:</label>
-                        <input class="border-2 border-gray-300 bg-gray-100 rounded-lg p-2 font-opensans w-2/5
-                            focus:outline-none focus:border-blue-600"   type="text" name="name" id="name" value="User">
-                    </div>
-                    <div class="grid">
-                        <label class="font-opensansbold" for="comment">Type comment here:</label>
-                        <textarea class="border-2 border-gray-300 bg-gray-150 rounded-lg p-2 font-opensans w-5/6
-                            focus:outline-none focus:border-blue-600" name="comment" id="comment" value="" rows="4"></textarea>
-                    </div>
-                    <div>
-                        <input class="font-opensansbold basic-button bg-gray-300 text-black hover:bg-gray-500 hover:text-white" 
-                            type="submit" value="Submit Comment">
-                </div>
-            </form>
-            <a class="font-opensansbold underline my-4 text-gray-900 hover:text-amber-700" href="/reader/">Back to (Reader) Home</a>
-        </div>  
-    </div>
+                <%} %>
+                    <!--COMMENT FORM-->
+                    <form method="POST" action="/reader/post-comment">
+                        <div class="grid gap-4 p-6 ">
+                            <input type="hidden" name="id_comment_form" id="id-comment-form" value="<%= article.id %>">
+                            <div class="grid gap-0">
+                                <label class="font-opensansbold" for="name">Your name:</label>
+                                <input class="border-2 border-gray-300 bg-gray-100 rounded-lg p-2 font-opensans w-2/5
+                                    focus:outline-none focus:border-blue-600" 
+                                    type="text" name="name" id="name" value="User">
+                            </div>
+                            <div class="grid">
+                                <label class="font-opensansbold" for="comment">Type comment here:</label>
+                                <textarea class="border-2 border-gray-300 bg-gray-150 rounded-lg p-2 font-opensans w-5/6
+                                    focus:outline-none focus:border-blue-600" name="comment" id="comment" value=""
+                                    rows="4"></textarea>
+                            </div>
+                            <div>
+                                <input
+                                    class="font-opensansbold basic-button bg-gray-300 text-black hover:bg-gray-500 
+                                    hover:text-white" type="submit" value="Submit Comment">
+                            </div>
+                    </form> <!--End of comment form-->
+                    <a class="font-opensansbold underline my-4 text-gray-900 hover:text-amber-700" 
+                        href="/reader/">
+                        Back to (Reader) Home
+                    </a>
+        </div> <!--End of post comment form container-->
+    </div> <!--End of main container-->
     <hr class="h-px my-2 bg-gray-300 border-0 dark:bg-gray-700">
+    <!--Container for comments-->
     <div class="mx-4 my-2 py-4 px-2 rounded-lg grid" id="comments-container">
         <h6 class="font-opensansbold mb-6">Comments</h6>
         <% if (comments.length < 1) { %>
@@ -132,7 +167,8 @@
                     <% comments.forEach(function(comment) { %>
                         <div class="p-4 w-full flex-col space-y-4 bg-white rounded-lg shadow-lg">
                             <div>
-                                <b>Posted by:</b> <%= comment.username %>
+                                <b>Posted by:</b>
+                                <%= comment.username %>
                             </div>
                             <div>
                                 "<%= comment.comment %>"
@@ -141,13 +177,14 @@
                                 <%= comment.datetime_published %> (UTC)
                             </div>
                         </div>
-                    <%
-                });%>
-            </div>
-        <% }%>
-    </div>
+                        <% });%>
+                </div>
+                <% }%>
+    </div> <!--End of comments container-->
     <script type="text/javascript" src="../../public/jquery.js"></script>
-    <script type="application/javascript" src="../../public/script.js" ></script>
-    <script type="application/javascript" src="../../public/likes-script.js" ></script>
+    <script type="application/javascript" src="../../public/script.js"></script>
+    <!--Script enabling AJAX request to not have to reload page when user clicks 'like'-->
+    <script type="application/javascript" src="../../public/likes-script.js"></script>
 </body>
+
 </html>
