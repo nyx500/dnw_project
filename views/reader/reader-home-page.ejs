@@ -13,7 +13,7 @@
         <div class="nav-container">
             <span>
                 <!--Display blog title in navbar-->
-                <div class="font-lobster justify-self-start title-container">
+                <div class="title-container">
                     <a class="hover:text-emerald-500" href="/reader/">
                         <%= blog.title %>
                     </a>
@@ -23,10 +23,10 @@
                 </div>
             </span>
             <div class="nav-link position-on-right">
-                <a href="/author" class="change-site-link text-amber-700 hover:text-emerald-500" >Home (Author)</a>
+                <a href="/author" class="change-site-link hover:text-emerald-500" >Home (Author)</a>
             </div>
             <div class="menu-button-container">
-                <button class="outline-none menu-button">
+                <button class="menu-button">
                     <!--Code for how to make an SVG menu button with three horizontal bars: -->
                      <!--Ref: https://www.devwares.com/blog/how-to-create-a-beautiful-responsive-navbar-using-tailwind-css/-->
                     <svg class="w-12 h-12" x-show="! showMenu" stroke-linecap="round"
@@ -36,7 +36,7 @@
                 </button>
             </div>
         </div>
-        <div class="hidden hidden-menu bg-emerald-200"> <!--Toggle'hidden' property with JS script when button is clicked-->
+        <div class="hidden hidden-menu bg-emerald-300"> <!--Toggle'hidden' property with JS script when button is clicked-->
             <ul>
                 <li>
                     <a href="/reader/">Home (Reader)</a>
@@ -54,29 +54,37 @@
         <h3 class="order-2 font-opensans"><%= blog.subtitle %></h3>
         <h4 class="order-3 text-center font-opensans">By <%= blog.author %></h4>
     </div>
-    <div class="bg-emerald-100 rounded px-6 pt-4 pb-12 mt-6 font-opensans">
+    <div class="bg-emerald-100 rounded px-6 pt-4 pb-12 mt-6 m-4 font-opensans">
         <h5 class="text-center my-6 lg:text-left lg:mx-4">Browse Published Articles:</h5>
-        <div class="reader-home-articles-container">
-            <% articles.forEach(function(article) { %>
-                <div class="text-left my-6 article-card-reader-home">
-                    <a href="/reader/article?id=<%= article.id %>" 
-                        class="font-opensansbold text-emerald-700 visited:text-amber-700 hover:text-emerald-900 underline">
-                        <%= article.title %>
-                    </a>
-                    <div class="text-sm">
-                        <em>Published:</em> <%= article.datetime_published %> (UTC)
-                    </div>
-                    <div class="mr-auto relative">
-                        <a href="/reader/article?id=<%= article.id %>">
-                            <button class="basic-button view-article-button">
-                                View Article
-                            </button>
-                        </a>
-                    </div>
+        <% if (articles.length < 1 ) {%>
+                <div class="ml-4">
+                    <p class="font-opensansitalic">
+                        There are no articles here...
+                    </p>
                 </div>
-            <%}) 
-            %>
-        </div>
+        <%} else {%>
+            <div class="reader-home-articles-container">
+                <% articles.forEach(function(article) { %>
+                    <div class="text-left my-6 article-card-reader-home">
+                        <a href="/reader/article?id=<%= article.id %>" 
+                            class="font-opensansbold text-emerald-700 visited:text-amber-700 hover:text-emerald-900 underline">
+                            <%= article.title %>
+                        </a>
+                        <div class="text-sm">
+                            <em>Published:</em> <%= article.datetime_published %> (UTC)
+                        </div>
+                        <div class="mr-auto relative">
+                            <a href="/reader/article?id=<%= article.id %>">
+                                <button class="basic-button view-article-button">
+                                    View Article
+                                </button>
+                            </a>
+                        </div>
+                    </div>
+                <%}) 
+                %>
+            </div>
+        <%}%>
     </div>
     <script type="application/javascript" src="../../public/script.js" ></script>
 </body>

@@ -15,6 +15,7 @@ const sanitizeHtml = require('sanitize-html');
 const httpStatusCodes = require('../errors/httpStatusCodes');
 const Error500 = require("../errors/Error500");
 const Error404 = require("../errors/Error404");
+const { contentSecurityPolicy } = require("helmet");
 // Function which is called when Sqlite query returns 'err' and cannot process the DB request:
 function returnErrorPage(res, error, optional_message=null) {
     res.status(error.statusCode).render("error", {
@@ -40,7 +41,10 @@ router.get("/", (req, res, next) => {
                 } else {
                     res.render("author/author-home-page", {
                         blog: blog_data,
-                        articles: articles_data
+                        articles: articles_data,
+                        // Send number of draft & published articles to the EJS, to display special msg if only 0 articles in a category
+                        draft_count: countDraftArticles(articles_data),
+                        published_count: countPublishedArticles(articles_data)
                     });
                 }
             });
@@ -193,8 +197,7 @@ var articleValidate = [
     check('title').not().isEmpty().withMessage(`Article title must not be empty!`)
         .isLength({ max: 500 }).withMessage(`Article title must be less than 500 chars!`).trim(),
     // Check article subtitle is not empty and less than 500 chars
-    check('subtitle').not().isEmpty().withMessage(`Article subtitle must not be empty!`)
-        .isLength({ max: 500 }).withMessage(`Article subtitle must be less than 500 chars!`).trim(),
+    check('subtitle').isLength({ max: 500 }).withMessage(`Article subtitle must be less than 500 chars!`).trim(),
     // Check article content is not empty and that does not exceed 40K chars (prevent buffer overflow) 
     check('content').not().isEmpty().withMessage(`Article content cannot be empty!`)
         .isLength({ max: 40000 }).withMessage(`Article content cannot be empty!`).trim()
@@ -264,6 +267,26 @@ router.post("/publish-article", (req, res) => {
         }
     });
 });
+
+function countDraftArticles(articles) {
+    let count = 0;
+    articles.forEach(article => {
+        if (!article.is_published) {
+            count++;
+        }
+    });
+    return count;
+}
+
+function countPublishedArticles(articles) {
+    let count = 0;
+    articles.forEach(article => {
+        if (article.is_published) {
+            count++;
+        }
+    });
+    return count;
+}
 
 
 module.exports = router;

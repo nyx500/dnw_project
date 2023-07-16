@@ -215,6 +215,7 @@
     }
     /*Styles for the draft articles and published articles containers on the Author Home page*/
     .author-home-articles-container {
+      @apply font-opensans;
       /*Apply responsive paddings/margins to draft/published article containers*/
       /* Small screen paddings */
       @apply px-4;
@@ -376,12 +377,6 @@
         /*On screens larger than mobile, place submit button in center, not on the lhs*/
         @apply sm:justify-center;
         @apply mt-4;
-    }
-    .save-button {
-      @apply text-white;
-      @apply bg-orange-600;
-      @apply hover:bg-orange-800;
-      @apply font-opensansbold;
     }
     /*Styles specific to 'Reader' home pg*/
     .reader-home-articles-container {

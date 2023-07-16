@@ -841,6 +841,7 @@ p {
 /*Styles for the draft articles and published articles containers on the Author Home page*/
 
 .author-home-articles-container {
+  font-family: opensans, sans-serif;
   /*Apply responsive paddings/margins to draft/published article containers*/
   /* Small screen paddings */
   padding-left: 1rem;
@@ -1125,22 +1126,6 @@ p {
 
 .save-settings-container {
   margin-top: 1rem;
-}
-
-.save-button {
-  --tw-text-opacity: 1;
-  color: rgb(255 255 255 / var(--tw-text-opacity));
-  --tw-bg-opacity: 1;
-  background-color: rgb(234 88 12 / var(--tw-bg-opacity));
-}
-
-.save-button:hover {
-  --tw-bg-opacity: 1;
-  background-color: rgb(154 52 18 / var(--tw-bg-opacity));
-}
-
-.save-button {
-  font-family: opensansbold, sans-serif;
 }
 
 /*Styles specific to 'Reader' home pg*/
@@ -1435,6 +1420,10 @@ p {
   margin: 2rem;
 }
 
+.m-4 {
+  margin: 1rem;
+}
+
 .mx-10 {
   margin-left: 2.5rem;
   margin-right: 2.5rem;
@@ -1511,6 +1500,14 @@ p {
 
 .mt-6 {
   margin-top: 1.5rem;
+}
+
+.ml-6 {
+  margin-left: 1.5rem;
+}
+
+.ml-4 {
+  margin-left: 1rem;
 }
 
 .block {
@@ -1810,6 +1807,11 @@ p {
 .bg-white {
   --tw-bg-opacity: 1;
   background-color: rgb(255 255 255 / var(--tw-bg-opacity));
+}
+
+.bg-emerald-300 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(110 231 183 / var(--tw-bg-opacity));
 }
 
 .bg-gradient-to-br {

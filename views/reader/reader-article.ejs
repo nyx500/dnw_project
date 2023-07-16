@@ -9,11 +9,12 @@
 </head>
 <body class="bg-blue-100">
     <!--Navbar-->
-    <nav class="z-10">
+     <!--Navbar-->
+     <nav class="z-10">
         <div class="nav-container">
             <span>
                 <!--Display blog title in navbar-->
-                <div class="font-lobster justify-self-start title-container">
+                <div class="title-container">
                     <a class="hover:text-emerald-500" href="/reader/">
                         <%= blog.title %>
                     </a>
@@ -23,10 +24,10 @@
                 </div>
             </span>
             <div class="nav-link position-on-right">
-                <a href="/author" class="change-site-link text-amber-700 hover:text-emerald-500" >Home (Author)</a>
+                <a href="/author" class="change-site-link hover:text-emerald-500" >Home (Author)</a>
             </div>
             <div class="menu-button-container">
-                <button class="outline-none menu-button">
+                <button class="menu-button">
                     <!--Code for how to make an SVG menu button with three horizontal bars: -->
                      <!--Ref: https://www.devwares.com/blog/how-to-create-a-beautiful-responsive-navbar-using-tailwind-css/-->
                     <svg class="w-12 h-12" x-show="! showMenu" stroke-linecap="round"
@@ -36,7 +37,7 @@
                 </button>
             </div>
         </div>
-        <div class="hidden hidden-menu bg-emerald-200"> <!--Toggle'hidden' property with JS script when button is clicked-->
+        <div class="hidden hidden-menu bg-emerald-300"> <!--Toggle'hidden' property with JS script when button is clicked-->
             <ul>
                 <li>
                     <a href="/reader/">Home (Reader)</a>

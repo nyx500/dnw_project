@@ -11,10 +11,8 @@
 </head>
 
 <body>
-
     <!--Navbar for home and settings link: navbar styles defined in ./public/input.css custom classes-->
     <nav>
-
         <!--Navbar main container-->
         <div class="nav-container">
             <!--Span element containing the Blog Title, and links within the current website section (e.g. Author)-->
@@ -66,9 +64,7 @@
                 </li>
             </ul>
         </div>
-
     </nav>
-
     <!-- Most h-tag styles are in public/input.css as so frequently used, but change font to lobster 
         for h1 here-->
     <h1 class="font-lobster">Home: Author</h1>
@@ -87,7 +83,6 @@
         </h4>
     </div>
     <!-- End of blog titles/author container -->
-
     <!-- Container for the 'Create New Draft Article' form -->
     <div class="create-draft-container font-opensans flex justify-center m-8">
         <form method="GET" action="/author/create-new-draft-article">
@@ -98,11 +93,9 @@
         </form>
     </div>
     <!-- End of container for the 'Create New Draft Article' form -->
-
     <!-- Container storing two columns: one for drafts, one for published articles -->
     <!--Responsive layout: show 2 cols only on > 640px-width screens -->
     <div class="font-opensans grid sm:grid-cols-2 sm:grid-cols-2 justify-center m-6 px-4 px-2">
-
         <!--DRAFT ARTICLES SECTION-->
         <!-- Styles for this articles container are in public/input.css because they are used repeatedly -->
         <div class="author-home-articles-container" id="author-home-draft-articles-container">
@@ -112,60 +105,67 @@
             <a class="small-screens-navigation-helper-link" href="#author-home-published-articles-container">
                 Go to Published Articles
             </a>
-            <!--Only display articles with is_published property set to "False" (in 'articles' table) here-->
-            <% articles.forEach(function(article) { %>
-                <% if(!article.is_published){ %>
-                    <div class="author-home-article-card">
-                        <div class="article-title">
-                            <h6>Title: <%= article.title %>
-                            </h6>
-                        </div>
-                        <div class="date-heading">
-                            <em>Created:</em>
-                            <%= article.datetime_created %> (UTC)
-                        </div>
-                        <div class="date-heading">
-                            <em>Last modified:</em>
-                            <%= article.datetime_modified %> (UTC)
-                        </div>
-                        <div class="date-heading">
-                            <% if(!article.datetime_published){ %>
-                                <em>Published:</em> Never
-                                <% } else { %>
-                                    <em>Last published:</em>
-                                    <%= article.datetime_published %> (UTC)
-                                        <% } %>
-                        </div>
-                        <!-- Container with buttons: edit link, 'publish' and 'delete' -->
-                        <div class="author-home-article-forms-container">
-                            <!--Dynamically-generated Edit Article Link-->
-                            <a href="/author/edit-article?id=<%= article.id %>" class="order-1 form-button px-8 bg-blue-500 hover:bg-blue-700
-                                     hover:no-underline hover:text-white">
-                                Edit
-                            </a>
-                            <!-- Form to publish the article -->
-                            <form class="order-2" method="POST" action="/author/publish-article">
-                                <!--Sends Article ID in req.body from hidden input field-->
-                                <input type="hidden" id="article-<%= article.id %>" name="id"
-                                    value="<%= article.id %>" />
-                                <input class="form-button max-h-max bg-teal-400 hover:bg-teal-800" type="submit"
-                                    value="Publish" />
-                            </form>
-                            <!-- Form to delete the article -->
-                            <form class="order-3" method="POST" action="/author/delete-article">
-                                <!--Sends Article ID in req.body from hidden input field-->
-                                <input type="hidden" id="article-<%= article.id %>" name="id"
-                                    value="<%= article.id %>" />
-                                <input class="form-button px-6 bg-amber-700 hover:bg-amber-900" type="submit"
-                                    value="Delete" />
-                            </form>
-                        </div> <!--End of container with forms for user interaction with the article-->
-                    </div> <!--End of individual draft article section -->
-                    <% } %>
-                        <% }); %>
+            <% if (draft_count==0) { %>
+                <div>
+                    <p class="font-opensansitalic">
+                        There are no draft articles!
+                    </p>
+                </div>
+                <%} else { %>
+                    <!--Only display articles with is_published property set to "False" (in 'articles' table) here-->
+                    <% articles.forEach(function(article) { %>
+                        <% if(!article.is_published){ %>
+                            <div class="author-home-article-card">
+                                <div class="article-title">
+                                    <h6>Title: <%= article.title %>
+                                    </h6>
+                                </div>
+                                <div class="date-heading">
+                                    <em>Created:</em>
+                                    <%= article.datetime_created %> (UTC)
+                                </div>
+                                <div class="date-heading">
+                                    <em>Last modified:</em>
+                                    <%= article.datetime_modified %> (UTC)
+                                </div>
+                                <div class="date-heading">
+                                    <% if(!article.datetime_published){ %>
+                                        <em>Published:</em> Never
+                                        <% } else { %>
+                                            <em>Last published:</em>
+                                            <%= article.datetime_published %> (UTC)
+                                                <% } %>
+                                </div>
+                                <!-- Container with buttons: edit link, 'publish' and 'delete' -->
+                                <div class="author-home-article-forms-container">
+                                    <!--Dynamically-generated Edit Article Link-->
+                                    <a href="/author/edit-article?id=<%= article.id %>" class="order-1 form-button px-8 bg-blue-500 hover:bg-blue-700
+                                            hover:no-underline hover:text-white">
+                                        Edit
+                                    </a>
+                                    <!-- Form to publish the article -->
+                                    <form class="order-2" method="POST" action="/author/publish-article">
+                                        <!--Sends Article ID in req.body from hidden input field-->
+                                        <input type="hidden" id="article-<%= article.id %>" name="id"
+                                            value="<%= article.id %>" />
+                                        <input class="form-button max-h-max bg-teal-400 hover:bg-teal-800" type="submit"
+                                            value="Publish" />
+                                    </form>
+                                    <!-- Form to delete the article -->
+                                    <form class="order-3" method="POST" action="/author/delete-article">
+                                        <!--Sends Article ID in req.body from hidden input field-->
+                                        <input type="hidden" id="article-<%= article.id %>" name="id"
+                                            value="<%= article.id %>" />
+                                        <input class="form-button px-6 bg-amber-700 hover:bg-amber-900" type="submit"
+                                            value="Delete" />
+                                    </form>
+                                </div> <!--End of container with forms for user interaction with the article-->
+                            </div>
+                            <%} %> <!--End of individual draft article section -->
+                                <%}) %>
+                                    <%} %>
         </div>
         <!--END OF DRAFT ARTICLES SECTION-->
-
         <!--PUBLISHED ARTICLES SECTION-->
         <div class="author-home-articles-container" id="author-home-published-articles-container">
             <h5>Published Articles</h5>
@@ -173,57 +173,64 @@
             <a class="small-screens-navigation-helper-link" href="#author-home-draft-articles-container">
                 Go to Draft Articles
             </a>
-            <!--Only display articles with is_published property set to 'True' in here-->
-            <% articles.forEach(function(article) { %>
-                <% if(article.is_published){ %>
-                    <div class="author-home-article-card">
-                        <div>
-                            <h6>Title: <%= article.title %>
-                            </h6>
-                        </div>
-                        <div>
-                            <em>Created:</em>
-                            <%= article.datetime_created %>,
-                        </div>
-                        <div>
-                            <em>Last modified:</em>
-                            <%= article.datetime_created %> (UTC)
-                        </div>
-                        <div>
-                            <em>Published:</em>
-                            <%= article.datetime_published %> (UTC)
-                        </div>
-                        <div>
-                            <b>Likes:</b>
-                            <%= article.likes %>
-                        </div>
-                        <!-- Container with buttons: edit link, 'share' and 'delete' -->
-                        <div class="author-home-article-forms-container">
-                            <!--Dynamically-generated Edit Article Link-->
-                            <a href="/author/edit-article?id=<%= article.id %>" class="order-1 form-button px-8 bg-blue-500 hover:bg-blue-700
-                                     hover:no-underline hover:text-white">
-                                Edit
-                            </a>
-                            <!-- Share button-->
-                            <button class="form-button order-2 share-button px-6
-                                 bg-emerald-600 hover:bg-emerald-950" id="share-button-<%= article.id %>">
-                                Share
-                            </button>
-                            <!-- Form to delete the article -->
-                            <form class="order-3" method="POST" action="/author/delete-article">
-                                <!--Sends Article ID in req.body from hidden input field-->
-                                <input type="hidden" id="article-<%= article.id %>" name="id"
-                                    value="<%= article.id %>" />
-                                <input class="form-button px-6 bg-amber-700 hover:bg-amber-900" type="submit"
-                                    value="Delete" />
-                            </form>
-                        </div>
-                    </div> <!--End of individual article card-->
-                    <% } %>
-                        <% }); %>
+            <% if (published_count==0) { %>
+                <div>
+                    <p class="font-opensansitalic">
+                        There are no published articles!
+                    </p>
+                </div>
+                <%} else { %>
+                    <!--Only display articles with is_published property set to 'True' in here-->
+                    <% articles.forEach(function(article) { %>
+                        <% if(article.is_published){ %>
+                            <div class="author-home-article-card">
+                                <div>
+                                    <h6>Title: <%= article.title %>
+                                    </h6>
+                                </div>
+                                <div>
+                                    <em>Created:</em>
+                                    <%= article.datetime_created %>,
+                                </div>
+                                <div>
+                                    <em>Last modified:</em>
+                                    <%= article.datetime_created %> (UTC)
+                                </div>
+                                <div>
+                                    <em>Published:</em>
+                                    <%= article.datetime_published %> (UTC)
+                                </div>
+                                <div>
+                                    <b>Likes:</b>
+                                    <%= article.likes %>
+                                </div>
+                                <!-- Container with buttons: edit link, 'share' and 'delete' -->
+                                <div class="author-home-article-forms-container">
+                                    <!--Dynamically-generated Edit Article Link-->
+                                    <a href="/author/edit-article?id=<%= article.id %>" class="order-1 form-button px-8 bg-blue-500 hover:bg-blue-700
+                                            hover:no-underline hover:text-white">
+                                        Edit
+                                    </a>
+                                    <!-- Share button-->
+                                    <button class="form-button order-2 share-button px-6
+                                        bg-emerald-600 hover:bg-emerald-950" id="share-button-<%= article.id %>">
+                                        Share
+                                    </button>
+                                    <!-- Form to delete the article -->
+                                    <form class="order-3" method="POST" action="/author/delete-article">
+                                        <!--Sends Article ID in req.body from hidden input field-->
+                                        <input type="hidden" id="article-<%= article.id %>" name="id"
+                                            value="<%= article.id %>" />
+                                        <input class="form-button px-6 bg-amber-700 hover:bg-amber-900" type="submit"
+                                            value="Delete" />
+                                    </form>
+                                </div>
+                            </div> <!--End of individual article card-->
+                            <%} %>
+                                <%}) %>
+                                    <%} %>
         </div>
         <!--PUBLISHED ARTICLES SECTION-->
-
     </div> <!--End of articles container-->
     <!--JS Script for things like menu button functionality on small screens-->
     <script type="application/javascript" src="../../public/script.js"></script>
