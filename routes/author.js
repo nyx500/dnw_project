@@ -55,9 +55,14 @@ router.get("/", (req, res, next) => {
 });
 
 
-// Author Settings Route: the author can change the blog title/subtitle/author name here
+/**
+ * Author Settings Page GET Route
+ * Purpose: the author can change the blog title, subtitle and author name here
+ * Inputs: none
+ * Outputs: renders Author settings page if there are no db errors, otherwise returns a custom error page
+*/
 router.get("/settings", (req, res) => {
-    // Retrieves the blog title/subtitle/author from the 'blog' table (only has one row) in the dtabase
+    /* Query which retrieves the first row of the blog table, which stores the blog title/subtitle/author (table should only have one row) */
     db.get("SELECT title, subtitle, author FROM blog;",
         function (err, blog_data) { // Callback has 2 args: error and data
             if (err) {
@@ -65,79 +70,92 @@ router.get("/settings", (req, res) => {
             } else {
                 // Pass in the blog_data as a variable called 'blog' into the ejs template
                 res.render("author/author-settings", {
-                    errors: [],
+                    errors: [], // No errors for GET route (no form posted yet!)
                     blog: blog_data
                 });
             }
         });
 });
 
-// Set of Rules using express-validator package to validate form data for updating the blog settings
+// Express-Validator Array: stores the set of rules that the req.body data (to update blog details) has to meet for new settings to be valid
 var blogValidate = [
-    // Check title
-    check('title').isLength({  max: 500 }).withMessage(`Blog title must be less than 500 words`)
-    .not().isEmpty().withMessage(`Blog title field cannot be empty!`)
-    .trim(),
-    // Check subtitle
+    // Check title input is not more than 500 chars and that it is not empty. 'trim()' trims trailing whitespace
+    check('title').isLength({ max: 500 }).withMessage(`Blog title must be less than 500 words`)
+        .not().isEmpty().withMessage(`Blog title field cannot be empty!`)
+        .trim(),
+    // Check subtitle input is not more than 500 chars and that it is not empty
     check('subtitle').isLength({ max: 500 }).withMessage(`Blog subtitle must be less than 500 chars!`)
-    .not().isEmpty().withMessage(`Blog subtitle field cannot be empty!`)
-    .trim(),
-    // Check author
+        .not().isEmpty().withMessage(`Blog subtitle field cannot be empty!`)
+        .trim(),
+    // Check author input is not more than 255 chars and that it is not empty
     check('author').isLength({ max: 255 }).withMessage(`Author name must be less than 255 chars!`)
-    .not().isEmpty().withMessage(`Author field cannot be empty!`)
-    .trim()
+        .not().isEmpty().withMessage(`Author field cannot be empty!`)
+        .trim()
 ];
 
-// Settings POST Route: validates input data to change blog title/subtitle/author and updates blog table in DB
-router.post("/settings", blogValidate, (req, res) => {
-
+/**
+ * Author Settings Page POST Route
+ * Purpose: validates author's form data to change blog title/subtitle/author and if valid, updates the blog details in the blog table
+ * Inputs: req.body from the form on the Author Settings page, containing title, subtitle and author fields,
+ * and the express-validator blogValidate ruleset for the incoming form data.
+ * Outputs: if form data is invalid, re-renders the Settings page with the error messages passed as variables.
+ * Else, if form data is valid, then redirects to Author Home page if settings are saved successfully,
+ * otherwise returns a custom error page saying that could not save new settings to database.
+*/
+router.post("/settings", blogValidate, (req, res) => { // Remember to pass the express-validator rule set as second input arg
+    // Stores outcome of express-validator validation
     const errors = validationResult(req);
-
-    // If data is invalid, send error msg to browser
+    // If there are some errors, send back the same Settings page but with errors passed as a variable
     if (!errors.isEmpty()) {
-        console.log(errors.array());
-        // Pass the error message into the settings form .ejs file
+        // If errors, re-render the Settings form again
         res.render("author/author-settings", {
-            errors: errors.array(),
+            errors: errors.array(), // Pass errors onto Settings page and display them
             blog: req.body
         });
     }
-    // Data is valid --> update the DB to store new blog settings
+    // IF data is valid (the errors outcome is empty), then update the DB to store new blog settings
     else {
-        // Update blog settings in blog table in db
-        var update_query = `UPDATE blog SET title = (?),`
-            + `subtitle = (?), author = (?) WHERE id = 1`;
-        // Update (single) blog row in 'blog' table with values from the **validated** req.body
+        // Updates the new blog settings sent in req.body to the single row in the blog table
+        var update_query = `UPDATE blog SET title = (?), subtitle = (?), author = (?) WHERE id = 1`;
+        // Sanitize POST data to prevent HTML injection/XSS attacks
         var clean_title = sanitizeHtml(req.body.title);
         var clean_subtitle = sanitizeHtml(req.body.subtitle);
         var clean_author = sanitizeHtml(req.body.author);
+        // Saves the sanitized new blog settings in the first/only row of the blog table
         db.run(update_query, [clean_title, clean_subtitle, clean_author],
             function (err) {
                 if (err) {
                     returnErrorPage(res, new Error500(), "Failed to save new settings.");
                 } else {
-                    // If successfully updated blog table, reload author's home page
+                    // If the blog settings are saved successfuly, reload the Author Home page
                     res.redirect("/author/");
                 }
             });
-        }
+    }
 });
 
-// Creates a new article and stores it in the database after Author clicks "Create New Draft" in Home Page
+
+/**
+ * Create New Article GET Route
+ * Purpose: create a new entry/article in the 'articles' table in the database
+ * Inputs: none
+ * Outcome: creates a new article entry in 'articles' table, then redirects to the edit page for the new article
+*/
 router.get("/create-new-draft-article", (req, res) => {
-    // Creates a new article (will be a draft as default of is_published field is 0) in the 'articles' table
+    // Inserts a new article into the 'articles' table using the default values for an article defined in schema
     var insert_query = `INSERT INTO articles DEFAULT VALUES;`;
     db.run(insert_query,
         function (err) {
             if (err) {
                 returnErrorPage(res, new Error500(), "Failed to create a new draft article in the database.");
             } else {
-                // If draft article is successfully added to 'articles' table, redirect to edit-article page...
+                // If the draft article is successfully added to 'articles' table, then go to the edit page to begin editing that article
                 res.redirect(
                     url.format({
                         pathname: "/author/edit-article",
+                        // To go to the right edit-article page, pass in the ID of the article just-added to the db in the req.query parameter
                         query: {
-                            "id": this.lastID // Pass the ID of the last-created draft into req.query
+                            "id": this.lastID
                         }
                     })
                 );
@@ -145,45 +163,44 @@ router.get("/create-new-draft-article", (req, res) => {
         });
 });
 
-// This is where the author writes, amends, and publishes individual articles
+/**
+ * Edit Article GET Route
+ * Purpose: allows the author to edit and update the title, subtitle, content of an article with a specific ID
+ * Inputs: req.query.id provides the ID in the database of the article to retrieve and edit
+ * Outcome: renders the edit-article page for a specific article defined by ID
+*/
 router.get("/edit-article", (req, res) => {
-    // First get errors from query string if there are any (for when POST form does not work)
-    var errors = [];
-    // If errors have been passed in as query in URL via the edit-article POST method, then extract the errors
-    // from the query string and store them in the array
-    if (req.query.errors)
-    {   
+    // Stores the errors from query string if there are any (will be sent in here if POST did not work when user tries to update article)
+    var errors = []; // If no errors, this will stay empty
+    // If some errors have been passed in as query in URL in the edit-article POST method when redirected here, then extract the errors
+    if (req.query.errors) {
+        // Converts query string storing errors into an array
         errors = (JSON.parse(req.query.errors).errors);
     }
-
-    // Retrieves the individual article with the correct req.query.id from the database
-    var query = `SELECT * FROM articles WHERE id = ?`; // Input: article's id from the inputted GET query string
-    db.get(query, [req.query.id], function (err, article_data) {
+    // Query retrieves the individual article with the correct req.query.id from the database
+    var query = `SELECT * FROM articles WHERE id = ?`;
+    // Query input: article's id from the inputted GET query string
+    db.get(query, [req.query.id], function (err, article_data) { // Use db.get --> single article entry
         if (err) {
             returnErrorPage(res, new Error500());
         } else {
-            // Only render the article page if article was returned from SQL query!
             if (article_data) {
-                // Need to get Blog title for the navbar logo...
+                // If article data is successfully retrieved from the 'articles' table, then also retrieve the blog data from the 'blog' table
                 var get_blog_title_query = `SELECT * FROM blog;`;
-                db.get(get_blog_title_query, function(err, blog_data)
-                {
-                    if (err)
-                    {
+                db.get(get_blog_title_query, function (err, blog_data) {
+                    if (err) {
                         returnErrorPage(res, new Error500());
                     } else {
-                        // Pass data about this individual draft article from DB to the edit-article view
+                        // Pass  the data about this individual draft article from the database to the edit-article view
                         res.render("author/author-edit-article", {
-                            /** Pass 'errors' as null, as some ejs in the template only executes when 'errors' NOT null
-                             * but then nothing in ejs works if no 'errors' variable is passed at all
-                            **/
                             blog: blog_data,
                             article: article_data,
+                            // Array storing errors if user tried to update article with POST method but inputted data was invalid
                             errors: errors
                         });
                     }
                 });
-                // No article data returned --> no such article with that ID in the database, so log the error
+                // No article data returned --> no such article with that ID in the database, so return 404 custom error page
             } else {
                 returnErrorPage(res, new Error404(), "This article does not exist.");
             }
@@ -191,9 +208,7 @@ router.get("/edit-article", (req, res) => {
     });
 });
 
-
-
-// Set of rules using the express-validator package to validate POST form data for updating the blog settings
+// Express-Validator Array: stores a set of rules that the req.body data (to edit article) has to meet to be validated
 var articleValidate = [
     // Check article title is not empty and less than 500 chars
     check('title').not().isEmpty().withMessage(`Article title must not be empty!`)
@@ -201,43 +216,54 @@ var articleValidate = [
     // Check article subtitle is not empty and less than 500 chars
     check('subtitle').not().isEmpty().withMessage(`Article subtitle must not be empty!`)
         .isLength({ max: 500 }).withMessage(`Article subtitle must be less than 500 chars!`).trim(),
-    // Check article content is not empty and that does not exceed 40K chars (prevent buffer overflow) 
+    // Check article content is not empty and that does not exceed 40K chars (to prevent buffer overflow) 
     check('content').not().isEmpty().withMessage(`Article content cannot be empty!`)
         .isLength({ max: 40000 }).withMessage(`Article content cannot be empty!`).trim()
 ];
 
-// This is the POST route by which the author can update each individual article
+/**
+ * Author Settings Page POST Route
+ * Purpose: allows user to update and save changes to an individual article, e.g. title, subtitle, content
+ * Inputs: req.body from the posted form --> article ID, title, subtitle, content
+ * Outputs: if form data is invalid, re-renders the same Edit Article page with the error messages passed as variables.
+ * Else, if form data is valid, then redirects to Author Home page if article saved successfully,
+ * otherwise returns a custom error page saying that could not update and save the article to database.
+*/
 router.post("/edit-article", articleValidate, (req, res) => {
-    // Validates and sanitizes the req.body user input using the above articleValidate array with express-validat
+    // Validates  the req.body user input using the above articleValidate array with express-validator
     const errors = validationResult(req);
-    // If data is invalid, then reload the edit-article page for the same article with error messages
+    // If the posted data is invalid, then reload the edit-article page for the same article with error messages
     if (!errors.isEmpty()) {
         res.redirect(
             url.format({
                 pathname: "/author/edit-article",
                 query: {
                     "id": req.body.id, // Pass the ID of the article into the req.query object
-                    "errors": JSON.stringify(errors)
+                    "errors": JSON.stringify(errors) 
                 }
             })
         );
     }
-    // Data is valid --> update the DB to store new article data
+    // If data is valid --> update the DB to save the new article data
     else {
-            // // Update the article and last-modified date in the DB
-            let update_query = `UPDATE articles SET datetime_modified = CURRENT_TIMESTAMP,`
-            +` title = (?), subtitle=(?), content=(?) WHERE id = (?)`;
-            let clean_title = sanitizeHtml(req.body.title);
-            let clean_subtitle = sanitizeHtml(req.body.subtitle);
-            let clean_content = sanitizeHtml(req.body.content);
-            // Article ID sent with the form in POST request using the value in the hidden input HTML element
-            db.run(update_query, [clean_title, clean_subtitle, clean_content, req.body.id], function (err) {
-                if (err) {
-                    returnErrorPage(res, new Error500(), "Failed to save changes to the article.");
-                } else {
-                    res.redirect("/author/");
-                }
-            });
+        /**
+         * Query updates the title, subtitle and author fields for this specific article in the 'articles' table 
+         * and changes the datetime_modified timestamp to now
+        */
+        let update_query = `UPDATE articles SET datetime_modified = CURRENT_TIMESTAMP,`
+            + ` title = (?), subtitle=(?), content=(?) WHERE id = (?)`;
+        // Sanitize POST data to prevent HTML injection/XSS attacks
+        let clean_title = sanitizeHtml(req.body.title);
+        let clean_subtitle = sanitizeHtml(req.body.subtitle);
+        let clean_content = sanitizeHtml(req.body.content);
+        // Run the update query using the article id sent from the hidden input in the edit-article form
+        db.run(update_query, [clean_title, clean_subtitle, clean_content, req.body.id], function (err) {
+            if (err) {
+                returnErrorPage(res, new Error500(), "Failed to save changes to the article.");
+            } else {
+                res.redirect("/author/");
+            }
+        });
     }
 });
 
@@ -278,13 +304,13 @@ router.post("/publish-article", (req, res) => {
  * This function is called when the Sqlite query returns 'err' and cannot process request
  * Input args: 'res' object to render the error page, error object, message to display on ejs page (default is null)
  * Outcome: sends back custom error page with the error and message variables
-*/ 
-function returnErrorPage(res, error, optional_message=null) {
+*/
+function returnErrorPage(res, error, optional_message = null) {
     // Renders the 'error' template/ejs file and passes in the error and message variables
     res.status(error.statusCode).render("error", {
         error: error,
         message: optional_message
-    }); 
+    });
 }
 
 /**
