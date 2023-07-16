@@ -1,3 +1,4 @@
+<!--This is a general Welcome page on / route before user selects Author or Reader section-->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,20 +8,26 @@
     <link rel="stylesheet" href="../public/output.css" />
     <title>Welcome Page</title>
 </head>
+<!-- Amber/green/blue pale gradient background -->
 <body class="bg-gradient-to-br from-amber-300 via-emerald-200 to-blue-300">
+    <!--Place the welcome greeting in the center of the page-->
     <div class="flex h-screen justify-center items-center">
+        <!--Place the welcome headings in a column-->
         <div class="grid justify-center text-center gap-12">
             <div>
                 <h1 class="font-lobster text-6xl">Welcome</h1>
                 <h2 class="font-opensans text-3xl">BlogDragon: Microblogging Tool</h2>
             </div>
+            <!-- Row of buttons allowing the user to select between the Author and the Reader page -->
             <div class="grid gap-4 sm:flex justify-center sm:space-x-12 md:space-x-24">
+                <!--Author Button-->
                 <button class="p-2.5 rounded-lg bg-blue-800 text-white font-opensansbold shadow-md shadow-zinc-800
                     hover:bg-blue-950">
                     <a class="hover:text-blue-100 hover:no-underline" href="author/">
                         Author Section
                     </a>
                 </button>
+                <!--Reader Button-->
                 <button class="p-2.5 rounded-lg bg-emerald-800 text-white font-opensansbold shadow-md shadow-zinc-800
                     hover:bg-emerald-950">
                     <a class="hover:text-emerald-100 hover:no-underline" href="reader/">
