@@ -261,22 +261,28 @@ router.post("/edit-article", articleValidate, (req, res) => {
             if (err) {
                 returnErrorPage(res, new Error500(), "Failed to save changes to the article.");
             } else {
-                res.redirect("/author/");
+                res.redirect("/author/"); // Go back to Author Home page if successfully edited the article
             }
         });
     }
 });
 
 
-// Deletes an article from the 'articles' table in the database
+/**
+ * Author Delete Article POST Route
+ * Purpose: allows user to delete a specific article from the 'articles' table in the database
+ * Inputs: req.body.id storing article's id
+ * Outputs: redirects to Author Home page if article deleted successfully,
+ * otherwise returns a customs error page saying that could not delete the article from the database.
+*/
 router.post("/delete-article", (req, res) => {
-    // Deletes article with corresponding ID from the 'articles' table
+    // Deletes article with corresponding ID (sent from the hidden form input) from the 'articles' table
     var delete_query = `DELETE FROM articles WHERE id = ?`;
-    // Article ID sent with the form in POST request using the value in the hidden input HTML element
     db.run(delete_query, [req.body.id], function (err) {
         if (err) {
             returnErrorPage(res, new Error500(), "Failed to delete article from database.");
         } else {
+            // Redirect to author home page
             res.redirect("/author/");
         }
     });
@@ -296,6 +302,8 @@ router.post("/publish-article", (req, res) => {
         }
     });
 });
+
+
 
 
 //////////////////////////////////////////////////HELPER FUNCTIONS/////////////////////////////////////////////////////////////////////////
