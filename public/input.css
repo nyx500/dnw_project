@@ -321,7 +321,9 @@
     .settings-form-label-input-pair label {
       @apply font-opensansbold;
       @apply sm:mr-2;
+      /*Make the label span the whole column for screens larger than 640px width*/
       @apply sm:col-span-1;
+      /* Margin and padding for form input labels */
       @apply mt-2.5;
       @apply p-2.5;
     }
@@ -343,23 +345,30 @@
 
     /*******************************Repeated Styles specific to 'Reader' home page*********************************/
     .reader-home-articles-container {
+      /*Show 1 col of articles on mobile screens*/
       @apply grid;
       @apply gap-4;
+      /* Show 2 cols of articles only on small screens > 640px width*/
       @apply sm:grid-cols-2;
+      /* Show 4 cols of articles only on large screens > 1024px width*/
       @apply lg:grid-cols-4;
       @apply place-items-center;
       @apply auto-rows-auto;
     }
     .article-card-reader-home {
+      /* Make all article sections the same size*/
       @apply h-full;
       @apply col-span-1;
-      @apply flex;
+      /*Show article information in a column*/
       @apply flex-col;
+      @apply space-y-4;
       @apply justify-evenly;
       @apply rounded-lg;
-      @apply bg-white;
+      /*Padding for article cards*/
       @apply p-6;
       @apply px-10;
+      /*Color for article cards*/
+      @apply bg-white;
       @apply shadow-md;
       @apply shadow-zinc-400;
       @apply hover:shadow-xl;

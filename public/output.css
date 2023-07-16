@@ -1028,11 +1028,21 @@ p {
 @media (min-width: 640px) {
   .settings-form-label-input-pair label {
     margin-right: 0.5rem;
+  }
+}
+
+.settings-form-label-input-pair label {
+  /*Make the label span the whole column for screens larger than 640px width*/
+}
+
+@media (min-width: 640px) {
+  .settings-form-label-input-pair label {
     grid-column: span 1 / span 1;
   }
 }
 
 .settings-form-label-input-pair label {
+  /* Margin and padding for form input labels */
   margin-top: 0.625rem;
   padding: 0.625rem;
 }
@@ -1073,14 +1083,20 @@ p {
 /*******************************Repeated Styles specific to 'Reader' home page*********************************/
 
 .reader-home-articles-container {
+  /*Show 1 col of articles on mobile screens*/
   display: grid;
   gap: 1rem;
+  /* Show 2 cols of articles only on small screens > 640px width*/
 }
 
 @media (min-width: 640px) {
   .reader-home-articles-container {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
+}
+
+.reader-home-articles-container {
+  /* Show 4 cols of articles only on large screens > 1024px width*/
 }
 
 @media (min-width: 1024px) {
@@ -1095,17 +1111,29 @@ p {
 }
 
 .article-card-reader-home {
+  /* Make all article sections the same size*/
   height: 100%;
   grid-column: span 1 / span 1;
-  display: flex;
+  /*Show article information in a column*/
   flex-direction: column;
+}
+
+.article-card-reader-home > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(1rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(1rem * var(--tw-space-y-reverse));
+}
+
+.article-card-reader-home {
   justify-content: space-evenly;
   border-radius: 0.5rem;
-  --tw-bg-opacity: 1;
-  background-color: rgb(255 255 255 / var(--tw-bg-opacity));
+  /*Padding for article cards*/
   padding: 1.5rem;
   padding-left: 2.5rem;
   padding-right: 2.5rem;
+  /*Color for article cards*/
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 255 255 / var(--tw-bg-opacity));
   --tw-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
   --tw-shadow-colored: 0 4px 6px -1px var(--tw-shadow-color), 0 2px 4px -2px var(--tw-shadow-color);
   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
