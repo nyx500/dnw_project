@@ -17,6 +17,8 @@ app.disable('x-powered-by');
 // Ref: https://sematext.com/blog/node-js-error-handling/#types-of-errors-operational-vs-programmer-errors
 const httpStatusCodes = require('./errors/httpStatusCodes');
 const Error404 = require("./errors/Error404");
+// A helper function which renders the error page if data cannot be retrieved/updated OR 404 error occurs
+const returnErrorPage = require("./errors/errorFunction");
 
 // Add a rate limiter here to protect from brute-force attacks
 const rateLimit = require('express-rate-limit');
@@ -66,10 +68,7 @@ app.get('/', (req, res) => {
 // 404 - No Resource/URL Found Handler --> calls this route if all the other routes have failed!
 app.get('*', function(req, res){
   var error = new Error404();
-  res.status(404).render("error", {
-    error: error,
-    message: null
-  });
+  returnErrorPage(res, error);
 });
 
 app.listen(port, () => {

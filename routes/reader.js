@@ -1,12 +1,8 @@
 
-/**
- * These are example routes for user management
- * This shows how to correctly structure your routes for the project
- */
+//These are the routes for the reader section of the blog
 
 const express = require("express");
 const router = express.Router();
-const assert = require('assert');
 // Enables constructing path for article redirects with query string
 const url = require('url');
 // Import modules from express-validation for form data validation and sanitization
@@ -14,30 +10,30 @@ const { check, validationResult } = require('express-validator');
 // Sanitization library to get rid of dangerous HTML code injection
 const sanitizeHtml = require('sanitize-html');
 
-// Error handling modules:
+// Import error handling modules:
 const httpStatusCodes = require('../errors/httpStatusCodes');
 const Error500 = require("../errors/Error500");
 const Error404 = require("../errors/Error404");
-// Function which is called when Sqlite query returns 'err' and cannot process the DB request:
-function returnErrorPage(res, error, optional_message=null) {
-  res.status(error.statusCode).render("error", {
-      error: error,
-      message: optional_message
-  }); // Renders the 'error' template/ejs file in the 'view' folder, passes in the Error object as variable
-}
+// A helper function which renders the error page if data cannot be retrieved/updated OR 404 error occurs
+const returnErrorPage = require("../errors/errorFunction");
 
 
-// Reader Home Page: displays blog title/subtitle/author and a list of links to published articles
+/**
+ * Author Home Page GET Route
+ * Purpose: the reader can view the blog title/subtitle/author and a list of information about published articles
+ * Inputs: none
+ * Outputs: renders Reader home page if there are no db errors, otherwise returns a custom error page with error 500 code
+*/
 router.get("/", (req, res) => {
-  // Retrieve blog data from blog table (title, author etc.)
+  // Retrieves the blog data (title,subtitle,author) from blog table
   var blog_query = `SELECT * FROM blog`;
   db.get(blog_query, function (err, blog_data) {
     if (err) {
       returnErrorPage(res, new Error500());
     } else {
-      // Retrieve the articles with 'is_published set to True' & order by datetime published, most recent is first
+      // Retrieves the articles with the 'is_published; field set to True and orders them by datetime published from newest to oldest
       var articles_query = `SELECT * FROM articles WHERE is_published = 1 ORDER BY datetime_published DESC;`;
-      db.all(articles_query, function (err, articles_data){
+      db.all(articles_query, function (err, articles_data) {
         if (err) {
           returnErrorPage(res, new Error500());
         } else {
@@ -51,24 +47,35 @@ router.get("/", (req, res) => {
   });
 });
 
+/**
+ * Author View Selected Article by ID GET Route
+ * Purpose: the reader is taken to the page displaying a specific article by clicking on it on the Reader Home page
+ * Inputs: the article ID (from req.query.id) to select the correct article from database
+ * Outputs: renders Reader home page if there are no db errors, otherwise returns a custom error page with error 500 code
+*/
 router.get("/article", (req, res)=> {
+  // Create empty 'errors' array
   var errors = [];
+  // Fill up the errors array if there were error args passed in the query string (if a comment/like POST request was invalid)
   if (req.query.errors)
-  {
+  { 
+    // Turn the query string storing errors into an array storing errors that can be displayed in the ejs foe
     errors = JSON.parse(req.query.errors);
-    console.log(typeof(errors));
   }
+  // Retrieves a single article  from the articles table according to id by using req.query.id
   var specific_article_query = `SELECT * FROM articles WHERE id = (?);`;
   db.get(specific_article_query,[req.query.id], function (err, article){
+    // Invalid ID: display error page with 404 status code
     if (err) {
       returnErrorPage(res, new Error404(), "This article does not exist.");
     } else {
+      // If article exists, search article id foreign key in the 'comments' table to retrieve all comments for that article (newest first)
       var retrieve_comments_query = `SELECT * FROM comments WHERE article_id = (?) ORDER BY datetime_published DESC;`;
-      db.all(retrieve_comments_query, [req.query.id], function (err, comments){
+      db.all(retrieve_comments_query, [req.query.id], function (err, comments){ // Retrieves all comments for that article
         if (err) {
           returnErrorPage(res, new Error500());
         } else {
-          // Need to get Blog title for the navbar logo...
+          // Also retrieve the Blog title from the 'blog' table to display it on the left of the navbar
           var get_blog_title_query = `SELECT * FROM blog;`;
           db.get(get_blog_title_query, function(err, blog_data)
           {
@@ -80,7 +87,7 @@ router.get("/article", (req, res)=> {
                   article: article,
                   blog: blog_data,
                   comments: comments,
-                  errors: errors
+                  errors: errors // Validation errors when user tries to post a comment go here
                 });
               }
           });

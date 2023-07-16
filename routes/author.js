@@ -1,6 +1,5 @@
-/**
- * These are the routes for the author section of the blog
- */
+//These are the routes for the author section of the blog
+
 const express = require("express");
 const router = express.Router();
 // Enables constructing path for article redirects with query string
@@ -15,6 +14,8 @@ const sanitizeHtml = require('sanitize-html');
 const httpStatusCodes = require('../errors/httpStatusCodes');
 const Error500 = require("../errors/Error500");
 const Error404 = require("../errors/Error404");
+// A helper function which renders the error page if data cannot be retrieved/updated OR 404 error occurs
+const returnErrorPage = require("../errors/errorFunction");
 const { contentSecurityPolicy } = require("helmet");
 
 
@@ -22,7 +23,7 @@ const { contentSecurityPolicy } = require("helmet");
  * Author Home Page GET Route
  * Purpose: the author can create, review, and edit articles here
  * Inputs: none
- * Outputs: renders Author home page if there are no db errors, otherwise returns a custom error page
+ * Outputs: renders Author home page if there are no db errors, otherwise returns a custom error page with error 500 code
 */
 router.get("/", (req, res, next) => {
     /** Retrieves the (title,subtitle,author) values from the single-row blog table in the sqlite db */
@@ -305,21 +306,7 @@ router.post("/publish-article", (req, res) => {
 
 
 
-
 //////////////////////////////////////////////////HELPER FUNCTIONS/////////////////////////////////////////////////////////////////////////
-
-/**
- * This function is called when the Sqlite query returns 'err' and cannot process request
- * Input args: 'res' object to render the error page, error object, message to display on ejs page (default is null)
- * Outcome: sends back custom error page with the error and message variables
-*/
-function returnErrorPage(res, error, optional_message = null) {
-    // Renders the 'error' template/ejs file and passes in the error and message variables
-    res.status(error.statusCode).render("error", {
-        error: error,
-        message: optional_message
-    });
-}
 
 /**
  * Counts the number of articles which are drafts from the result of select all articles query from the db  
