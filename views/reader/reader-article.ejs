@@ -7,10 +7,9 @@
         <link href="../../public/output.css" rel="stylesheet" type="text/css" />
         <title>View Article</title>
     </head>
-    <body class="bg-blue-100">
+    <body class="bg-blue-100 m-0">
         <!--Navbar-->
-        <!--Navbar-->
-        <nav class="z-10">
+        <nav class="z-10 mx-auto w-full">
             <div class="nav-container">
                 <span>
                     <!--Display blog title in navbar-->
@@ -49,10 +48,10 @@
                 </ul>
             </div>
         </nav>
-        <!--Main container (column/grid)-->
-        <div class="grid gap-8 items-stretch mx-4 my-12 py-8">
+         <!--Main container (column/grid)-->
+        <div class="grid gap-8 items-center mx-6 my-10 py-8">
             <!--Article container-->
-            <div class="article-section">
+            <div class="grid gap-12">
                 <!--Display article details in this container (column/grid)-->
                 <div class="flex-col content-center text-center">
                     <!-- Make it clear that this is the **Author** not the **User** Home page-->
@@ -63,19 +62,19 @@
                         <%= article.subtitle %>
                     </h2>
                     <h3 class="text-lg"><em>Published: <%= article.datetime_published %> </em>(UTC)</h3>
-                </div>
-                <!--Link container enabling easy access to comments section in center of article container-->
-                <div class="mx-6 mt-12 text-center">
+                </div>  
+                    <!--Link container enabling easy access to comments section in center of article container-->
+                    <div class="mx-12 text-center">
                     <a class="underline font-opensansbold m-6 text-blue-700 hover:text-blue-900
                         visited:text-amber-700" href="#comments-container">
                         Navigate to the Comments section
                     </a>
                 </div>
                 <!-- Container for actual article content in white-->
-                <div class="w-full font-opensans flex m-2 py-2 justify-center text-left" id="article-content">
-                    <div class="w-full mx-6 p-6 border border-gray-300 bg-white">
+                <div class="font-opensans justify-start p-0 m-0" id="article-content">
+                    <div class="border grid justify-start mx-12 border-gray-400 bg-white text-left rounded p-0 m-0">
                         <!--Important: without white-space set to "pre-wrap", the author's line breaks will not be displayed!-->
-                        <p class="w-full" style="white-space: pre-wrap;">
+                        <p class="w-full px-4 justify-start whitespace-pre-wrap">
                             <%= article.content %>
                         </p>
                     </div>
@@ -108,8 +107,7 @@
                 </div> <!-- End of container for the likes information and form -->
             </div> <!--End of article container-->
             <!--Post comment form container-->
-            <div class="mx-auto w-5/6 grid rounded-lg shadow-md shadow-zinc-300 p-6 bg-gray-200 border-4"
-                sid="comments-form">
+            <div class="mx-auto w-5/6 grid rounded-lg shadow-md shadow-zinc-300 p-6 bg-gray-200 border-4">
                 <h5 class="mx-6">Post a Comment</h5>
                 <!-- Display errors here if tried to post a comment but did not pass validation checks-->
                 <% if (errors.length> 0) { %>
@@ -125,60 +123,61 @@
                                 <% } %>
                         </ul>
                     </div>
-                    <%} %>
-                        <!--COMMENT FORM-->
-                        <form method="POST" action="/reader/post-comment">
-                            <div class="grid gap-4 p-6 ">
-                                <input type="hidden" name="id_comment_form" id="id-comment-form" value="<%= article.id %>">
-                                <div class="grid gap-0">
-                                    <label class="font-opensansbold" for="name">Your name:</label>
-                                    <input class="border-2 border-gray-300 bg-gray-100 rounded-lg p-2 font-opensans w-2/5
-                                        focus:outline-none focus:border-blue-600" 
-                                        type="text" name="name" id="name" value="User">
-                                </div>
-                                <div class="grid">
-                                    <label class="font-opensansbold" for="comment">Type comment here:</label>
-                                    <textarea class="border-2 border-gray-300 bg-gray-150 rounded-lg p-2 font-opensans w-5/6
-                                        focus:outline-none focus:border-blue-600" name="comment" id="comment" value=""
-                                        rows="4"></textarea>
-                                </div>
-                                <div>
-                                    <input
-                                        class="font-opensansbold basic-button bg-gray-300 text-black hover:bg-gray-500 
-                                        hover:text-white" type="submit" value="Submit Comment">
-                                </div>
-                        </form> <!--End of comment form-->
-                        <a class="font-opensansbold underline my-4 text-gray-900 hover:text-amber-700" 
-                            href="/reader/">
-                            Back to (Reader) Home
-                        </a>
-            </div> <!--End of post comment form container-->
-        </div> <!--End of main container-->
-        <hr class="h-px my-2 bg-gray-300 border-0 dark:bg-gray-700">
-        <!--Container for comments-->
-        <div class="mx-4 my-2 py-4 px-2 rounded-lg grid" id="comments-container">
-            <h6 class="font-opensansbold mb-6">Comments</h6>
-            <% if (comments.length < 1) { %>
-                <p class="font-opensansitalic">Nobody has left any comments yet.</p>
-                <%} else { %>
-                    <div class="font-opensans grid gap-4">
-                        <% comments.forEach(function(comment) { %>
-                            <div class="p-4 w-full flex-col space-y-4 bg-white rounded-lg shadow-lg">
-                                <div>
-                                    <b>Posted by:</b>
-                                    <%= comment.username %>
-                                </div>
-                                <div>
-                                    "<%= comment.comment %>"
-                                </div>
-                                <div class="text-sm">
-                                    <%= comment.datetime_published %> (UTC)
-                                </div>
-                            </div>
-                            <% });%>
+                    <%} %> <!--End of errors section-->
+                <!--COMMENT FORM-->
+                <form method="POST" action="/reader/post-comment">
+                    <div class="grid gap-4 p-6">
+                        <input type="hidden" name="id_comment_form" id="id-comment-form" value="<%= article.id %>">
+                        <div class="grid gap-0">
+                            <label class="font-opensansbold" for="name">Your name:</label>
+                            <input class="border-2 border-gray-300 bg-gray-100 rounded-lg p-2 font-opensans w-2/5
+                                focus:outline-none focus:border-blue-600" 
+                                type="text" name="name" id="name" value="User">
+                        </div>
+                        <div class="grid">
+                            <label class="font-opensansbold" for="comment">Type comment here:</label>
+                            <textarea class="border-2 border-gray-300 bg-gray-150 rounded-lg p-2 font-opensans w-5/6
+                                focus:outline-none focus:border-blue-600" name="comment" id="comment" value=""
+                                rows="4"></textarea>
+                        </div>
+                        <div>
+                            <input
+                                class="font-opensansbold basic-button bg-gray-300 text-black hover:bg-gray-500 
+                                hover:text-white" type="submit" value="Submit Comment">
+                        </div>
                     </div>
-                    <% }%>
-        </div> <!--End of comments container-->
+                </form>
+            </div>
+            <hr class="h-px my-2 bg-gray-300 border-0 dark:bg-gray-700">
+            <!--Container for comments-->
+            <div class="mx-4 my-2 py-4 px-2 grid" id="comments-container">
+                <h6 class="font-opensansbold mb-6">Comments</h6>
+                <% if (comments.length < 1) { %>
+                    <p class="font-opensansitalic">Nobody has left any comments yet.</p>
+                    <%} else { %>
+                        <div class="font-opensans grid gap-4">
+                            <% comments.forEach(function(comment) { %>
+                                <div class="p-4 w-full flex-col space-y-4 bg-white rounded-lg shadow-lg">
+                                    <div>
+                                        <b>Posted by:</b>
+                                        <%= comment.username %>
+                                    </div>
+                                    <div>
+                                        "<%= comment.comment %>"
+                                    </div>
+                                    <div class="text-sm">
+                                        <%= comment.datetime_published %> (UTC)
+                                    </div>
+                                </div>
+                                <% });%>
+                        </div>
+                        <% }%>
+            </div>
+        </div>
+
+        <footer class="bottom-0 mx-auto w-full">
+            <div>BlogDragon Solutions 2023</div>
+        </footer>
         <script type="text/javascript" src="../../public/jquery.js"></script>
         <script type="application/javascript" src="../../public/script.js"></script>
         <!--Script enabling AJAX request to not have to reload page when user clicks 'like'-->

@@ -186,6 +186,21 @@
     p {
         @apply text-base/7; /*Line spacing --> 7*/
     }
+    /*Styling for the footer on every page*/
+    footer {
+      @apply bg-gray-200;
+      @apply border-2;
+      @apply border-gray-300;
+      @apply font-opensansbold;
+    }
+    footer div {
+      @apply mx-auto;
+      @apply w-full;
+      @apply max-w-screen-xl;
+      @apply p-4;
+      @apply py-4;
+      @apply lg:py-4;
+    }
     /* Creates a general custom template class for button styling (e.g. Create Draft button) */
     /* Then add individual button color-classes from Tailwind inline in the EJS files */
     .basic-button {

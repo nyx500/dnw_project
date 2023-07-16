@@ -120,19 +120,27 @@ router.post("/like-article", (req, res)=> {
     });
 })
 
-// Validation rules for comments
+// Express-Validator Ruleset for posting comments on an article
 var commentValidate = [
-  // Check title
+  // Check user's name in comments input form is not empty and less than 255 words
   check('name').isLength({  max: 255 }).withMessage(`User's name must be less than 500 words`)
   .not().isEmpty().withMessage(`Name field cannot be empty!`).trim(),
+  // Check comment is not empty and that it is under 1000 words
   check('comment').isLength({ max: 1000 }).withMessage(`Comment must be less than 1000 chars!`)
   .not().isEmpty().withMessage(`Comment field cannot be empty!`).trim()
 ];
 
+
+/**
+ * Reader Post Comment POST Route
+ * Purpose: allows reader to post their name and a comment on a selected article
+ * Inputs: the article ID (res.body.id), user's name and comment content
+ * Outputs: renders same article page there are no db errors, otherwise returns a custom error page with error 500 code
+*/
 router.post("/post-comment", commentValidate, (req, res)=> {
   // Check for validation errors
   const errors = validationResult(req);
-  // If data is invalid, send error msg to browser
+  // If data is invalid, send error messages to same article page
   if (!errors.isEmpty()) {
     // Pass the error message into the article form .ejs file
     res.redirect(
@@ -143,11 +151,14 @@ router.post("/post-comment", commentValidate, (req, res)=> {
               "errors": JSON.stringify(errors.array())
           }
       }));
+  // Execute this if there are no validation errors:
   } else {
-    // SQL query to add comment to comments table, with foreign key being the ID of the article the comment belongs to
+    // Query to add a comment into 'comments' table, with the foreign key being the ID of the article which the comment belongs to
   var add_comment_query = `INSERT INTO comments (username, comment, article_id) VALUES (?, ?, ?);`
+  // Sanitize the POST form inputs
   let clean_username = sanitizeHtml(req.body.name);
   let clean_comment = sanitizeHtml(req.body.comment);
+  // Run the query to add comment to db
   db.run(add_comment_query, [clean_username, clean_comment, req.body.id_comment_form], function(err){
     if (err)
     {
@@ -158,8 +169,8 @@ router.post("/post-comment", commentValidate, (req, res)=> {
       res.redirect(url.format({
         pathname: "/reader/article",
         query: {
-            "id": req.body.id_comment_form,
-            errors: []
+            "id": req.body.id_comment_form, // Get same article page using same id
+            errors: [] // If no errors then return empty array instead of error content
         }
       }));  
     }
