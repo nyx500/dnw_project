@@ -284,22 +284,11 @@
       @apply mx-2;
       @apply cursor-pointer;
     }
-    /*****Styling for Author-Settings Page*****/
-    .author-settings-main-container {
-      @apply font-opensans;
-      @apply ml-4;
-      @apply mr-4;
-      @apply m-4;
-      @apply py-4;
-      @apply rounded;
-      @apply grid;
-      @apply justify-center;
-      @apply content-evenly;
-      @apply gap-y-8;
-      @apply h-5/6;
-    }
+
+    /***************Repeated Custom Styles specific to Reused Error (Bad Form input) messages**************/
     /*Styling for div containing error msgs for bad form input*/
     .errors-container {
+      @apply font-opensans;
       @apply grid;
       @apply text-center;
       /*Apply dark orange instead of red for error messages, as red is quite harsh for the user */
@@ -318,30 +307,10 @@
     .errors-container ul li {
       @apply m-2;
     }
-    /*Container where form to change author's blog settings is located*/
-    .settings-form {
-      @apply text-left;
-      @apply grid;
-      @apply gap-4;
-      @apply content-center;
-      @apply bg-blue-200; 
-      @apply shadow-xl; 
-      @apply rounded;
-      @apply px-8; 
-      @apply pt-6;
-      @apply pb-6; 
-      @apply mb-4;
-    }
-    /*Container for the link-textinput elements (excluding the Submit button)*/
-    .settings-form-inputs-container{
-      @apply grid;
-      @apply gap-y-4;
-      @apply auto-cols-auto;
-      /*Put text inputs on lhs of container */
-      @apply self-start;
-    }
+
+    /***********************Repeated Custom Styles specific to 'Author - Settings' page**********************/
     .settings-form-label-input-pair {
-      /*Mobile screens form inputs layout: */
+      /*Mobile screens form inputs layout: label always on top of the input */
       @apply flex-col;
       @apply flex-nowrap;
       /*Larger screens: put label + input INLINE */
@@ -371,14 +340,8 @@
       @apply w-full;
       @apply p-2;
     }
-    .save-settings-container {
-        @apply flex;
-        @apply items-center;
-        /*On screens larger than mobile, place submit button in center, not on the lhs*/
-        @apply sm:justify-center;
-        @apply mt-4;
-    }
-    /*Styles specific to 'Reader' home pg*/
+
+    /*******************************Styles specific to 'Reader' home page*********************************/
     .reader-home-articles-container {
       @apply grid;
       @apply gap-4;
@@ -401,10 +364,6 @@
       @apply shadow-zinc-400;
       @apply hover:shadow-xl;
       @apply hover:shadow-zinc-900;
-    }
-    .view-article-button {
-      @apply bg-amber-700;
-      @apply hover:bg-amber-900;
     }
 }  
 

@@ -969,26 +969,12 @@ p {
   cursor: pointer;
 }
 
-/*****Styling for Author-Settings Page*****/
-
-.author-settings-main-container {
-  font-family: opensans, sans-serif;
-  margin-left: 1rem;
-  margin-right: 1rem;
-  margin: 1rem;
-  padding-top: 1rem;
-  padding-bottom: 1rem;
-  border-radius: 0.25rem;
-  display: grid;
-  justify-content: center;
-  align-content: space-evenly;
-  row-gap: 2rem;
-  height: 83.333333%;
-}
+/***************Repeated Custom Styles specific to Reused Error (Bad Form input) messages**************/
 
 /*Styling for div containing error msgs for bad form input*/
 
 .errors-container {
+  font-family: opensans, sans-serif;
   display: grid;
   text-align: center;
   /*Apply dark orange instead of red for error messages, as red is quite harsh for the user */
@@ -1018,38 +1004,10 @@ p {
   margin: 0.5rem;
 }
 
-/*Container where form to change author's blog settings is located*/
-
-.settings-form {
-  text-align: left;
-  display: grid;
-  gap: 1rem;
-  align-content: center;
-  --tw-bg-opacity: 1;
-  background-color: rgb(191 219 254 / var(--tw-bg-opacity));
-  --tw-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
-  --tw-shadow-colored: 0 20px 25px -5px var(--tw-shadow-color), 0 8px 10px -6px var(--tw-shadow-color);
-  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
-  border-radius: 0.25rem;
-  padding-left: 2rem;
-  padding-right: 2rem;
-  padding-top: 1.5rem;
-  padding-bottom: 1.5rem;
-  margin-bottom: 1rem;
-}
-
-/*Container for the link-textinput elements (excluding the Submit button)*/
-
-.settings-form-inputs-container {
-  display: grid;
-  row-gap: 1rem;
-  grid-auto-columns: auto;
-  /*Put text inputs on lhs of container */
-  align-self: flex-start;
-}
+/***********************Repeated Custom Styles specific to 'Author - Settings' page**********************/
 
 .settings-form-label-input-pair {
-  /*Mobile screens form inputs layout: */
+  /*Mobile screens form inputs layout: label always on top of the input */
   flex-direction: column;
   flex-wrap: nowrap;
   /*Larger screens: put label + input INLINE */
@@ -1112,23 +1070,7 @@ p {
   padding: 0.5rem;
 }
 
-.save-settings-container {
-  display: flex;
-  align-items: center;
-  /*On screens larger than mobile, place submit button in center, not on the lhs*/
-}
-
-@media (min-width: 640px) {
-  .save-settings-container {
-    justify-content: center;
-  }
-}
-
-.save-settings-container {
-  margin-top: 1rem;
-}
-
-/*Styles specific to 'Reader' home pg*/
+/*******************************Styles specific to 'Reader' home page*********************************/
 
 .reader-home-articles-container {
   display: grid;
@@ -1177,16 +1119,6 @@ p {
   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
   --tw-shadow-color: #18181b;
   --tw-shadow: var(--tw-shadow-colored);
-}
-
-.view-article-button {
-  --tw-bg-opacity: 1;
-  background-color: rgb(180 83 9 / var(--tw-bg-opacity));
-}
-
-.view-article-button:hover {
-  --tw-bg-opacity: 1;
-  background-color: rgb(120 53 15 / var(--tw-bg-opacity));
 }
 
 *, ::before, ::after {
@@ -1412,16 +1344,16 @@ p {
   margin: 0.5rem;
 }
 
+.m-4 {
+  margin: 1rem;
+}
+
 .m-6 {
   margin: 1.5rem;
 }
 
 .m-8 {
   margin: 2rem;
-}
-
-.m-4 {
-  margin: 1rem;
 }
 
 .mx-10 {
@@ -1478,6 +1410,10 @@ p {
   margin-bottom: 2.5rem;
 }
 
+.mb-4 {
+  margin-bottom: 1rem;
+}
+
 .mb-6 {
   margin-bottom: 1.5rem;
 }
@@ -1490,6 +1426,10 @@ p {
   margin-left: 0.5rem;
 }
 
+.ml-4 {
+  margin-left: 1rem;
+}
+
 .mr-auto {
   margin-right: auto;
 }
@@ -1498,16 +1438,12 @@ p {
   margin-top: 3rem;
 }
 
+.mt-4 {
+  margin-top: 1rem;
+}
+
 .mt-6 {
   margin-top: 1.5rem;
-}
-
-.ml-6 {
-  margin-left: 1.5rem;
-}
-
-.ml-4 {
-  margin-left: 1rem;
 }
 
 .block {
@@ -1562,6 +1498,10 @@ p {
   height: 1.25rem;
 }
 
+.h-5\/6 {
+  height: 83.333333%;
+}
+
 .h-px {
   height: 1px;
 }
@@ -1611,6 +1551,10 @@ p {
   list-style-type: disc;
 }
 
+.auto-cols-auto {
+  grid-auto-columns: auto;
+}
+
 .flex-col {
   flex-direction: column;
 }
@@ -1625,6 +1569,10 @@ p {
 
 .content-end {
   align-content: flex-end;
+}
+
+.content-evenly {
+  align-content: space-evenly;
 }
 
 .items-center {
@@ -1671,18 +1619,26 @@ p {
   gap: 2rem;
 }
 
+.gap-y-4 {
+  row-gap: 1rem;
+}
+
+.gap-y-8 {
+  row-gap: 2rem;
+}
+
 .space-y-4 > :not([hidden]) ~ :not([hidden]) {
   --tw-space-y-reverse: 0;
   margin-top: calc(1rem * calc(1 - var(--tw-space-y-reverse)));
   margin-bottom: calc(1rem * var(--tw-space-y-reverse));
 }
 
-.self-center {
-  align-self: center;
+.self-start {
+  align-self: flex-start;
 }
 
-.justify-self-start {
-  justify-self: start;
+.self-center {
+  align-self: center;
 }
 
 .truncate {
@@ -1759,9 +1715,9 @@ p {
   background-color: rgb(209 250 229 / var(--tw-bg-opacity));
 }
 
-.bg-emerald-200 {
+.bg-emerald-300 {
   --tw-bg-opacity: 1;
-  background-color: rgb(167 243 208 / var(--tw-bg-opacity));
+  background-color: rgb(110 231 183 / var(--tw-bg-opacity));
 }
 
 .bg-emerald-600 {
@@ -1807,11 +1763,6 @@ p {
 .bg-white {
   --tw-bg-opacity: 1;
   background-color: rgb(255 255 255 / var(--tw-bg-opacity));
-}
-
-.bg-emerald-300 {
-  --tw-bg-opacity: 1;
-  background-color: rgb(110 231 183 / var(--tw-bg-opacity));
 }
 
 .bg-gradient-to-br {
@@ -1892,6 +1843,11 @@ p {
 .py-4 {
   padding-top: 1rem;
   padding-bottom: 1rem;
+}
+
+.py-6 {
+  padding-top: 1.5rem;
+  padding-bottom: 1.5rem;
 }
 
 .py-8 {
@@ -1976,11 +1932,6 @@ p {
   text-transform: lowercase;
 }
 
-.text-amber-700 {
-  --tw-text-opacity: 1;
-  color: rgb(180 83 9 / var(--tw-text-opacity));
-}
-
 .text-black {
   --tw-text-opacity: 1;
   color: rgb(0 0 0 / var(--tw-text-opacity));
@@ -2028,6 +1979,12 @@ p {
   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
 }
 
+.shadow-xl {
+  --tw-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+  --tw-shadow-colored: 0 20px 25px -5px var(--tw-shadow-color), 0 8px 10px -6px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+
 .shadow-slate-400 {
   --tw-shadow-color: #94a3b8;
   --tw-shadow: var(--tw-shadow-colored);
@@ -2041,11 +1998,6 @@ p {
 .shadow-zinc-800 {
   --tw-shadow-color: #27272a;
   --tw-shadow: var(--tw-shadow-colored);
-}
-
-.outline-none {
-  outline: 2px solid transparent;
-  outline-offset: 2px;
 }
 
 .blur {
@@ -2209,6 +2161,10 @@ p {
 
   .sm\:justify-start {
     justify-content: flex-start;
+  }
+
+  .sm\:justify-center {
+    justify-content: center;
   }
 
   .sm\:gap-4 {

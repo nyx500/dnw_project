@@ -66,16 +66,18 @@
     </nav>
     <!-- Make it clear that this is the **Author** not the **User** Home page-->
     <h1 class="font-lobster">Author: Change Settings</h1>
-    <div class="author-settings-main-container">
+    <div class="font-opensans m-4 py-4 rounded grid justify-center content-evenly gap-y-8 h-5/6">
         <h2 class="text-center">
             You can change your blog details here:
         </h2>
         <% if (errors.length> 0) { %>
-            <!--If errors array contains at least one item, then display the errors container/div:-->
+            <!--If errors array is not empty, then display the errors here:-->
             <div id="errors-container" class="errors-container">
-                <p class="font-opensansbold">Sorry! We failed to save your settings because of the following errors:</p>
+                <p class="font-bold">
+                    Sorry! We failed to save your settings because of the following errors:
+                </p>
                 <!--In tailwind, <ul> tags need explicit list-disc class to show the bullet points-->
-                <ul class="list-disc">
+                <ul>
                     <% for (var i=0; i < errors.length; i++ ) { %>
                         <li>
                             <%= errors[i].msg %>
@@ -84,9 +86,11 @@
                 </ul>
             </div>
             <%} %>
-                <!--Form to change the author's blog details/settings-->
-                <form class="settings-form" method="POST" action="/author/settings">
-                    <div class="settings-form-inputs-container">
+                <!--Form to change the author's blog details in the 'blog' sqlite3 table -->
+                <form class="text-left grid gap-4 content-center bg-blue-200 shadow-xl rounded px-8 py-6 mb-4"
+                    method="POST" action="/author/settings">
+                    <div class="grid gap-y-4 auto-cols-auto self-start">
+                        <!--Form label-input components: styles contained in input.css, as repeated so often-->
                         <div class="settings-form-label-input-pair">
                             <label for="title">Blog Title:</label>
                             <input type="text" name="title" id="title" value="<%= blog.title %>">
@@ -100,18 +104,20 @@
                             <input type="text" name="subtitle" id="subtitle" value="<%= blog.subtitle %>">
                         </div>
                     </div>
-                    <div class="save-settings-container">
+                    <div class="flex items-center sm:justify-center mt-4">
                         <input class="basic-button bg-orange-600 hover:bg-orange-800 font-opensansbold" type="submit"
                             value="Save Settings" />
                     </div>
-                </form> <!--End of Change Settings Form-->
-                <!--Link to go back to Author's home page-->
+                </form>
+                <!--End of Change Settings Form-->
+                <!--Link to go back to Author Home page-->
                 <div class="text-center relative inset-x-0 bottom-0 pb-0">
                     <a class="hover:text-amber-700 font-bold underline text-blue-700" href="/author/">
                         Back to Home (Author)
                     </a>
                 </div>
-    </div> <!--End of main div-->
+    </div>
+    <!--End of main div-->
     <script type="application/javascript" src="../../public/script.js"></script>
 </body>
 
