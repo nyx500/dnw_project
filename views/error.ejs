@@ -1,3 +1,4 @@
+<!--Page displaying errors with 404 and 500 status codes in case of bad route/db operation did not work-->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,6 +13,7 @@
         <h1 class="text-3xl font-bold">Error</h1>
         <% if (error) 
             {%> 
+                <!--Displays error name with status code and description of that kind of error-->
                 <div class="flex mx-4">
                     <h2 class="text-lg">
                         <%= error.name %>: 
@@ -20,6 +22,7 @@
                 </div>
             <%}
         %>
+        <!--Display optional message if there is one being sent from the middleware, e.g. if the comment failed to be posted-->
         <% if (message)
             {%> 
                 <div class="flex mx-9">
