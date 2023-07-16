@@ -1,5 +1,7 @@
+<!--EJS Author Home: author can view their draft/published articles, edit them, delete them & publish them-->
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -7,17 +9,23 @@
     <link rel="stylesheet" href="../../public/output.css" />
     <title>Home: Author</title>
 </head>
+
 <body>
-    <!--Navbar for home and settings link-->
-    <nav class="z-10">
+
+    <!--Navbar for home and settings link: navbar styles defined in ./public/input.css custom classes-->
+    <nav>
+
+        <!--Navbar main container-->
         <div class="nav-container">
-            <span>
-                <!--Display blog title in navbar-->
-                <div class="font-lobster justify-self-start title-container">
+            <!--Span element containing the Blog Title, and links within the current website section (e.g. Author)-->
+            <span> <!--Hidden on mobile screens in favor of the Menu Button and collapsible list menu!-->
+                <!--Displays blog title on the left of the navbar-->
+                <div class="title-container">
                     <a href="/author/">
                         <%= blog.title %>
                     </a>
                 </div>
+                <!--Links to pages within this website section -->
                 <div class="nav-link">
                     <a href="/author/">Home (Author)</a>
                 </div>
@@ -25,21 +33,27 @@
                     <a href="/author/settings">Settings</a>
                 </div>
             </span>
+            <!-- Container for toggleable link to Other Section (e.g. 'Reader' for the 'Author' page)-->
             <div class="nav-link position-on-right">
-                <a href="/reader" class="change-site-link" >Home (Reader)</a>
+                <a href="/reader" class="change-site-link">Home (Reader)</a>
             </div>
+            <!--This is hidden on larger screens -->
             <div class="menu-button-container">
-                <button class="outline-none menu-button">
-                    <!--Code for how to make an SVG menu button with three horizontal bars: -->
-                     <!--Ref: https://www.devwares.com/blog/how-to-create-a-beautiful-responsive-navbar-using-tailwind-css/-->
-                    <svg class="w-12 h-12" x-show="! showMenu" stroke-linecap="round"
-                        stroke-linejoin="round" stroke-width="3" viewBox="0 00 26 26" stroke="black">
+                <button class="menu-button">
+                    <!--Code for how to make an SVG menu icon containing three horizontal bars: -->
+                    <!--Ref: https://www.devwares.com/blog/how-to-create-a-beautiful-responsive-navbar-using-tailwind-css/-->
+                    <svg class="w-12 h-12" x-show="! showMenu" stroke-linecap="round" stroke-linejoin="round"
+                        stroke-width="3" viewBox="0 00 26 26" stroke="black">
                         <path d="m4 6h16M4 12h16M4 18h16"></path>
                     </svg>
                 </button>
             </div>
-        </div>
-        <div class="hidden hidden-menu font-opensans bg-blue-200"> <!--Toggle 'hidden' property with JS script when button is clicked-->
+        </div> <!--End of 'nav-container' class-->
+
+        <!-- Collapsible menu which is displayed across the screen on mobile-only sized screens -->
+        <!--Toggle showing this menu with the above Menu Button by clicking it (implemented in script.js file)-->
+        <!--Make this menu blue on author page and emerald colored on reader page to help users distinguish-->
+        <div class="hidden hidden-menu bg-blue-300"> <!-- 'hidden' property in TailwindCSS is toggled -->
             <ul>
                 <li>
                     <a href="/author/">Home (Author)</a>
@@ -52,114 +66,167 @@
                 </li>
             </ul>
         </div>
+
     </nav>
+
+    <!-- Most h-tag styles are in public/input.css as so frequently used, but change font to lobster 
+        for h1 here-->
     <h1 class="font-lobster">Home: Author</h1>
-    <!-- Make it clear that this is the **Author** not the **User** Home page-->
-    <!--This is a custom Tailwind class made to apply to the heading-blocks on each 'Home' page-->
-    <div class="home-title-box"> 
-        <h2 class="order-1 font-lobster"><%= blog.title %></h2>
-        <h3 class="order-2 font-opensans"><%= blog.subtitle %></h3>
-        <h4 class="order-3 text-center font-opensans"><%= blog.author %></h4>
+    <!-- Container with all blog details for Author home page-->
+    <!--Tailwind Classes are contained inline in the 'class' attrib, as this custom element is not reused!-->
+    <div class="flex-col flex-auto flex-wrap text-center justify-center content-center gap-2 sm:gap-4
+         md:gap-5 lg:gap-6">
+        <h2 class="order-1 font-lobster">
+            <%= blog.title %>
+        </h2>
+        <h3 class="order-2 font-opensans">
+            <%= blog.subtitle %>
+        </h3>
+        <h4 class="order-3 text-center font-opensans">
+            <%= blog.author %>
+        </h4>
     </div>
-    <div class="create-draft-container font-opensans">
+    <!-- End of blog titles/author container -->
+
+    <!-- Container for the 'Create New Draft Article' form -->
+    <div class="create-draft-container font-opensans flex justify-center m-8">
         <form method="GET" action="/author/create-new-draft-article">
-            <button type="submit" class="basic-button create-draft-button" name="create-new-draft" value="create-new-draft">
-                <b>Create New Draft</b>
+            <button type="submit" class="basic-button bg-blue-500 hover:bg-blue-800 font-opensansbold"
+                name="create-new-draft" value="create-new-draft">
+                Create New Draft
             </button>
         </form>
     </div>
-    <div class="author-home-articles-container font-opensans">
-        <div class="author-home-draft-articles-container" id="author-home-draft-articles-container">
+    <!-- End of container for the 'Create New Draft Article' form -->
+
+    <!-- Container storing two columns: one for drafts, one for published articles -->
+    <!--Responsive layout: show 2 cols only on > 640px-width screens -->
+    <div class="font-opensans grid sm:grid-cols-2 sm:grid-cols-2 justify-center m-6 px-4 px-2">
+
+        <!--DRAFT ARTICLES SECTION-->
+        <!-- Styles for this articles container are in public/input.css because they are used repeatedly -->
+        <div class="author-home-articles-container" id="author-home-draft-articles-container">
             <h5>Draft Articles</h5>
-            <!--On mobile screens with one column grid layout, use this link to go to published-->
-            <a class="navigation-link" href="#author-home-published-articles-container">
+            <!--On mobile screens with one *long* column grid layout, create link so the author can quickly
+                navigate to the 'published' section!-->
+            <a class="small-screens-navigation-helper-link" href="#author-home-published-articles-container">
                 Go to Published Articles
             </a>
-            <!--Only display articles with is_published property set to "False" in here-->
+            <!--Only display articles with is_published property set to "False" (in 'articles' table) here-->
             <% articles.forEach(function(article) { %>
                 <% if(!article.is_published){ %>
-                    <div class="article-card-author-home">
-                        <div class="article-title">                 
-                            <h6>Title: <%= article.title %></h6>
+                    <div class="author-home-article-card">
+                        <div class="article-title">
+                            <h6>Title: <%= article.title %>
+                            </h6>
                         </div>
                         <div class="date-heading">
-                            <em>Created:</em> <%= article.datetime_created %> (UTC)
+                            <em>Created:</em>
+                            <%= article.datetime_created %> (UTC)
                         </div>
                         <div class="date-heading">
-                            <em>Last modified:</em> <%= article.datetime_modified %> (UTC)
+                            <em>Last modified:</em>
+                            <%= article.datetime_modified %> (UTC)
                         </div>
                         <div class="date-heading">
-                            <% if(!article.datetime_published){ %> 
+                            <% if(!article.datetime_published){ %>
                                 <em>Published:</em> Never
                                 <% } else { %>
-                                <em>Last published:</em> <%= article.datetime_published %> (UTC)
-                                <% } %>
+                                    <em>Last published:</em>
+                                    <%= article.datetime_published %> (UTC)
+                                        <% } %>
                         </div>
-                        <div class="article-forms-container">
-                            <!-- Dynamic Link to Edit Article page with this article's ID in URL as querystring -->
-                            <a class="edit-link" href="/author/edit-article?id=<%= article.id %>">Edit</a>
-                            <!-- Form/Button to Delete Article page using this article's ID -->
-                            <!-- Use POST to publish! -->
-                            <form method="POST" action="/author/publish-article">
-                                <!--Send Article ID in req.body from hidden input field-->
-                                <input type="hidden" id="article-<%= article.id %>" name="id" value="<%= article.id %>"/>
-                                <input class="publish-button" type="submit" value="Publish"/>
+                        <!-- Container with buttons: edit link, 'publish' and 'delete' -->
+                        <div class="author-home-article-forms-container">
+                            <!--Dynamically-generated Edit Article Link-->
+                            <a href="/author/edit-article?id=<%= article.id %>" class="order-1 form-button px-8 bg-blue-500 hover:bg-blue-700
+                                     hover:no-underline hover:text-white">
+                                Edit
+                            </a>
+                            <!-- Form to publish the article -->
+                            <form class="order-2" method="POST" action="/author/publish-article">
+                                <!--Sends Article ID in req.body from hidden input field-->
+                                <input type="hidden" id="article-<%= article.id %>" name="id"
+                                    value="<%= article.id %>" />
+                                <input class="form-button max-h-max bg-teal-400 hover:bg-teal-800" type="submit"
+                                    value="Publish" />
                             </form>
-                            <!-- Use POST to delete! -->
-                            <form method="POST" action="/author/delete-article">
-                                <!--Send Article ID in req.body from hidden input field-->
-                                <input type="hidden" id="article-<%= article.id %>" name="id" value="<%= article.id %>"/>
-                                <input class="delete-button" type="submit" value="Delete"/>
+                            <!-- Form to delete the article -->
+                            <form class="order-3" method="POST" action="/author/delete-article">
+                                <!--Sends Article ID in req.body from hidden input field-->
+                                <input type="hidden" id="article-<%= article.id %>" name="id"
+                                    value="<%= article.id %>" />
+                                <input class="form-button px-6 bg-amber-700 hover:bg-amber-900" type="submit"
+                                    value="Delete" />
                             </form>
-                        </div>
+                        </div> <!--End of container with forms for user interaction with the article-->
                     </div> <!--End of individual draft article section -->
-                <% } %>
-            <% }); %> 
-        </div> <!--End of draft articles container-->
-        <div class="author-home-published-articles-container" id="author-home-published-articles-container">
+                    <% } %>
+                        <% }); %>
+        </div>
+        <!--END OF DRAFT ARTICLES SECTION-->
+
+        <!--PUBLISHED ARTICLES SECTION-->
+        <div class="author-home-articles-container" id="author-home-published-articles-container">
             <h5>Published Articles</h5>
-            <!--On mobile screens with one column grid layout, use this link to go to drafts-->
-            <a class="navigation-link" href="#author-home-draft-articles-container">
+            <!--On mobile screens with one column grid layout, use this link to go to drafts section-->
+            <a class="small-screens-navigation-helper-link" href="#author-home-draft-articles-container">
                 Go to Draft Articles
             </a>
-            <!--Only display articles with is_published property set to True in here-->
+            <!--Only display articles with is_published property set to 'True' in here-->
             <% articles.forEach(function(article) { %>
                 <% if(article.is_published){ %>
-                    <div class="article-card-author-home">
-                        <div class="article-title">
-                            <h6>Title: <%= article.title %></h6>
+                    <div class="author-home-article-card">
+                        <div>
+                            <h6>Title: <%= article.title %>
+                            </h6>
                         </div>
-                        <div class="date-heading">
-                            <em>Created:</em> <%= article.datetime_created %>,
+                        <div>
+                            <em>Created:</em>
+                            <%= article.datetime_created %>,
                         </div>
-                        <div class="date-heading">
-                            <em>Last modified:</em> <%= article.datetime_created %> (UTC)
+                        <div>
+                            <em>Last modified:</em>
+                            <%= article.datetime_created %> (UTC)
                         </div>
-                        <div class="date-heading">
-                           <em>Published:</em> <%= article.datetime_published %> (UTC)
+                        <div>
+                            <em>Published:</em>
+                            <%= article.datetime_published %> (UTC)
                         </div>
-                        <div class="author-home-likes">
-                            <b>Likes:</b> <%= article.likes %>
+                        <div>
+                            <b>Likes:</b>
+                            <%= article.likes %>
                         </div>
-                        <div class="article-forms-container">
-                            <!-- Link to Edit Article page with this article's ID in URL as querystring -->
-                            <a class="edit-link" href="/author/edit-article?id=<%= article.id %>">Edit</a>
-                            <!--When clicked shows alert with link to article-->
-                            <button class="share-button" id="share-button-<%= article.id %>">Share</button>
-                            <!-- Form/Button to Delete Article page using this article's ID -->
-                            <form method="POST" action="/author/delete-article">
-                                <!-- Use POST to avoid user executing CRUD operations in URL! -->
-                                <!--Send Article ID in req.body from hidden input field-->
-                                <input type="hidden" id="article-<%= article.id %>" name="id" value="<%= article.id %>"/>
-                                <input class="delete-button" type="submit" value="Delete"/>
+                        <!-- Container with buttons: edit link, 'share' and 'delete' -->
+                        <div class="author-home-article-forms-container">
+                            <!--Dynamically-generated Edit Article Link-->
+                            <a href="/author/edit-article?id=<%= article.id %>" class="order-1 form-button px-8 bg-blue-500 hover:bg-blue-700
+                                     hover:no-underline hover:text-white">
+                                Edit
+                            </a>
+                            <!-- Share button-->
+                            <button class="form-button order-2 share-button px-6
+                                 bg-emerald-600 hover:bg-emerald-950" id="share-button-<%= article.id %>">
+                                Share
+                            </button>
+                            <!-- Form to delete the article -->
+                            <form class="order-3" method="POST" action="/author/delete-article">
+                                <!--Sends Article ID in req.body from hidden input field-->
+                                <input type="hidden" id="article-<%= article.id %>" name="id"
+                                    value="<%= article.id %>" />
+                                <input class="form-button px-6 bg-amber-700 hover:bg-amber-900" type="submit"
+                                    value="Delete" />
                             </form>
                         </div>
                     </div> <!--End of individual article card-->
-                <% } %>
-            <% }); %> 
-        </div> <!--End of published articles container-->
+                    <% } %>
+                        <% }); %>
+        </div>
+        <!--PUBLISHED ARTICLES SECTION-->
+
     </div> <!--End of articles container-->
     <!--JS Script for things like menu button functionality on small screens-->
-    <script type="application/javascript" src="../../public/script.js" ></script>
+    <script type="application/javascript" src="../../public/script.js"></script>
 </body>
+
 </html>

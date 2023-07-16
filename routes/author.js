@@ -32,6 +32,7 @@ router.get("/", (req, res, next) => {
             returnErrorPage(res, new Error500());
         } else {
             // Now we have the blog table details, retrieve all the articles from the database
+            // Sort articles so that the articles most recently modified are displayed at the top
             var retrieve_articles_query = `SELECT * FROM articles ORDER BY datetime_modified DESC;`;
             db.all(retrieve_articles_query, function (err, articles_data) {
                 if (err) {

@@ -1,7 +1,7 @@
 @tailwind base;
 
 
-/*Custom Fonts*/
+/*DEFINES CUSTOM FONTS: 'Lobster' and 'OpenSans'*/
 @font-face {
   font-family: "lobster";
   src: url("fonts/Lobster-Regular.ttf");
@@ -20,98 +20,135 @@
   src: url("fonts/open_sans/OpenSans-Italic.ttf");
 }
 
+/*My Custom Classes Go Here: Store Combined TailwindCSS classes for frequently used elements */
 @layer base {
-    /** CSS settings for navbar on top of page
-      Ref: https://www.devwares.com/blog/how-to-create-a-beautiful-responsive-navbar-using-tailwind-css/*/
+    /*******************************************NAVBAR STYLES*******************************************/
+    /** Main 'nav' tag styles:
+     * Ref: https://www.devwares.com/blog/how-to-create-a-beautiful-responsive-navbar-using-tailwind-css/
+    */
     nav {
-      @apply shadow-lg; /* Apply shadowy 3D outline to navbar*/
-      @apply bg-gray-100; /* Light grey navbar */
-      @apply sm:sticky; /*Make the navbar fixed on top but not on mobile screens 640px width or less*/
+      /* Applies a shadowy 3D outline to navbar*/
+      @apply shadow-lg; 
+      /* Applies background color: light grey */
+      @apply bg-gray-100;
+      /* These properties make the navbar sticky on screens above 640px width by using the 'sm' qualifier*/
+      @apply sm:sticky; 
       @apply sm:top-0;
-      @apply sm:px-6; /* Padding */
+      @apply z-10;
+      /* Horizontal padding */
+      @apply sm:px-6; 
+      /* Vertical padding (increase on screens > 640px width) */
       @apply py-2;
       @apply sm:py-4;
+      /* Makes the navbar go all across the width of the page */
       @apply w-full;
     }
-    /*Navbar container for navbar content*/
+    /*Navbar container for all the navbar content: use a row (flex) */
     .nav-container {
       @apply flex;
     }
-    /**Container for the links in the navbar shown on screens larger than 640px */
+    /**Styles for the container for the links in the navbar (display only on screens larger than 640px!) */
     .nav-container span {
-      @apply hidden; /*Hide links mobile screens in favour of menu button */
+      /* Hide links mobile screens in favour of menu button */
+      @apply hidden; 
+      /* Display links on screens above 640px width */
       @apply sm:flex; 
+      /* Font settings */
       @apply font-semibold;
-      @apply text-base;
       @apply font-opensans;
+      @apply text-base;
     }
-    /* Container in navbar showing blog title */
+    /* Container in navbar showing the blog title (on screens larger than 640px) */
     .title-container {
+      @apply font-lobster;
+      /* Flex direction: vertical */
       @apply flex-col;
+      /* Put logo/blog title on top */
       @apply justify-start;
-      @apply ml-0; /* Left margin */
-      @apply mr-4; /* Right margin */
+      /* Margin styles */
+      @apply ml-0;
+      @apply mr-4;
+      /* Text size */
       @apply text-2xl;
     }
+    /* Styles for containers wrapping navbar links to other pages within the author/reader page */
     .nav-link {
       @apply flex-col;
+      /* Put the nav links at the bottom of the navbar (in contrast to the large logo, which starts at the top
+       */
       @apply justify-end;
+      /* Use margin-top: 1 to position links better in relation to (large) blog title/logo */
       @apply mt-1;
     }
+    /* Styling for the actual links in the navbar*/
     .nav-link a {
       @apply text-base;
       @apply px-3;
     }
+    /* Styling for the 'Reader Home' link container (ON THE RIGHT OF THE NAVBAR):display: 
+      on the Author pages/vice versa 
+    */
     .position-on-right {
-      @apply ml-auto;
+      @apply ml-auto; /* Forces this link to go to the right/end of the navbar */
       @apply text-base;
     }
-    /* Go to reader page by clicking this button */
+    /* Link which toggles between the Reader/Author page */
     .change-site-link {
-      @apply hidden; /* Hide the link on small screens and use collapisble menu with Menu button instead!*/
+      /* Hide the link on small screens and use collapisble menu with Menu button instead!*/
+      @apply hidden; 
       @apply sm:flex;
+      @apply px-2;
       @apply font-opensans;
       @apply font-semibold;
-      @apply px-2;
+      @apply underline;
+      /* Link color properties */
       @apply text-amber-700;
       @apply hover:text-blue-600;
-      @apply underline;
     }
-    /* Container to show menu button only on mobile screens with less than 640 px width*/
+    /* Container for Menu button: shown only on mobile screens with less than 640 px width!*/
     .menu-button-container {
+      /* Hide menu button on screens > 640px width */
       @apply flex;
-      @apply sm:hidden; /* Hide menu button on screens > 640px width */
+      @apply sm:hidden; 
+      /* Must center the menu button vertically*/
       @apply items-center;
       @apply py-2;
     }
-    /*Container for the hidden expandable menu which is only accessible on phones*/
+    /* Styling for the Menu Button 'button' tag element */
+    .menu-button {
+      @apply outline-none;
+    }
+    /*Container for the hidden vertical, collapsible menu which is only accessible on phones*/
     .hidden-menu {
       @apply font-opensans;
+      /* This was difficult: 
+        forcing this menu to cover the whole width of the phone is essential for a modern look!
+      */
       @apply w-full;
       @apply sm:hidden;
-      @apply border;
-      @apply border-black;
     }
-    /* Create horizontal lines between the links in the expandable menu */
-    .hidden-menu ul {
-      @apply divide-y;
-      @apply divide-black;
-    }
-    /*Styling for the navbar links in the vertical menu toggleable on phones */
+    /* Styles for the navbar links in the vertical menu toggleable on phones */
     .hidden-menu ul li a {
+      /* Make vertical list of links in this collapsible menu */
       @apply block;
       @apply text-center;
       @apply text-sm;
+      /* Padding properties */
       @apply px-2;
       @apply py-4;
       @apply font-semibold;
       @apply underline;
+      @apply active:text-amber-600;
+      @apply visited:text-amber-800;
     }
-    /**Sizing and margin for h1 tags: increase size and margin as screens get bigger; start with smallest first*/
+    /**As TailwindCSS does not apply auto-styling to h1,h2 etc. tags, lets implement it for all of them here*/
     h1 {
-      @apply m-4; /**Smallest screens: margin of 6rem around h1 titles*/
-      @apply sm:m-8; /**Screens above 640px are 'sm': margin of 8rem around h1 titles*/
-      @apply text-4xl;  /**Increase h1 size as screen size increases*/
+      /**Smallest screens margins*/
+      @apply m-4; 
+      /**Screens above 640px: increase margins*/
+      @apply sm:m-8; 
+      /**Increase header size as screen size increases*/
+      @apply text-4xl;  
       @apply sm:text-5xl;
     }
     h2 {
@@ -143,141 +180,110 @@
         @apply font-semibold;
         @apply mb-4;
     }
-    
-    /**Apply heading sizes and margins to all heading tags on Home pgs so that they are responsive*/
-    .home-title-box {
-      @apply flex-col; /**Headings go in a column */
-      @apply flex-auto;
-      @apply text-center;
-      @apply justify-center;
-      @apply content-center;
-      @apply gap-2; /**Smallest screens*/
-      @apply sm:gap-4; /**Screens above 640px*/
-      @apply md:gap-5; /**Screens above 768px*/
-      @apply lg:gap-6; /**Screens above 1024px*/
-      @apply flex-wrap;
-      @apply text-center;
-    }
     a:hover {
         @apply text-blue-500 underline;
     }
     p {
         @apply text-base/7; /*Line spacing --> 7*/
     }
-    /*Style container for create new draft form*/
-    .create-draft-container {
-      @apply flex;
-      @apply justify-center;
-      @apply m-8;
-    }
-    /**Create general class for the most basic kind of button, 
-      e.g. the one used on Author's homepage to create a draft*/
+    /* Creates a general custom template class for button styling (e.g. Create Draft button) */
+    /* Then add individual button color-classes from Tailwind inline in the EJS files */
     .basic-button {
+      /* Put a shadow around button as an indicator user should click on it/is a clickable element */
       @apply shadow-md;
       @apply shadow-slate-400;
+      /* Increase shadow when button is clicked */
       @apply hover:shadow-xl;
       @apply hover:shadow-slate-800;
       @apply text-white;
+      /* Padding */
       @apply py-2;
       @apply px-4;
+      /* Rounded button borders to look less jarring */
       @apply rounded;
+      /* Turn cursor into pointer icon to highlight the fact that user should click here */
       @apply cursor-pointer;
     }
-    .create-draft-button {
-      @apply bg-blue-500;
-      @apply hover:bg-blue-800;
-    }
-    /*Styling for the grid container containing the draft articles and published article sections on Author Home*/
-    .author-home-articles-container {
-      /* Two article columns only on larger screens */
-      @apply grid;
-      @apply sm:grid-cols-2;
-      @apply justify-self-center;
-      @apply m-6;
-      @apply px-4;
-      @apply px-2;
-    }
     /*Link on single column mobile pages to navigate to either draft or published articles*/
-    .navigation-link {
+    .small-screens-navigation-helper-link {
       @apply sm:hidden;
       @apply underline;
-      @apply active:text-blue-700;
+      @apply text-sm;
+      @apply active:text-blue-600;
+      @apply hover:text-blue-800;
       @apply visited:text-amber-700;
     }
-    /*Styling for the draft articles and published articles containers on the Author Home page*/
-    .author-home-draft-articles-container, .author-home-published-articles-container {
-      /*Apply responsive paddings/margins to draft/published article sections*/
+    /*Styles for the draft articles and published articles containers on the Author Home page*/
+    .author-home-articles-container {
+      /*Apply responsive paddings/margins to draft/published article containers*/
+      /* Small screen paddings */
       @apply px-4;
-      @apply sm:px-6;
       @apply py-2;
+      /* Screens over 640px width paddings */
+      @apply sm:px-6;
       @apply sm:py-4; 
+      /* Small screen margins */
       @apply m-4;
+      /* Margins for screens over 640px */
       @apply sm:m-6;
+      /* Background color */
       @apply bg-blue-100;
+      /* Rounded borders */
       @apply rounded;
+      /* Author Home articles containers layout confiuration */
       @apply grid;
-      /* Position articles vertically starting from top of column*/
-      @apply content-start;
-      /* Position articles in center horizontally*/
-      @apply justify-items-center;
-      @apply gap-6;
+      @apply content-start; /* Articles vertically at the top */
+      @apply justify-items-center; /* Articles horizontally in center */
+      @apply gap-6; /* Space between each article */
     }
-    /* Container for each individual article*/
-    .article-card-author-home {
-      @apply rounded-lg;
-      @apply bg-white;
+    /* Container for each individual article: make this a custom class because it is reused for BOTH
+    the published articles AND the draft articles! */
+    .author-home-article-card {
+      /*Padding*/
       @apply p-6;
       @apply px-10;
+      /*Color and shape of card*/
+      @apply rounded-lg;
+      @apply bg-white;
       @apply shadow-md;
       @apply shadow-zinc-400;
       @apply hover:shadow-xl;
       @apply hover:shadow-zinc-900;
+      /*Card layout*/
+      @apply flex-col;
+      @apply justify-center;
+      @apply space-y-2;
+      /*Ensures all cards are the same size for a neater appearance*/
+      @apply h-full;
     }
-    /*Styling for headings/forms inside of each article card*/
+    /*Space around each bit of article info (e.g. datetimes, title etc.) inside of each article card*/
     .article-card-author-home div {
       @apply my-2;
     }
     /*Make buttons for edit/delete etc. be inline using flex*/
-    .article-forms-container {
+    .author-home-article-forms-container {
       @apply flex;
-      @apply gap-2;
       @apply flex-wrap;
-      @apply justify-between;
+      @apply justify-start;
+      @apply content-start;
     }
-    /* Style Edit Link as a button*/
-    .edit-link, .publish-button, .delete-button, .share-button, .save-button {
+    /* Author Home Interact with Article Buttons: General Template for Form Buttons (e.g. Edit, Delete) */
+    .form-button {
       @apply rounded-lg;
+      @apply text-white;
+      /* Make form elements the same width as the others for them to be inline s*/
+      @apply w-max;
+      @apply max-w-max;
       @apply text-base;
+      /* Padding */
       @apply px-5;
       @apply py-2.5;
-      @apply mb-2;
+      /* Margins */
+      @apply my-1;
+      @apply mx-2;
       @apply cursor-pointer;
     }
-    .edit-link {
-      @apply text-white;
-      @apply bg-blue-500;
-      @apply hover:bg-blue-900;
-      @apply hover:text-blue-50;
-    }
-    .publish-button {
-      @apply text-white;
-      @apply bg-teal-400;
-      @apply hover:bg-teal-900;
-      @apply hover:text-teal-50;
-    }
-    .delete-button {
-      @apply text-white;
-      @apply bg-amber-700;
-      @apply hover:bg-amber-900;
-      @apply hover:text-amber-50;
-    }
-    .share-button {
-      @apply text-white;
-      @apply bg-emerald-500;
-      @apply hover:bg-emerald-950;
-      @apply hover:text-emerald-50;
-    }
-    /*Styling for Author-Settings Page*/
+    /*****Styling for Author-Settings Page*****/
     .author-settings-main-container {
       @apply font-opensans;
       @apply ml-4;

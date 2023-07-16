@@ -1,9 +1,3 @@
-[...document.getElementsByClassName('share-button')].forEach((button) => {
-    button.addEventListener("click", function() {
-        let sharingLink = window.location.origin + "/reader/article?" + "id=" + button.id.split("share-button-")[1];
-        alert("Sharing Link: " + sharingLink);
-    });
-});
 
 
 /** Functionality to scroll to the errors container on the Comments form on the View Article page if errors exist
@@ -23,6 +17,16 @@ function scrollToErrors(element) {
 
 // Execute code only when 'body' tag is loaded
 document.querySelector('body').onload = function() {
+
+    console.log("Loaded");
+    
+    [...document.getElementsByClassName('share-button')].forEach((button) => {
+        button.addEventListener("click", function() {
+            let sharingLink = `${window.location.origin}/reader/article?id=${button.id.split("share-button-")[1]}`;
+            alert("Sharing Link: " + sharingLink);
+        });
+    });
+
     var errorsContainer = document.querySelector('#errors-container');
     if (errorsContainer)
     {
