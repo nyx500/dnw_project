@@ -22,6 +22,19 @@
 
 /*My Custom Classes Go Here: Store Combined TailwindCSS classes for frequently used elements */
 @layer base {
+    /*Author Pages and Reader Home Page: 'Body' tag styling for light and dark modes*/
+    .normal-body {
+      @apply bg-white;
+      /*Styling for dark mode*/
+      @apply dark:bg-gray-950;
+      @apply dark:text-white;
+    }
+    /*Reader View Article Page Body Tag Styling*/
+    .reader-view-article-body {
+      @apply bg-blue-100;
+      @apply dark:bg-zinc-950;
+      @apply dark:text-white;
+    }
     /*******************************************NAVBAR STYLES*******************************************/
     /** Main 'nav' tag styles:
      * Ref: https://www.devwares.com/blog/how-to-create-a-beautiful-responsive-navbar-using-tailwind-css/
@@ -31,6 +44,10 @@
       @apply shadow-lg; 
       /* Applies background color: light grey */
       @apply bg-gray-100;
+      /*Dark mode colors*/
+      @apply dark:bg-black;
+      @apply dark:border;
+      @apply dark:border-white;
       /* These properties make the navbar sticky on screens above 640px width by using the 'sm' qualifier*/
       @apply sm:sticky; 
       @apply sm:top-0;
@@ -57,6 +74,7 @@
       @apply font-semibold;
       @apply font-opensans;
       @apply text-base;
+      @apply dark:text-white;
     }
     /* Container in navbar showing the blog title (on screens larger than 640px) */
     .title-container {
@@ -70,6 +88,7 @@
       @apply mr-4;
       /* Text size */
       @apply text-2xl;
+      @apply dark:text-white;
     }
     /* Styles for containers wrapping navbar links to other pages within the author/reader page */
     .nav-link {
@@ -91,6 +110,9 @@
     .position-on-right {
       @apply ml-auto; /* Forces this link to go to the right/end of the navbar */
       @apply text-base;
+      @apply justify-end;
+      /* Use margin-top: 1 to position links better in relation to (large) blog title/logo */
+      @apply mt-1;
     }
     /* Link which toggles between the Reader/Author page */
     .change-site-link {
@@ -103,7 +125,8 @@
       @apply underline;
       /* Link color properties */
       @apply text-amber-700;
-      @apply hover:text-blue-600;
+      @apply dark:text-gray-400;
+      @apply hover:text-gray-600;
     }
     /* Container for Menu button: shown only on mobile screens with less than 640 px width!*/
     .menu-button-container {
@@ -140,6 +163,40 @@
       @apply underline;
       @apply active:text-amber-600;
       @apply visited:text-amber-800;
+      /*Darkmode colors*/
+      @apply dark:text-gray-200;
+      @apply dark:active:text-gray-400;
+      @apply dark:visited:text-slate-400;
+    }
+     /*Container for darkmode button */
+     .darkmode-element {
+      @apply mt-6;
+      @apply flex;
+      /*Center the darkmode button on small mobile size screens*/
+      @apply justify-center;
+      @apply content-center;
+      /*Place the button on the right on screens larger than 640px width*/
+      @apply sm:justify-end;
+      @apply sm:content-end;
+      @apply sm:items-end;
+      @apply sm:m-2;
+      @apply sm:ml-auto;
+      @apply sm:right-2;
+    }
+    /*Darkmode button style */
+    .darkmode-button {
+      @apply font-opensansbold;
+      @apply mx-4;
+      @apply my-4;
+      @apply p-2;
+      @apply text-white;
+      @apply rounded;
+      @apply bg-black;
+      @apply border-2;
+      @apply border-gray-500;
+      @apply dark:bg-gray-600;
+      @apply dark:border-white;
+      @apply text-sm;
     }
     /**As TailwindCSS does not apply auto-styling to h1,h2 etc. tags, lets implement it for all of them here*/
     h1 {
@@ -192,6 +249,11 @@
       @apply border-2;
       @apply border-gray-300;
       @apply font-opensansbold;
+      /*Dark mode colors*/
+      @apply dark:bg-black;
+      @apply dark:text-white;
+      @apply dark:border;
+      @apply dark:border-white;
     }
     footer div {
       @apply mx-auto;
@@ -210,7 +272,12 @@
       /* Increase shadow when button is clicked */
       @apply hover:shadow-xl;
       @apply hover:shadow-slate-800;
+      @apply dark:shadow-sm;
+      @apply dark:shadow-gray-900;
+      @apply dark:hover:shadow-md;
+      @apply dark:hover:shadow-slate-800;
       @apply text-white;
+      @apply font-opensansbold;
       /* Padding */
       @apply py-2;
       @apply px-4;
@@ -227,6 +294,7 @@
       @apply active:text-blue-600;
       @apply hover:text-blue-800;
       @apply visited:text-amber-700;
+      @apply dark:visited:text-amber-500;
     }
     /*Styles for the draft articles and published articles containers on the Author Home page*/
     .author-home-articles-container {
@@ -244,6 +312,7 @@
       @apply sm:m-6;
       /* Background color */
       @apply bg-blue-100;
+      @apply dark:bg-slate-900;
       /* Rounded borders */
       @apply rounded;
       /* Author Home articles containers layout confiuration */
@@ -265,6 +334,10 @@
       @apply shadow-zinc-400;
       @apply hover:shadow-xl;
       @apply hover:shadow-zinc-900;
+      @apply dark:bg-gray-800;
+      @apply dark:text-white;
+      @apply dark:shadow-sm;
+      @apply dark:shadow-zinc-700;
       /*Card layout*/
       @apply flex-col;
       @apply justify-center;
@@ -352,6 +425,7 @@
       @apply rounded-lg;
       @apply focus:outline-none;
       @apply focus:border-blue-600;
+      @apply dark:focus:border-blue-300;
       @apply focus:border-2;
       @apply block;
       @apply w-full;
@@ -384,10 +458,15 @@
       @apply px-10;
       /*Color for article cards*/
       @apply bg-white;
+      @apply dark:bg-gray-800;
+      @apply dark:text-white;
       @apply shadow-md;
       @apply shadow-zinc-400;
+      @apply dark:shadow-zinc-800;
       @apply hover:shadow-xl;
+      @apply dark:hover:shadow-lg;
       @apply hover:shadow-zinc-900;
+      @apply dark:hover:shadow-zinc-800;
     }
 }  
 

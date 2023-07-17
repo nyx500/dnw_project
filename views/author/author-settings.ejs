@@ -9,7 +9,7 @@
     <title>Author: Settings</title>
 </head>
 
-<body>
+<body class="normal-body">
     <!--Navbar for home and settings link: navbar styles defined in ./public/input.css custom classes-->
     <nav>
         <!--Navbar main container-->
@@ -31,7 +31,7 @@
                 </div>
             </span>
             <!-- Container for toggleable link to Other Section (e.g. 'Reader' for the 'Author' page)-->
-            <div class="nav-link position-on-right">
+            <div class="position-on-right">
                 <a href="/reader" class="change-site-link">Home (Reader)</a>
             </div>
             <!--This is hidden on larger screens -->
@@ -39,18 +39,17 @@
                 <button class="menu-button">
                     <!--Code for how to make an SVG menu icon containing three horizontal bars: -->
                     <!--Ref: https://www.devwares.com/blog/how-to-create-a-beautiful-responsive-navbar-using-tailwind-css/-->
-                    <svg class="w-12 h-12" x-show="! showMenu" stroke-linecap="round" stroke-linejoin="round"
+                    <svg id="menu-icon" class="w-12 h-12" x-show="! showMenu" stroke-linecap="round" stroke-linejoin="round"
                         stroke-width="3" viewBox="0 00 26 26" stroke="black">
                         <path d="m4 6h16M4 12h16M4 18h16"></path>
                     </svg>
                 </button>
             </div>
         </div> <!--End of 'nav-container' class-->
-
         <!-- Collapsible menu which is displayed across the screen on mobile-only sized screens -->
         <!--Toggle showing this menu with the above Menu Button by clicking it (implemented in script.js file)-->
         <!--Make this menu blue on author page and emerald colored on reader page to help users distinguish-->
-        <div class="hidden hidden-menu bg-blue-300"> <!-- 'hidden' property in TailwindCSS is toggled -->
+        <div class="hidden hidden-menu bg-blue-300 dark:bg-gray-900"> <!-- 'hidden' property in TailwindCSS is toggled -->
             <ul>
                 <li>
                     <a href="/author/">Home (Author)</a>
@@ -64,6 +63,9 @@
             </ul>
         </div>
     </nav>
+    <div class="darkmode-element">
+        <button id="darkmode-button" class="darkmode-button">Dark Mode</button>
+    </div>
     <!-- Make it clear that this is the **Author** not the **User** Home page-->
     <h1 class="font-lobster">Author: Change Settings</h1>
     <div class="font-opensans m-4 py-4 rounded grid justify-center content-evenly gap-y-8 h-5/6">
@@ -87,7 +89,7 @@
             </div>
             <%} %>
                 <!--Form to change the author's blog details in the 'blog' sqlite3 table -->
-                <form class="text-left grid gap-4 content-center bg-blue-200 shadow-xl rounded px-8 py-6 mb-4"
+                <form class="text-left grid gap-4 content-center bg-blue-200 dark:bg-slate-800 shadow-xl rounded px-8 py-6 mb-4"
                     method="POST" action="/author/settings">
                     <div class="grid gap-y-4 auto-cols-auto self-start">
                         <!--Form label-input components: styles contained in input.css, as repeated so often-->

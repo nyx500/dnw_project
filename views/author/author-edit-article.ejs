@@ -8,13 +8,14 @@
     <link rel="stylesheet" href="../../public/output.css" />
     <title>Edit Article</title>
 </head>
-<body>
+<body class="normal-body">
     <!--Navbar for home and settings link: navbar styles defined in ./public/input.css custom classes-->
     <nav>
         <!--Navbar main container-->
         <div class="nav-container">
             <!--Span element containing the Blog Title, and links within the current website section (e.g. Author)-->
             <span> <!--Hidden on mobile screens in favor of the Menu Button and collapsible list menu!-->
+                <!--Displays blog title on the left of the navbar-->
                 <div class="title-container">
                     <a href="/author/">
                         <%= blog.title %>
@@ -29,7 +30,7 @@
                 </div>
             </span>
             <!-- Container for toggleable link to Other Section (e.g. 'Reader' for the 'Author' page)-->
-            <div class="nav-link position-on-right">
+            <div class="position-on-right">
                 <a href="/reader" class="change-site-link">Home (Reader)</a>
             </div>
             <!--This is hidden on larger screens -->
@@ -37,14 +38,18 @@
                 <button class="menu-button">
                     <!--Code for how to make an SVG menu icon containing three horizontal bars: -->
                     <!--Ref: https://www.devwares.com/blog/how-to-create-a-beautiful-responsive-navbar-using-tailwind-css/-->
-                    <svg class="w-12 h-12" x-show="! showMenu" stroke-linecap="round" stroke-linejoin="round"
+                    <svg id="menu-icon" class="w-12 h-12" x-show="! showMenu" stroke-linecap="round" stroke-linejoin="round"
                         stroke-width="3" viewBox="0 00 26 26" stroke="black">
                         <path d="m4 6h16M4 12h16M4 18h16"></path>
                     </svg>
                 </button>
             </div>
         </div> <!--End of 'nav-container' class-->
-        <div class="hidden hidden-menu bg-blue-300"> <!-- 'hidden' property in TailwindCSS is toggled -->
+
+        <!-- Collapsible menu which is displayed across the screen on mobile-only sized screens -->
+        <!--Toggle showing this menu with the above Menu Button by clicking it (implemented in script.js file)-->
+        <!--Make this menu blue on author page and emerald colored on reader page to help users distinguish-->
+        <div class="hidden hidden-menu bg-blue-300 dark:bg-gray-900"> <!-- 'hidden' property in TailwindCSS is toggled -->
             <ul>
                 <li>
                     <a href="/author/">Home (Author)</a>
@@ -58,6 +63,9 @@
             </ul>
         </div>
     </nav>
+    <div class="darkmode-element">
+        <button id="darkmode-button" class="darkmode-button">Dark Mode</button>
+    </div>
     <h1 class="font-lobster">Author: Edit Article</h1>
     <!--Article details-->
     <div class="font-opensans grid sm:grid-cols-2 m-10">
@@ -96,7 +104,7 @@
         <%} %>
         <!--End errors container-->
         <!--Main Edit Article Form container-->
-        <div class="p-4 m-10 rounded-lg bg-blue-100 mb-6 drop-shadow-xl border-2 border-gray-300"> <!--Tailwind classes here : elem is not repeated-->
+        <div class="p-4 m-10 rounded-lg bg-blue-100 dark:bg-slate-700 mb-6 drop-shadow-xl border-2 border-gray-300">
             <!--Article form-->
             <form class="m-10 flex-col justify-center content-center" method="POST" action="/author/edit-article">
                 <!--Send the article's ID and other hidden fields back with POST!-->
@@ -109,22 +117,22 @@
                     value="<%= article.datetime_published %>" />
                 <!--End of hidden fields-->
                 <!--Start of displayed input fields for title and subtitle-->
-                <div class="sm:flex sm:justify-start sm:mb-10 gap-8">
+                <div class="flex flex-wrap justify-center sm:justify-start sm:mb-10 gap-8">
                     <div class="block">
                         <label class="font-opensansbold m-2" for="title">
                             Change Title:
                         </label>
-                        <input class="font-opensansitalic sm:w-full bg-gray-50 border-2 border-gray-300 text-gray-900 
-                            rounded-lg focus:outline-none focus:border-blue-600 focus:border-2 p-2.5 ml-2" type="text"
-                            name="title" id="title" value="<%= article.title %>">
+                        <input class="font-opensansitalic sm:w-full bg-gray-50 dark:bg-black dark:text-white border-2 
+                            border-gray-300 text-gray-900 rounded-lg focus:outline-none focus:border-blue-600 focus:border-2
+                            p-2.5 ml-2" type="text" name="title" id="title" value="<%= article.title %>">
                     </div>
                     <div class="block">
                         <label class="font-opensansbold m-2" for="subtitle">
                             Change Subtitle:
                         </label>
-                        <input class="font-opensansitalic sm:w-full bg-gray-50 border-2 border-gray-300 text-gray-900 rounded-lg
-                            rounded-lg focus:outline-none focus:border-blue-600 focus:border-2 p-2.5 ml-2" type="text"
-                            name="subtitle" id="subtitle" value="<%= article.subtitle %>">
+                        <input class="font-opensansitalic sm:w-full bg-gray-50 dark:bg-black dark:text-white border-2
+                            border-gray-300 text-gray-900 rounded-lg rounded-lg focus:outline-none focus:border-blue-600
+                            focus:border-2 p-2.5 ml-2" type="text" name="subtitle" id="subtitle" value="<%= article.subtitle %>">
                     </div>
                 </div>
                 <!--End of displayed input fields for title and subtitle-->
@@ -134,17 +142,17 @@
                         <label class="font-opensansbold mb-10" for="content">Edit Content:</label>
                     </div>
                     <div>
-                        <textarea class="w-full px-1 py-1 text-gray-900 bg-white border-2 border-gray-300 rounded-lg focus:outline-none
-                            focus:border-blue-600 focus:border-2 font-opensans" type="text" name="content" id="content"
-                            rows="12"><%= article.content %></textarea>
+                        <textarea class="w-full px-1 py-1 text-gray-950 bg-white dark:bg-black dark:text-white border-2
+                            border-gray-300 rounded-lgfocus:outline-none focus:border-blue-600 focus:border-2 font-opensans"
+                            type="text" name="content" id="content" rows="12"><%= article.content %></textarea>
                     </div>
                 </div>
                 <!--End Edit Article Text Content Here-->
                 <!--Container and styling for Submit Changes button -->
                 <div class="text-center pt-4">
-                    <input class="shadow-md shadow-slate-400 hover:drop-shadow-lg hover:shadow-slate-800 text-white
-                        py-2 px-4 rounded-lg cursor-pointer text-white bg-orange-600 hover:bg-orange-800
-                        font-opensansbold" type="submit" value="Submit Changes" />
+                    <input class="shadow-md shadow-slate-400 dark:shadow-slate-500 hover:drop-shadow-lg hover:shadow-slate-800 
+                        dark:hover:drop-shadow-sm text-white py-2 px-4 rounded-lg cursor-pointer text-white bg-orange-600 
+                        hover:bg-orange-800 font-opensansbold" type="submit" value="Submit Changes" />
                 </div>
                 <!--End of container and styling for Submit Changes button -->
             </form>

@@ -10,7 +10,7 @@
     <title>Home: Author</title>
 </head>
 
-<body>
+<body class="normal-body">
     <!--Navbar for home and settings link: navbar styles defined in ./public/input.css custom classes-->
     <nav>
         <!--Navbar main container-->
@@ -32,7 +32,7 @@
                 </div>
             </span>
             <!-- Container for toggleable link to Other Section (e.g. 'Reader' for the 'Author' page)-->
-            <div class="nav-link position-on-right">
+            <div class="position-on-right">
                 <a href="/reader" class="change-site-link">Home (Reader)</a>
             </div>
             <!--This is hidden on larger screens -->
@@ -40,7 +40,7 @@
                 <button class="menu-button">
                     <!--Code for how to make an SVG menu icon containing three horizontal bars: -->
                     <!--Ref: https://www.devwares.com/blog/how-to-create-a-beautiful-responsive-navbar-using-tailwind-css/-->
-                    <svg class="w-12 h-12" x-show="! showMenu" stroke-linecap="round" stroke-linejoin="round"
+                    <svg id="menu-icon" class="w-12 h-12" x-show="! showMenu" stroke-linecap="round" stroke-linejoin="round"
                         stroke-width="3" viewBox="0 00 26 26" stroke="black">
                         <path d="m4 6h16M4 12h16M4 18h16"></path>
                     </svg>
@@ -51,7 +51,7 @@
         <!-- Collapsible menu which is displayed across the screen on mobile-only sized screens -->
         <!--Toggle showing this menu with the above Menu Button by clicking it (implemented in script.js file)-->
         <!--Make this menu blue on author page and emerald colored on reader page to help users distinguish-->
-        <div class="hidden hidden-menu bg-blue-300"> <!-- 'hidden' property in TailwindCSS is toggled -->
+        <div class="hidden hidden-menu bg-blue-300 dark:bg-gray-900"> <!-- 'hidden' property in TailwindCSS is toggled -->
             <ul>
                 <li>
                     <a href="/author/">Home (Author)</a>
@@ -65,9 +65,12 @@
             </ul>
         </div>
     </nav>
+    <div class="darkmode-element">
+        <button id="darkmode-button" class="darkmode-button">Dark Mode</button>
+    </div>
     <!-- Most h-tag styles are in public/input.css as so frequently used, but change font to lobster 
         for h1 here-->
-    <h1 class="font-lobster">Home: Author</h1>
+    <h1 class="font-lobster text-center sm:text-left">Home: Author</h1>
     <!-- Container with all blog details for Author home page-->
     <!--Tailwind Classes are contained inline in the 'class' attrib, as this custom element is not reused!-->
     <div class="flex-col flex-auto flex-wrap text-center justify-center content-center gap-2 sm:gap-4
@@ -86,7 +89,7 @@
     <!-- Container for the 'Create New Draft Article' form -->
     <div class="create-draft-container font-opensans flex justify-center m-8">
         <form method="GET" action="/author/create-new-draft-article">
-            <button type="submit" class="basic-button bg-blue-500 hover:bg-blue-800 font-opensansbold"
+            <button type="submit" class="basic-button bg-blue-500 hover:bg-blue-800 dark:bg-gray-600 hover:bg-gray-900 font-opensansbold"
                 name="create-new-draft" value="create-new-draft">
                 Create New Draft
             </button>
@@ -139,8 +142,9 @@
                                 <!-- Container with buttons: edit link, 'publish' and 'delete' -->
                                 <div class="author-home-article-forms-container">
                                     <!--Dynamically-generated Edit Article Link-->
-                                    <a href="/author/edit-article?id=<%= article.id %>" class="order-1 form-button px-8 bg-blue-500 hover:bg-blue-700
-                                            hover:no-underline hover:text-white">
+                                    <a href="/author/edit-article?id=<%= article.id %>" class="order-1 form-button px-8 
+                                        bg-blue-500 dark:bg-blue-700 hover:bg-blue-700 dark:hover:bg-blue-900 
+                                        hover:no-underline hover:text-white">
                                         Edit
                                     </a>
                                     <!-- Form to publish the article -->
@@ -148,16 +152,16 @@
                                         <!--Sends Article ID in req.body from hidden input field-->
                                         <input type="hidden" id="article-<%= article.id %>" name="id"
                                             value="<%= article.id %>" />
-                                        <input class="form-button max-h-max bg-teal-400 hover:bg-teal-800" type="submit"
-                                            value="Publish" />
+                                        <input class="form-button max-h-max bg-teal-400 hover:bg-teal-800
+                                        dark:bg-teal-700 dark:hover:bg-teal-900" type="submit"value="Publish" />
                                     </form>
                                     <!-- Form to delete the article -->
                                     <form class="order-3" method="POST" action="/author/delete-article">
                                         <!--Sends Article ID in req.body from hidden input field-->
                                         <input type="hidden" id="article-<%= article.id %>" name="id"
                                             value="<%= article.id %>" />
-                                        <input class="form-button px-6 bg-amber-700 hover:bg-amber-900" type="submit"
-                                            value="Delete" />
+                                        <input class="form-button px-6 bg-amber-700 hover:bg-amber-900
+                                        dark:bg-amber-800 dark:hover:bg-amber-950" type="submit" value="Delete" />
                                     </form>
                                 </div> <!--End of container with forms for user interaction with the article-->
                             </div>
@@ -207,13 +211,14 @@
                                 <!-- Container with buttons: edit link, 'share' and 'delete' -->
                                 <div class="author-home-article-forms-container">
                                     <!--Dynamically-generated Edit Article Link-->
-                                    <a href="/author/edit-article?id=<%= article.id %>" class="order-1 form-button px-8 bg-blue-500 hover:bg-blue-700
-                                            hover:no-underline hover:text-white">
+                                    <a href="/author/edit-article?id=<%= article.id %>" class="order-1 form-button px-8 bg-blue-500
+                                        dark:bg-blue-700 hover:bg-blue-700 hover:bg-blue-700 hover:no-underline hover:text-white">
                                         Edit
                                     </a>
                                     <!-- Share button-->
                                     <button class="form-button order-2 share-button px-6
-                                        bg-emerald-600 hover:bg-emerald-950" id="share-button-<%= article.id %>">
+                                        bg-emerald-600 hover:bg-emerald-900 dark:emerald-800 hover:bg-emerald-950" 
+                                        id="share-button-<%= article.id %>">
                                         Share
                                     </button>
                                     <!-- Form to delete the article -->
@@ -221,8 +226,8 @@
                                         <!--Sends Article ID in req.body from hidden input field-->
                                         <input type="hidden" id="article-<%= article.id %>" name="id"
                                             value="<%= article.id %>" />
-                                        <input class="form-button px-6 bg-amber-700 hover:bg-amber-900" type="submit"
-                                            value="Delete" />
+                                        <input class="form-button px-6 bg-amber-700 hover:bg-amber-900 dark:bg-amber-800 
+                                            dark:hover:bg-amber-950" type="submit" value="Delete" />
                                     </form>
                                 </div>
                             </div> <!--End of individual article card-->

@@ -15,6 +15,55 @@ function scrollToErrors(element) {
    });
 }
 
+/* Dark mode functionality */
+function toggleDarkMode() {
+    var button = document.querySelector('#darkmode-button');
+    // Toggles temporary dark mode session variable when click on the Dark Mode buton found on every page
+    button.addEventListener("click", function() {
+        // Get the object which stores if dark mode is off/on from sessionStorage
+        var darkVariable = sessionStorage.getItem('dark');
+        if (darkVariable === undefined || darkVariable === null || darkVariable === 'off')
+        {   
+            sessionStorage.setItem('dark', 'on');
+            document.documentElement.classList.add("dark");
+            button.innerHTML = "Light Mode";
+            console.log("dark mode is on");
+            document.querySelector('#menu-icon').style.stroke = "lightgrey";
+        }
+        else
+        {   
+            sessionStorage.setItem('dark', 'off');
+            document.documentElement.classList.remove("dark");
+            button.innerHTML = "Dark Mode";
+            console.log("dark mode is off");
+            document.querySelector('#menu-icon').style.stroke = "black";
+        }
+    });
+}
+
+// uses the value assigned to the 'dark' item in session storage to add/remove the 'dark' class from html (root element) when page loads
+function applyDarkModeToHTML() {
+    var darkVariable = sessionStorage.getItem('dark');
+    if (darkVariable === 'on')
+    {   
+        document.querySelector('#darkmode-button').innerHTML = "Light Mode";
+        if (!document.documentElement.classList.contains('dark'))
+        {
+            document.documentElement.classList.add("dark");
+        }
+        document.querySelector('#menu-icon').style.stroke = "lightgrey";
+        console.log("pg loaded: dark mode is on");
+    } else {
+        document.querySelector('#darkmode-button').innerHTML = "Dark Mode";
+        if (document.documentElement.classList.contains('dark'))
+        {
+            document.documentElement.classList.remove("dark");
+        } 
+        document.querySelector('#menu-icon').style.stroke = "black";
+        console.log("pg loaded: dark mode is off");
+    }
+}
+
 // Execute code only when 'body' tag is loaded
 document.querySelector('body').onload = function() {
     
@@ -46,5 +95,10 @@ document.querySelector('body').onload = function() {
             nav.classList.toggle('py-0');
         });
     }
+
+    // Apply dark mode if selected when the page loads
+    applyDarkModeToHTML();
+    // Toggle the dark mode by clicking on 'Dark Mode' button
+    toggleDarkMode();
 };
 
