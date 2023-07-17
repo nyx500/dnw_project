@@ -1914,6 +1914,18 @@ footer div {
   white-space: nowrap;
 }
 
+.whitespace-normal {
+  white-space: normal;
+}
+
+.whitespace-pre {
+  white-space: pre;
+}
+
+.whitespace-pre-line {
+  white-space: pre-line;
+}
+
 .whitespace-pre-wrap {
   white-space: pre-wrap;
 }
@@ -2149,6 +2161,14 @@ footer div {
 
 .pt-4 {
   padding-top: 1rem;
+}
+
+.pl-2 {
+  padding-left: 0.5rem;
+}
+
+.pl-4 {
+  padding-left: 1rem;
 }
 
 .text-left {
