@@ -5,8 +5,6 @@ const sqlite3 = require('sqlite3').verbose();
 const bodyParser = require("body-parser");
 // Imports path library to generate properly-formatted paths
 const path = require('path');
-// Imports joi input data validation package
-const Joi = require('joi');
 // Security: Helmet is a collection of middleware functions that set security-related HTTP response headers.
 const helmet = require('helmet');
 app.use(helmet());
@@ -20,14 +18,14 @@ const Error404 = require("./errors/Error404");
 // A helper function which renders the error page if data cannot be retrieved/updated OR 404 error occurs
 const returnErrorPage = require("./errors/errorFunction");
 
-// Add a rate limiter here to protect from brute-force attacks
+// Add a rate limiter here to protect from too many requests from one IP address
 const rateLimit = require('express-rate-limit');
 // Ref: https://medium.com/@samuelnoye35/strengthening-security-in-node-js-best-practices-and-examples-64a408b254cd
 const limiter = rateLimit({
   windowMs: 20 * 60 * 1000, // 20 minutes = 1 time window
   max: 100, // Set a maximum of 100 requests per time window
 });
-//app.use(limiter); // Run limiter
+app.use(limiter); // Run limiter
 
 // Handles post requests --> must define it before defining the routes or doesn't work!!!
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -52,7 +50,7 @@ app.use('/public', express.static(path.join(__dirname, '/public')));
 
 // Sets the app up to use ejs for rendering
 app.set("views", __dirname + "/views");
-app.set('view engine', 'ejs');
+app.set('view engine', 'ejs');  
 
 
 // This adds all the readerRoutes to the app under the path /reader

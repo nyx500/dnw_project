@@ -31,7 +31,7 @@
     }
     /*Reader View Article Page Body Tag Styling*/
     .reader-view-article-body {
-      @apply bg-blue-100;
+      @apply bg-emerald-100;
       @apply dark:bg-zinc-950;
       @apply dark:text-white;
     }
@@ -263,13 +263,13 @@
       @apply py-4;
       @apply lg:py-4;
     }
-    /* Creates a general custom template class for button styling (e.g. Create Draft button) */
-    /* Then add individual button color-classes from Tailwind inline in the EJS files */
+    /* Creates a general custom template class for button styling (e.g. for Create Draft button) */
+    /* Then we will add the individual button color-classes from Tailwind inline in "class" in the EJS files */
     .basic-button {
-      /* Put a shadow around button as an indicator user should click on it/is a clickable element */
+      /* Puts a shadow around button as an indicator user should click on it/is a clickable element */
       @apply shadow-md;
       @apply shadow-slate-400;
-      /* Increase shadow when button is clicked */
+      /* Increases shadow when button is clicked */
       @apply hover:shadow-xl;
       @apply hover:shadow-slate-800;
       @apply dark:shadow-sm;

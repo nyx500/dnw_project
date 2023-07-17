@@ -441,7 +441,7 @@ video {
 
 .reader-view-article-body {
   --tw-bg-opacity: 1;
-  background-color: rgb(219 234 254 / var(--tw-bg-opacity));
+  background-color: rgb(209 250 229 / var(--tw-bg-opacity));
 }
 
 :is(.dark .reader-view-article-body) {
@@ -943,18 +943,18 @@ footer div {
   }
 }
 
-/* Creates a general custom template class for button styling (e.g. Create Draft button) */
+/* Creates a general custom template class for button styling (e.g. for Create Draft button) */
 
-/* Then add individual button color-classes from Tailwind inline in the EJS files */
+/* Then we will add the individual button color-classes from Tailwind inline in "class" in the EJS files */
 
 .basic-button {
-  /* Put a shadow around button as an indicator user should click on it/is a clickable element */
+  /* Puts a shadow around button as an indicator user should click on it/is a clickable element */
   --tw-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
   --tw-shadow-colored: 0 4px 6px -1px var(--tw-shadow-color), 0 2px 4px -2px var(--tw-shadow-color);
   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
   --tw-shadow-color: #94a3b8;
   --tw-shadow: var(--tw-shadow-colored);
-  /* Increase shadow when button is clicked */
+  /* Increases shadow when button is clicked */
 }
 
 .basic-button:hover {
@@ -1914,20 +1914,8 @@ footer div {
   white-space: nowrap;
 }
 
-.whitespace-normal {
-  white-space: normal;
-}
-
-.whitespace-pre {
-  white-space: pre;
-}
-
 .whitespace-pre-line {
   white-space: pre-line;
-}
-
-.whitespace-pre-wrap {
-  white-space: pre-wrap;
 }
 
 .rounded {
@@ -2161,14 +2149,6 @@ footer div {
 
 .pt-4 {
   padding-top: 1rem;
-}
-
-.pl-2 {
-  padding-left: 0.5rem;
-}
-
-.pl-4 {
-  padding-left: 1rem;
 }
 
 .text-left {
