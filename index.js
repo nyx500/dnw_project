@@ -8,7 +8,7 @@ const path = require('path');
 // Security: Helmet is a collection of middleware functions that set security-related HTTP response headers.
 const helmet = require('helmet');
 app.use(helmet());
-// Add an extra layer of obsecurity to reduce server fingerprinting
+// Reduces the ability to fingerprint the software being used on the server (ref: https://expressjs.com/en/advanced/best-practice-security.html)
 app.disable('x-powered-by');
 
 // Import my custom error functionality 
