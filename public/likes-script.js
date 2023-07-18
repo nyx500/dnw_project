@@ -14,8 +14,7 @@ $(document).ready(function () {
             type: "POST",
             url: route,
             data: { "id_like_form": id }, // This represents 'req.body'
-            success: function (response) { window.location.reload() }, // Response should be status code 200!
-            error: function (err) { console.log("error") }
+            success: function (response) { window.location.reload() } // Response should be status code 200!
         });
     });
 });

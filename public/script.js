@@ -45,7 +45,6 @@ document.querySelector('body').onload = function() {
 function scrollToErrors(element) {
     var offset = 200;
     var elementPosition = element.getBoundingClientRect().top;
-    console.log(element.getBoundingClientRect());
     var offsetPosition = elementPosition + window.scrollY - offset;
     window.scrollTo({
         top: offsetPosition,

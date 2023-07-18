@@ -25,7 +25,8 @@ const limiter = rateLimit({
   windowMs: 20 * 60 * 1000, // 20 minutes = 1 time window
   max: 100, // Set a maximum of 100 requests per time window
 });
-app.use(limiter); // Run limiter
+
+//app.use(limiter); // Run limiter
 
 // Handles post requests --> must define it before defining the routes or doesn't work!!!
 app.use(bodyParser.urlencoded({ extended: true }));
