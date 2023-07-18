@@ -123,7 +123,9 @@ router.post("/settings", blogValidate, (req, res) => { // Remember to pass the e
         var clean_subtitle = sanitizeHtml(req.body.subtitle);
         var clean_author = sanitizeHtml(req.body.author);
         // Saves the sanitized new blog settings in the first/only row of the blog table
-        db.run(update_query, [clean_title, clean_subtitle, clean_author],
+        // 'Defend against SQL injection attacks by using **parameterized queries** or prepared statements'
+        // Ref: https://expressjs.com/en/advanced/best-practice-security.html
+        db.run(update_query, [clean_title, clean_subtitle, clean_author], // parameterized query syntax here
             function (err) {
                 if (err) {
                     returnErrorPage(res, new Error500(), "Failed to save new settings.");
