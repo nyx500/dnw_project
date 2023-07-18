@@ -35,6 +35,13 @@ Run ```npm run start``` to start serving the web app (Access via http://localhos
 You can also run: 
 ```npm run clean-db``` to delete the database before rebuilding it for a fresh start
 
+#### Added by Ophelia - notes on extra scripts ####
+Run ```windows-os-build-db``` to create the database (database.db) on Windows systems
+Run ```npm run windows-os-clean-db``` to clean the database on Windows systems
+The script ```npm run build-css``` was used to output the public/output.css file from the Tailwind CSS input file.
+The script ```npm run watch-css``` was used to watch the Tailwind CSS for changes to apply them continuously.
+
+
 ##### Next steps #####
 
 * Explore the file structure and code
@@ -67,6 +74,8 @@ Edit this section to include any settings that should be adjusted in configurati
 
 NB. we will ONLY run ```npm install```, ```npm run build-db```, and ```npm run start``` . We will NOT install additional packages to run your code and will NOT run additional build scripts. Be careful with any additional node dependencies that you use.
 
-
-
-
+#### How to run the app ####
+1. Run script ```npm start```
+2. Website should be available at `localhost:3000\` with the 'Welcome' Page allowing user to choose between the 'author' and the 'reader' sections
+3. Navigate to `localhost:3000\author` to access the Author homepage
+4. Navigate to `localhost:3000\reader` to access the Reader homepage
